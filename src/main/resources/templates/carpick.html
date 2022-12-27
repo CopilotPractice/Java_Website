@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>PulseCar</title>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="icon" type="image/x-icon" href="/images/favicon.ico" />
+ <script
+      src="https://kit.fontawesome.com/9d7a2afbd4.js"
+      crossorigin="anonymous"
+    ></script>
+<link rel="icon" type="image/x-icon" href="/images/favicon.ico" />
+<link rel="stylesheet" th:href=@{css/w3.css} />
+<link rel="stylesheet" th:href=@{css/cgoing.css} />
+<link rel="stylesheet" th:href=@{css/jsk.css} />
+<script src="js/w3.js"></script>
+<script src="js/cgoing.js"></script>
+<script src="js/custom.js"></script>
+</head>
+<body>
+	<!-- common 헤더 -->
+	<div id="wrapper">
+		<div th:insert="common_header.html :: header"></div>
+
+		<!-- banner -->
+		<div
+			class="flex-container flex-center w3-large lnb-margin w3-padding w3-light-grey">
+			<a href="car.html">전기차 거래 플랫폼</a>
+		</div>
+		<div id="mypage_main">
+			<!-- lnb (Local navigation bar) -->
+			<div id="mypage_side">
+				<div th:insert="common_sidebar_mypage.html :: mypage_side"></div>
+			</div>
+
+			<!-- 찜리스트 -->
+			<div class="w3-padding" id="mypage_contents">
+				<div class="j-pick-list">
+					<ul>
+						<li>차량정보</li>
+					</ul>
+				</div>
+				<div class="w3-row ">
+					<div class="w3-col" style="width: 65%">
+						<h2 class="w3-small w3-center">차량정보</h2>
+					</div>
+					<div class="w3-col" style="width: 20%">
+						<h2 class="w3-small w3-center">가격</h2>
+					</div>
+					<div class="w3-col" style="width: 15%">
+						<h2 class="w3-small  w3-center">지역</h2>
+					</div>
+				</div>
+				<!-- 반복 -->
+				<th:block class="w3-padding">
+					<!-- 반복 th:each="{}" -->
+					<div class="w3-row j-border-tb">
+						<div class="w3-padding ">
+							<th:block th:each="carpick : ${carpick}">
+							<div style="height: 130px">
+								<div class="w3-col" style="width: 20%">
+									<a th:href="@{car_detail(userid=${session.loginUser.id},num=${carpick.c_num})}">
+										<img style="margin-top: 15px" th:src="@{/image/__${carpick.img_dir_1}__}" class="j-image3" /> <!-- th:src="@{${dto.img_dir_1}}" 1번 이미지-->
+									</a>
+								</div>
+								<div class="w3-col"
+									style="width: 45%; height: 100%; position: relative;">
+									<h2 class="w3-large" th:utext="${carpick.c_name}" >
+										<!-- th:href="@{car_detail(num=${dto?.c_num})}" 게시글 링크-->
+										{차이름}
+									</h2>
+
+
+									<span class="partition-right" th:utext="${carpick.c_num}">{차번호}</span>
+									<span class="partition-right" th:utext="${carpick.c_scail}">{차스케일}</span>
+									<span class="partition-right" th:utext="${carpick.c_year}">{}년식</span>
+									<span class="partition-right" th:utext="${#numbers.formatInteger(carpick.c_mile, 3, 'COMMA')}+'km'">{}km</span>
+								</div>
+								<div class="w3-col" style="width: 20%">
+									<div class="w3-center">
+										<h1 class="w3-large" th:utext="${#numbers.formatInteger(carpick.cp_price, 3, 'COMMA')}+'원'">{가격}</h1>
+									</div>
+								</div>
+								<div class="w3-col" style="width: 15%">
+									<div class="w3-center">
+										<h2 class="w3-large" th:utext="${carpick.cp_address}">{판매게시글 주소}</h2>
+									</div>
+								</div>
+							</div>
+								</th:block>
+
+						</div>
+					</div>
+				</th:block>
+			</div>
+		</div>
+		<!-- common 푸터 -->
+		<div th:replace="common_footer :: footer"></div>
+	</div>
+</body>
+</html>

@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <title>PulseCar</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link
+      rel="stylesheet"
+      th:href="@{https://fonts.googleapis.com/icon?family=Material+Icons}" />
+    <link rel="stylesheet" th:href="@{/css/w3.css}" />
+    <link rel="stylesheet" th:href="@{css/cgoing.css}" />
+    <script type="text/javascript" src="js/custom.js"></script>
+    <script src="js/w3.js"></script>
+    <script src="js/cgoing.js"></script>
+  </head>
+  <body>
+    <div id="wrapper">
+      <!-- common 헤더 -->
+      <div th:insert="common_header.html :: header"></div>
+
+      <!-- banner -->
+      <div
+        class="flex-container flex-center w3-large lnb-margin w3-padding w3-light-grey">
+        <a th:href="@{car(userid=${drLoginUser.dr_id})}">전기차 거래 플랫폼</a>
+      </div>
+
+      <div id="mypage_main">
+        <!-- Grid Column(2/12) -->
+        <!-- 사이드바 영역 -->
+        <div id="mypage_side">
+           <div th:insert="common_sidebar_mypage.html :: mypage_side"></div>
+        </div>
+        <!-- Grid Column(10/12) -->
+        <!-- 마이페이지 영역 -->
+        <div class="w3-padding" id="mypage_contents">
+          <!-- 회원 설명 -->
+          <div class="w3-container">
+			<span th:text="|${drLoginUser.dr_name}님의 마이페이지입니다|"></span>
+            <button class="w3-right cursor w3-large w3-round w3-right">
+              내차 팔기
+            </button>
+          </div>
+          <!-- 회원 정보 -->
+           <th:block th:if="${drLoginUser!= null}">
+          <div
+            class="w3-container w3-padding w3-border-bottom"
+            style="position: relative">
+            <span class="w3-large font-bold w3-margin-right">회원정보</span>
+            <span th:text="|${drLoginUser.dr_phone}|" class="partition-right"></span>
+            <span th:text="|이메일 : ${drLoginUser.dr_email}|"></span>
+            <button class="cursor w3-large w3-round w3-right" 
+            	style="
+                vertical-align: middle;
+                position: absolute;
+                top: 50%;
+                right: 10px;
+                transform: translateY(-50%);" 
+                th:onclick="|location.href='@{updateDealerForm(loginId=${drLoginUser.dr_id})}'|">
+              회원정보 수정
+            </button>
+            
+          </div>
+          </th:block>
+          <div class="mypageCarStatus w3-margin-top">
+            <div>
+              <p class="w3-xlarge">내 차 구매</p>
+              <p class="w3-large w3-border-bottom w3-margin">찜한 차량</p>
+              <div class="w3-section w3-large">
+                <!-- 동적으로 바뀌는 부분 -->
+                <!-- 없을 경우 -->
+                <div class="w3-center">
+                  <span style="color: red">찜한 차량</span>이 없습니다.
+                </div>
+                <!-- 있을 경우 -->
+                <div style="display: flex; flex-wrap: wrap">
+                  <!-- 찜한 차량 정보 -->
+                </div>
+              </div>
+            </div>
+            <div>
+              <p class="w3-xlarge">내 차 판매</p>
+              <p class="w3-large">
+                <span class="partition-right">판매중 차량</span>
+                <span th:utext="${drLoginUser.dr_selling}">총 {}대</span>
+              </p>
+                <th:block th:each="carpick : ${dto}">
+                  <div id="carPickList" style="flex-basis: 50%">
+                    <img
+                      th:src="@{/image/__${carpick?.img_dir_1}__}"
+                      style="width: 50%; padding: 10px" />
+                    <p th:utext="${carpick?.c_name}">{차이름}</p>
+                    <p th:utext="${carpick?.cp_price}">{가격}}</p>
+                  </div>
+				</th:block>
+              <p class="w3-xlarge"></p>
+              <p class="w3-large">
+                <span class="partition-right">판매완료 차량</span>
+                <span th:utext="${drLoginUser.dr_sold}">총 {}대</span>
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- common 푸터 -->
+     <div th:insert="common_footer.html :: footer"></div>
+    </div>
+  </body>
+</html>

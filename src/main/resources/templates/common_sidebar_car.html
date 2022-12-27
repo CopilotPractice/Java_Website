@@ -1,0 +1,463 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<div class="" th:fragment="sidebar_car">
+  <div class="w3-section">
+    <div>
+      <span class="w3-text-theme">전기자동차</span>
+      <span class="w3-right" th:utext="|${#lists.size(cardto)}대|">{}</span>
+    </div>
+    <p class="w3-small">
+      <span class="gi-reset">
+        <input type="reset" value="선택초기화" class="btn-plain" th:onclick="ResetList();"/>
+      </span>
+      <span class="gi-search w3-right">
+        <input type="button" value="최근검색" class="btn-plain" />
+      </span>
+    </p>
+  </div>
+  <!-- Button : 차종 -->
+  <button
+    class="dropdown-btn"
+    onclick="w3.toggleShow('#carType'); reverseArrow(this);">
+    <span class="w3-left">차종</span>
+    <i class="material-icons w3-right">expand_more</i>
+  </button>
+  <!-- Dropdown Contents : 차종 -->
+  <div id="carType" class="w3-small" style="display: none">
+    <ul class="c-ul">
+      <li>
+        <input type="checkbox" name="Car" id="tinyCar" value="경차" th:onclick=" AllCheck([[${user?.getId}]]); toggleDiv();"/>
+        <label for="tinyCar">경차</label>
+        <span class="w3-right" th:utext="|${#lists.size(tinydto)}대|">{}</span>
+      </li>
+      <li>
+        <input type="checkbox" name="Car" id="smallCar" value="소형" th:onclick=" AllCheck([[${user?.getId}]]); toggleDiv();"/>
+        <label for="smallCar">소형차</label>
+        <span class="w3-right" th:utext="|${#lists.size(smalldto)}대|">{}</span>
+      </li>
+      <li>
+        <input type="checkbox" name="Car" id="semi-midsizeCar" value="준중형" th:onclick=" AllCheck([[${user?.getId}]]); toggleDiv();"/>
+        <label for="semi-midsizeCar">준중형차</label>
+        <span class="w3-right" th:utext="|${#lists.size(semidto)}대|">{}</span>
+      </li>
+      <li>
+        <input type="checkbox" name="Car" id="midsizeCar" value="중형" th:onclick=" AllCheck([[${user?.getId}]]); toggleDiv();"/>
+        <label for="midsizeCar">중형차</label>
+        <span class="w3-right" th:utext="|${#lists.size(middto)}대|">{}</span>
+      </li>
+      <li>
+        <input type="checkbox" name="Car" id="bigCar" value="대형" th:onclick=" AllCheck([[${user?.getId}]]); toggleDiv();"/>
+        <label for="bigCar">대형차</label>
+        <span class="w3-right" th:utext="|${#lists.size(bigdto)}대|">{}</span>
+      </li>
+      <li>
+        <input type="checkbox" name="Car" id="sportsCar" value="스포츠카" th:onclick=" AllCheck([[${user?.getId}]]); toggleDiv();"/>
+        <label for="sportsCar">스포츠카</label>
+        <span class="w3-right" th:utext="|${#lists.size(sportsdto)}대|">{}</span>
+      </li>
+    </ul>
+  </div>
+  <!-- Dropdown Contents : 차종 End -->
+  <!-- Button : 제조사/모델 -->
+  <button
+    class="dropdown-btn"
+    onclick="w3.toggleShow('#makerAndModel'); reverseArrow(this);">
+    <span class="w3-left">제조사/모델</span>
+    <i class="material-icons w3-right">expand_more</i>
+  </button>
+  <!-- Dropdown Contents : 제조사/모델 -->
+  <div
+    id="makerAndModel"
+    class="w3-small"
+    style="display: none; margin-right: 5px">
+    <select
+      id="makerSelect"
+      class="w3-select"
+      name="maker"
+      th:onchange="AllCheck([[${user?.getId}]]); toggleDiv();">
+      <option value="" disabled selected>제조사 선택</option>
+      <optgroup label="국산차">
+        <option value="hyundai">현대</option>
+        <option value="genesis">제네시스</option>
+        <option value="kia">기아</option>
+        <option value="chevrolet">쉐보레</option>
+        <option value="renault">르노</option>
+      </optgroup>
+      <optgroup label="수입차">
+        <option value="tesla">테슬라</option>
+        <option value="benz">벤츠</option>
+        <option value="bmw">BMW</option>
+        <option value="audi">아우디</option>
+        <option value="porsche">포르쉐</option>
+        <option value="polestar">폴스타</option>
+      </optgroup>
+    </select>
+    <!-- Dynamic : 현대 선택 시에 등장-->
+    <select
+      class="w3-select"
+      id="model_hyundai"
+      name="model"
+      style="display: none"
+      th:onchange="hyundaiSelect([[${user?.getId}]])">
+      <option value="" disabled selected>모델 선택</option>
+      <optgroup label="현대">
+        <option value="ioniq">아이오닉</option>
+        <option value="ioniq5">아이오닉5</option>
+        <option value="ioniq6">아이오닉6</option>
+        <option value="kona">코나</option>
+      </optgroup>
+    </select>
+    <!-- Dynamic : 제네시스 선택 시에 등장-->
+    <select
+      class="w3-select"
+      id="model_genesis"
+      name="model"
+      style="display: none"
+      th:onchange="genesisSelect([[${user?.getId}]])">
+      <option value="" disabled selected>모델 선택</option>
+      <optgroup label="제네시스">
+        <option value="g80">G80</option>
+        <option value="gv60">GV60</option>
+        <option value="gv70">GV70</option>
+      </optgroup>
+    </select>
+    <!-- Dynamic : 기아 선택 시에 등장-->
+    <select class="w3-select" id="model_kia" name="model" style="display: none" th:onchange="kiaSelect([[${user?.getId}]])">
+      <option value="" disabled selected>모델 선택</option>
+      <optgroup label="기아">
+        <option value="ev6">ev6</option>
+        <option value="niro">니로</option>
+        <option value="ray">레이</option>
+        <option value="soul">쏘울</option>
+      </optgroup>
+    </select>
+    <!-- Dynamic : 쉐보레 선택 시에 등장-->
+    <select
+      class="w3-select"
+      id="model_chevrolet"
+      name="model"
+      style="display: none"
+      th:onchange="chevroletSelect([[${user?.getId}]])">
+      <option value="" disabled selected>모델 선택</option>
+      <optgroup label="쉐보레">
+        <option value="bolt">볼트</option>
+      </optgroup>
+    </select>
+    <!-- Dynamic : 르노 선택 시에 등장-->
+    <select
+      class="w3-select"
+      id="model_renault"
+      name="model"
+      style="display: none"
+      th:onchange="renaultSelect([[${user?.getId}]])">
+      <option value="" disabled selected>모델 선택</option>
+      <optgroup label="르노">
+        <option value="twizy">트위지</option>
+      </optgroup>
+    </select>
+    <!-- Dynamic : 테슬라 선택 시에 등장-->
+    <select
+      class="w3-select"
+      id="model_tesla"
+      name="model"
+      style="display: none"
+      th:onchange="teslaSelect([[${user?.getId}]])">
+      <option value="" disabled selected>모델 선택</option>
+      <optgroup label="테슬라">
+        <option value="model3">모델 3</option>
+        <option value="modelS">모델 S</option>
+        <option value="modelX">모델 X</option>
+        <option value="modelY">모델 Y</option>
+      </optgroup>
+    </select>
+    <!-- Dynamic : 벤츠 선택 시에 등장-->
+    <select
+      class="w3-select"
+      id="model_benz"
+      name="model"
+      style="display: none"
+      th:onchange="benzSelect([[${user?.getId}]])">
+      <option value="" disabled selected>모델 선택</option>
+      <optgroup label="벤츠">
+        <option value="eqa">EQA</option>
+        <option value="eqb">EQB</option>
+        <option value="eqc">EQC</option>
+        <option value="eqe">EQE</option>
+        <option value="eqs">EQS</option>
+      </optgroup>
+    </select>
+    <!-- Dynamic : BMW 선택 시에 등장-->
+    <select class="w3-select" id="model_bmw" name="model" style="display: none" th:onchange="bmwSelect([[${user?.getId}]])">
+      <option value="" disabled selected>모델 선택</option>
+      <optgroup label="BMW">
+        <option value="i3">i3</option>
+        <option value="i4">i4</option>
+        <option value="ix3">ix3</option>
+        <option value="ix">ix</option>
+      </optgroup>
+    </select>
+    <!-- Dynamic : 아우디 선택 시에 등장-->
+    <select
+      class="w3-select"
+      id="model_audi"
+      name="model"
+      style="display: none"
+      th:onchange="audiSelect([[${user?.getId}]])">
+      <option value="" disabled selected>모델 선택</option>
+      <optgroup label="아우디">
+        <option value="e-tron">e-트론</option>
+        <option value="e-tron-gt">e-트론 GT</option>
+      </optgroup>
+    </select>
+    <!-- Dynamic : 포르쉐 선택 시에 등장-->
+    <select
+      class="w3-select"
+      id="model_porsche"
+      name="model"
+      style="display: none"
+      th:onchange="porscheSelect([[${user?.getId}]])">
+      <option value="" disabled selected>모델 선택</option>
+      <optgroup label="포르쉐">
+        <option value="taycan">타이칸</option>
+      </optgroup>
+    </select>
+    <!-- Dynamic : 폴스타 선택 시에 등장-->
+    <select
+      class="w3-select"
+      id="model_polestar"
+      name="model"
+      style="display: none"
+      th:onchange="polestarSelect([[${user?.getId}]])">
+      <option value="" disabled selected>모델 선택</option>
+      <optgroup label="폴스타">
+        <option value="polestar2">폴스타 2</option>
+      </optgroup>
+    </select>
+  </div>
+  <!-- Dropdown Contents : 제조사/모델 End -->
+  <!-- Button : 연식 -->
+  <button
+    class="dropdown-btn"
+    onclick="w3.toggleShow('#carYear'); reverseArrow(this);">
+    <span class="w3-left">연식</span>
+    <i class="material-icons w3-right">expand_more</i>
+  </button>
+  <!-- Dropdown Contents : 연식 -->
+  <div id="carYear" class="w3-small w3-center w3-section" style="display: none">
+    <p>
+      <input class="" type="date" name="Day" id="fromdate" />
+      <span>부터</span>
+      <input type="submit" value="확인" th:onclick="AllCheck([[${user?.getId}]]); toggleDiv();">
+    </p>
+    <p class="w3-margin-top">
+      <input class="" type="date" name="Day" id="todate" />
+      <span>까지</span>
+      <input type="submit" value="확인" th:onclick="AllCheck([[${user?.getId}]]); toggleDiv();">
+    </p>
+  </div>
+  <!-- Dropdown Contents : 연식 End -->
+  <!-- Button : 주행거리 -->
+  <button
+    class="dropdown-btn"
+    onclick="w3.toggleShow('#mile'); reverseArrow(this);">
+    <span class="w3-left">주행거리</span>
+    <i class="material-icons w3-right">expand_more</i>
+  </button>
+  <!-- Dropdown Contents : 주행거리 -->
+  <div id="mile" class="w3-small" style="display: none">
+    <ul class="c-ul">
+      <li>
+        <input type="checkbox" name="Mile" id="d_under2" value="20000" th:onclick=" AllCheck([[${user?.getId}]]); toggleDiv();"/>
+        <label for="d_under2">2만 km 미만</label>
+        <span class="w3-right" th:utext="|${#lists.size(twedto)}대|">{}</span>
+      </li>
+      <li>
+        <input type="checkbox" name="Mile" id="d_btw2and4" value="40000" th:onclick=" AllCheck([[${user?.getId}]]); toggleDiv();"/>
+        <label for="d_btw2and4">2만 ~ 4만 km 미만</label>
+        <span class="w3-right" th:utext="|${#lists.size(fortydto)}대|">{}</span>
+      </li>
+      <li>
+        <input type="checkbox" name="Mile" id="d_btw4and6" value="60000" th:onclick=" AllCheck([[${user?.getId}]]); toggleDiv();"/>
+        <label for="d_btw4and6">4만 ~ 6만 km 미만</label>
+        <span class="w3-right" th:utext="|${#lists.size(sixtydto)}대|">{}</span>
+      </li>
+      <li>
+        <input type="checkbox" name="Mile" id="d_btw6and8" value="80000" th:onclick=" AllCheck([[${user?.getId}]]); toggleDiv();"/>
+        <label for="d_btw6and8">6만 ~ 8만 km 미만</label>
+        <span class="w3-right" th:utext="|${#lists.size(eightydto)}대|">{}</span>
+      </li>
+      <li>
+        <input type="checkbox" name="Mile" id="d_btw8and10" value="100000" th:onclick=" AllCheck([[${user?.getId}]]); toggleDiv();"/>
+        <label for="d_btw8and10">8만 ~ 10만 km 미만</label>
+        <span class="w3-right" th:utext="|${#lists.size(oneundto)}대|">{}</span>
+      </li>
+      <li>
+        <input type="checkbox" name="Mile" id="d_over10" value="100001" th:onclick=" AllCheck([[${user?.getId}]]); toggleDiv();"/>
+        <label for="d_over10">10만 km 이상</label>
+        <span class="w3-right" th:utext="|${#lists.size(oneupdto)}대|">{}</span>
+      </li>
+    </ul>
+  </div>
+  <!-- Dropdown Contents : 주행거리 End -->
+  <!-- Button : 가격 -->
+  <button
+    class="dropdown-btn"
+    onclick="w3.toggleShow('#price'); reverseArrow(this);">
+    <span class="w3-left">가격</span>
+    <i class="material-icons w3-right">expand_more</i>
+  </button>
+  <!-- Dropdown Contents : 가격 -->
+  <div id="price" class="w3-small" style="display: none">
+    <ul class="c-ul">
+      <li>
+        <input type="checkbox" name="Price" id="p_under1" value="10000000" th:onclick=" AllCheck([[${user?.getId}]]); toggleDiv();"/>
+        <label for="p_under1">1천만원 미만</label>
+        <span class="w3-right" th:utext="|${#lists.size(tenmildto)}대|">{}</span>
+      </li>
+      <li>
+        <input type="checkbox" name="Price" id="p_btw1and2" value="20000000" th:onclick=" AllCheck([[${user?.getId}]]); toggleDiv();"/>
+        <label for="p_btw1and2">1천만원 ~ 2천만원 미만</label>
+        <span class="w3-right" th:utext="|${#lists.size(twentymildto)}대|">{}</span>
+      </li>
+      <li>
+        <input type="checkbox" name="Price" id="p_btw2and3" value="30000000" th:onclick=" AllCheck([[${user?.getId}]]); toggleDiv();"/>
+        <label for="p_btw2and3">2천만원 ~ 3천만원 미만</label>
+        <span class="w3-right" th:utext="|${#lists.size(thirymildto)}대|">{}</span>
+      </li>
+      <li>
+        <input type="checkbox" name="Price" id="p_btw3and4" value="40000000" th:onclick=" AllCheck([[${user?.getId}]]); toggleDiv();"/>
+        <label for="p_btw3and4">3천만원 ~ 4천만원 미만</label>
+        <span class="w3-right" th:utext="|${#lists.size(fortymildto)}대|">{}</span>
+      </li>
+      <li>
+        <input type="checkbox" name="Price" id="p_btw4and5" value="50000000" th:onclick=" AllCheck([[${user?.getId}]]); toggleDiv();"/>
+        <label for="p_btw4and5">4천만원 ~ 5천만원 미만</label>
+        <span class="w3-right" th:utext="|${#lists.size(fiftymildto)}대|">{}</span>
+      </li>
+      <li>
+        <input type="checkbox" name="Price" id="p_over5" value="50000001" th:onclick=" AllCheck([[${user?.getId}]]); toggleDiv();"/>
+        <label for="p_over5">5천만원 이상</label>
+        <span class="w3-right" th:utext="|${#lists.size(fiftymilupdto)}대|">{}</span>
+      </li>
+    </ul>
+  </div>
+  <!-- Dropdown Contents : 가격 End -->
+  <!-- Button : 지역 -->
+  <button
+    class="dropdown-btn"
+    onclick="w3.toggleShow('#region'); reverseArrow(this);">
+    <span class="w3-left">지역</span>
+    <i class="material-icons w3-right">expand_more</i>
+  </button>
+  <!-- Dropdown Contents : 지역 -->
+  <div id="region" class="w3-small" style="display: none">
+    <ul class="c-ul">
+      <li>
+        <input type="checkbox" name="Address" id="gyeonggi" value="경기" th:onclick="AllCheck([[${user?.getId}]]); toggleDiv();"/>
+        <label for="gyeonggi">경기</label>
+        <span class="w3-right" th:utext="|${#lists.size(gyegidto)}대|">{}</span>
+      </li>
+      <li>
+        <input type="checkbox" name="Address" id="seoul" value="서울" th:onclick="AllCheck([[${user?.getId}]]); toggleDiv();"/>
+        <label for="seoul">서울</label>
+        <span class="w3-right" th:utext="|${#lists.size(seouldto)}대|">{}</span>
+      </li>
+      <li>
+        <input type="checkbox" name="Address" id="busan" value="부산" th:onclick="AllCheck([[${user?.getId}]]); toggleDiv();"/>
+        <label for="busan">부산</label>
+        <span class="w3-right" th:utext="|${#lists.size(busandto)}대|">{}</span>
+      </li>
+      <li>
+        <input type="checkbox" name="Address" id="incheon" value="인천" th:onclick="AllCheck([[${user?.getId}]]); toggleDiv();"/>
+        <label for="incheon">인천</label>
+        <span class="w3-right" th:utext="|${#lists.size(incheondto)}대|">{}</span>
+      </li>
+      <li>
+        <input type="checkbox" name="Address" id="daegu" value="대구" th:onclick="AllCheck([[${user?.getId}]]); toggleDiv();"/>
+        <label for="daegu">대구</label>
+        <span class="w3-right" th:utext="|${#lists.size(daegudto)}대|">{}</span>
+      </li>
+      <li>
+        <input type="checkbox" name="Address" id="daejeon" value="대전" th:onclick="AllCheck([[${user?.getId}]]); toggleDiv();"/>
+        <label for="daejeon">대전</label>
+        <span class="w3-right" th:utext="|${#lists.size(daejeondto)}대|">{}</span>
+      </li>
+      <li>
+        <input type="checkbox" name="Address" id="gwangju" value="광주" th:onclick="AllCheck([[${user?.getId}]]); toggleDiv();"/>
+        <label for="gwangju">광주</label>
+        <span class="w3-right" th:utext="|${#lists.size(gwangjudto)}대|">{}</span>
+      </li>
+    </ul>
+    <div class="w3-margin w3-center">
+      <p>다른 지역 검색</p>
+      <input type="text" class="w3-border" style="width: 50%" />
+      <button class="w3-black" style="cursor: pointer">검색</button>
+    </div>
+  </div>
+  <!-- Dropdown Contents : 지역 End -->
+  <!-- Button : 옵션 -->
+  <button
+    class="dropdown-btn"
+    onclick="w3.toggleShow('#option'); reverseArrow(this);">
+    <span class="w3-left">옵션</span>
+    <i class="material-icons w3-right">expand_more</i>
+  </button>
+  <!-- Dropdown Contents : 옵션 -->
+  <div id="option" class="w3-small" style="display: none">
+    <ul class="c-ul">
+      <li>
+        <input type="checkbox" name="Option" id="sunroof" value="sunroof" th:onclick="AllCheck([[${user?.getId}]]); toggleDiv();"/>
+        <label for="sunroof">선루프</label>
+        <span class="w3-right" th:utext="|${#lists.size(sunrootdto)}대|"></span>z
+      </li>
+      <li>
+        <input type="checkbox" name="Option" id="navigation" value="navigation" th:onclick="AllCheck([[${user?.getId}]]); toggleDiv();"/>
+        <label for="navigation">내비게이션</label>
+        <span class="w3-right" th:utext="|${#lists.size(navidto)}대|">{}</span>
+      </li>
+      <li>
+        <input type="checkbox" name="Option" id="heatHandle" value="heatHandle" th:onclick="AllCheck([[${user?.getId}]]); toggleDiv();"/>
+        <label for="heatHandle">열선 스티어링 휠</label>
+        <span class="w3-right" th:utext="|${#lists.size(handledto)}대|">{}</span>
+      </li>
+      <li>
+        <input type="checkbox" name="Option" id="hud" value="hud" th:onclick="AllCheck([[${user?.getId}]]); toggleDiv();"/>
+        <label for="hud">HUD</label>
+        <span class="w3-right" th:utext="|${#lists.size(huddto)}대|">{}</span>
+      </li>
+      <li>
+        <input type="checkbox" name="Option" id="rearCamera" value="camera_rear" th:onclick="AllCheck([[${user?.getId}]]); toggleDiv();"/>
+        <label for="rearCamera">후방 카메라</label>
+        <span class="w3-right" th:utext="|${#lists.size(cameradto)}대|">{}</span>
+      </li>
+      <li>
+        <input type="checkbox" name="Option" id="ldws" value="ldws" th:onclick="AllCheck([[${user?.getId}]]); toggleDiv();"/>
+        <label for="ldws">차선이탈 경보 시스템</label>
+        <span class="w3-right" th:utext="|${#lists.size(ldwsdto)}대|">{}</span>
+      </li>
+      <li>
+        <input type="checkbox" name="Option" id="ecm" value="ecm" th:onclick="AllCheck([[${user?.getId}]]); toggleDiv();"/>
+        <label for="ecm">ECM 룸미러</label>
+        <span class="w3-right" th:utext="|${#lists.size(ecmdto)}대|">{}</span>
+      </li>
+      <li>
+        <input type="checkbox" name="Option" id="tpms" value="tpms" th:onclick="AllCheck([[${user?.getId}]]); toggleDiv();"/>
+        <label for="tpms">TPMS</label>
+        <span class="w3-right" th:utext="|${#lists.size(tpmsdto)}대|">{}</span>
+      </li>
+    </ul>
+  </div>
+  <!-- Dropdown Contents : 옵션 End -->
+  <div class="w3-center">
+    <p>차량번호/판매자 이름</p>
+  <form action="" method="post" th:onsubmit="return searchCheck();">
+    <input
+      type="text"
+      name="search"
+      class="w3-border"
+      style="width: 60%"
+      placeholder="예) 12가1234" 
+      onkeyup="this.value=this.value.replace(/[^0-9|ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/g,'');" />
+    <button class="w3-black" style="cursor: pointer">검색</button>
+  </form>
+  </div>
+</div>

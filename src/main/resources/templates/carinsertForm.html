@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <title>PulseCar</title>
+    <meta charset="UTF-8" />
+   <meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="icon" type="image/x-icon" href="/images/favicon.ico" />
+<link rel="stylesheet" th:href=@{css/w3.css} />
+<link rel="stylesheet" th:href=@{css/cgoing.css} />
+<link rel="stylesheet" th:href=@{css/jsk.css} />
+<script type="text/javascript" src="js/custom.js"></script>
+<script src="js/w3.js"></script>
+<script src="js/cgoing.js"></script>
+  </head>
+  <body>
+    <div th:id="wrapper">
+        <div class="w3-auto">
+          <!-- common 헤더 -->
+          <div th:insert="common_header.html :: header"></div>
+
+          <div class="w3-panel w3-bottombar">
+            <p class="w3-large w3-center">차량정보 입력</p>
+          </div>
+
+          <form action="/carinsert" method="post" enctype="multipart/form-data">
+            <div id="table1" style="width: 50%; margin-left: 25%">
+              <table class="w3-table carinsert">
+                <tr>
+                  <td>차량 번호</td>
+                  <td>
+                    <input type="text" name="c_num" class="w3-input w3-border" />
+                  </td>
+                </tr>
+                <tr>
+                  <td>제조사</td>
+                  <td>
+                    <input type="text" name="c_brand" class="w3-input w3-border" />
+                  </td>
+                </tr>
+                <tr>
+                  <td>모델</td>
+                  <td>
+                    <input type="text" name="c_name" class="w3-input w3-border" />
+                  </td>
+                </tr>
+                <tr>
+                  <td>세부모델</td>
+                  <td>
+                    <input type="text" name="c_grade" class="w3-input w3-border" />
+                  </td>
+                </tr>
+                <tr>
+                  <td>크기</td>
+                  <td>
+                    <input type="text" name="c_scail" class="w3-input w3-border" />
+                  </td>
+                </tr>
+                <tr>
+                  <td>연식</td>
+                  <td>
+                    <input type="text" name="c_year" class="w3-input w3-border" />
+                  </td>
+                </tr>
+                <tr>
+                  <td>색상</td>
+                  <td>
+                    <input type="text" name="c_coler" class="w3-input w3-border" />
+                  </td>
+                </tr>
+                <tr>
+                  <td>주행거리</td>
+                  <td>
+                    <input type="text" name="c_mile" class="w3-input w3-border" />
+                  </td>
+                </tr>
+              </table>
+              <div class="carinsert2">
+                <table>
+                  <tr>
+                    <td>
+                      <input type="checkbox" name="sunroof" th:value="1" checked />
+                      썬루프
+                    </td>
+                    <td>
+                      <input type="checkbox" name="navi" th:value="1" />
+                      네비게이션
+                    </td>
+                    <td>
+                      <input type="checkbox" name="handle" th:value="1" />
+                      열선핸들
+                    </td>
+                    <td>
+                      <input type="checkbox" name="hud" th:value="1" />
+                      헤드업디스플레이
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <input
+                        type="checkbox"
+                        name="camera"
+                        th:value="1"
+                        checked
+                      />
+                      후방카메라
+                    </td>
+                    <td>
+                      <input type="checkbox" name="ldws" th:value="1" />
+                      차선이탈 경보 시스템
+                    </td>
+                    <td>
+                      <input type="checkbox" name="ecm" th:value="1" />
+                      ECM룸미러
+                    </td>
+                    <td>
+                      <input type="checkbox" name="tpms" th:value="1" />
+                      타이어 공기압 센서
+                    </td>
+                  </tr>
+                </table>
+              </div>
+            </div>
+            <div id="table2" style="display: none">
+              <table class="w3-table w3-bordered">
+                <tr>
+                  <td>판매자 이름</td>
+                  <td>
+                    <input
+                      type="text"
+                      name="#"
+                      class="w3-input w3-border"
+                      th:value="${drdto.dr_name}"
+                      readonly
+                    />
+                  </td>
+                </tr>
+                <tr>
+                  <td>주소</td>
+                  <td>
+                    <input
+                      type="text"
+                      name="cp_address"
+                      class="w3-input w3-border"
+                      th:value="${drdto.dr_c_address}"
+                      readonly
+                    />
+                    <input type="hidden" name="id" th:value="${drdto.dr_id}"/>
+                  </td>
+                </tr>
+                <tr>
+                  <td>가격</td>
+                  <td>
+                    <input type="text" name="cp_price" class="w3-input w3-border" />
+                  </td>
+                </tr>
+                <tr>
+                  <td>설명글</td>
+                  <td>
+                    <textarea
+                      class="w3-input w3-border"
+                      name="content"
+                      cols="80"
+                      rows="13"
+                      required
+                    ></textarea>
+                  </td>
+                </tr>
+                <tr>
+                  <td>차량사진 등록</td>
+                  <td><input type="file" name="file" multiple=multiple required /></td>
+                </tr>
+<!--                 <div></div> -->
+              </table>
+            </div>
+            <div class="w3-margin-top" style="text-align: right">
+              <button id="btnAfter" onclick="clickNext()" class="j-btn">
+                다음
+              </button>
+              <button
+                style="display: none"
+                id="btnBefore"
+                onclick="clickNext()"
+                class="j-btn"
+              >
+                이전
+              </button>
+              <button class="j-btn" style="display: none;" id="submit">
+                등록완료
+              </button>
+            </div>
+          </form>
+      </div>
+      <!-- common 푸터 -->
+      
+     <div th:insert="common_footer.html :: footer"></div>
+
+      <script>
+        var currentPage = 1;
+        function clickNext() {
+          console.log(currentPage);
+          if (currentPage == 1) {
+            document.getElementById("table1").style.display = "none";
+            document.getElementById("table2").style.display = "block";
+            document.getElementById("btnBefore").style.display = "block";
+            document.getElementById("btnAfter").style.display = "none";
+            document.getElementById("submit").style.display = "block";
+            currentPage++;
+          } else {
+            document.getElementById("table1").style.display = "block";
+            document.getElementById("table2").style.display = "none";
+            document.getElementById("btnBefore").style.display = "none";
+            document.getElementById("btnAfter").style.display = "block";
+            document.getElementById("submit").style.display = "none";
+            currentPage--;
+          }
+        }
+      </script>
+
+    </div>
+  </body>
+</html>

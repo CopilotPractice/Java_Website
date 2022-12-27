@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>electric life</title>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="icon" type="image/x-icon" href="/images/favicon.ico" />
+<link rel="stylesheet" th:href=@{css/w3.css} />
+<link rel="stylesheet" th:href=@{css/cgoing.css} />
+<link rel="stylesheet" th:href=@{css/jsk.css} />
+<script type="text/javascript" src="js/custom.js"></script>
+<script src="js/w3.js"></script>
+<script src="js/cgoing.js"></script>
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+</head>
+<body>
+	<div id="wrapper">
+		<!-- common 헤더 -->
+		<header id="headerWrap">
+		<div>
+		<div class="w3-container" id="header">
+			<!-- 로고 Area -->
+			<div class="w3-row">
+				<div class="w3-quarter">
+						<h2 class="logo">
+							<a href="/" onmouseover="mOverLogo(this)"
+								onmouseout="mOutLogo(this)">PulseCar</a>
+						</h2>
+					</div>
+				<div class="w3-rest w3-mobile">
+					<div class="w3-right w3-small">
+			<th:block th:if="${session.loginUser!= null}">
+			<th:block th:if="${userupdate!=null}">
+							<span th:text="|${userupdate.name}님 환영합니다|"></span>
+							<a th:href="@{productpick(id=${userupdate.id})}">찜목록</a>
+							<span th:if="${userupdate.lv == 1}"> <span
+								class="w3-text-blue" th:text="[일반회원]"></span>
+							</span>
+							<span th:if="${userupdate.lv == 2}"> <span
+								class="w3-text-deep-orange" th:text="[우수회원]"></span>
+							</span>
+							<span th:if="${userupdate.lv == 3}"> <span
+								class="w3-text-green" th:text="[관리자]"></span>
+							</span>
+							<a th:href="@{mypage(loginId=${userupdate.id})}"
+								class="c-btn anchorNoColor">마이페이지</a>
+							<a th:href="@{updateUserInfoForm(loginId=${userupdate.id})}"
+								class="c-btn anchorNoColor">회원정보수정</a>
+							<a href="logout" class="c-btn anchorNoColor">로그아웃</a>
+			</th:block>
+			<th:block th:unless="${userupdate!=null}">
+							<span th:text="|${session.loginUser.name}님 환영합니다|"></span>
+							<a th:href="@{productpick(id=${session.loginUser.id})}">찜목록</a>
+							<span th:if="${session.loginUser.lv == 1}"> <span
+								class="w3-text-blue" th:text="[일반회원]"></span>
+							</span>
+							<span th:if="${session.loginUser.lv == 2}"> <span
+								class="w3-text-deep-orange" th:text="[우수회원]"></span>
+							</span>
+							<span th:if="${session.loginUser.lv == 3}"> <span
+								class="w3-text-green" th:text="[관리자]"></span>
+							</span>
+							<a th:href="@{mypage(loginId=${session.loginUser.id})}"
+								class="c-btn anchorNoColor">마이페이지</a>
+							<a th:href="@{updateUserInfoForm(loginId=${session.loginUser.id})}"
+								class="c-btn anchorNoColor">회원정보수정</a>
+							<a href="logout" class="c-btn anchorNoColor">로그아웃</a>
+			</th:block>
+			</th:block>
+			<th:block th:if="${session.drLoginUser!= null}">
+							<span th:text="|${session.drLoginUser?.dr_name}님 환영합니다|"></span>
+							<span class="w3-text-red" th:text="[딜러]"></span>
+							<a th:href="@{updateUserInfoForm(loginId=${session.drLoginUser.dr_id})}"
+								class="c-btn anchorNoColor">회원정보수정</a>
+							<a href="logout" class="c-btn anchorNoColor">로그아웃</a>
+			</th:block>
+			<th:block th:if="${session.loginUser?.id==null } and ${session.drLoginUser?.dr_id==null }">
+							<a href="loginForm" class="c-btn anchorNoColor">로그인</a>
+							<a href="signupForm" class="c-btn anchorNoColor">회원가입</a>
+			</th:block>
+			
+					</div>
+					<nav class="w3-bar w3-xlarge flex-container flex-end">
+						<a th:href="@{car}" class="gnb_item">Car</a> 
+						<a th:href="@{shop(list='p_num',category=1)}" class="gnb_item">Shop</a>
+						<a
+							th:href="@{bbs(orderBy=bbs_writedate,bbsDiv=null,searchText=null)}"
+							class="gnb_item">Community</a> <a href="life.html"
+							class="gnb_item">Life</a>
+					</nav>
+				</div>
+				</nav>
+			</div>
+	</div>
+	</div>
+	</header>
+		<!-- shop/detail -->
+		<nav
+			class="flex-container flex-center w3-large lnb-margin w3-padding w3-light-grey">
+
+			<a th:href="@{shop(list=p_num,category=1)}" id="one"
+				th:class="${dto?.p_category}==1?on_lnb:''" onclick="addOnLnb(this)">새차용품</a>
+			<a th:href="@{shop(list=p_num,category=2)}" id="two"
+				th:class="${dto?.p_category}==2?on_lnb:''" onclick="addOnLnb(this)">익스테리어</a>
+			<a th:href="@{shop(list=p_num,category=3)}" id="three"
+				th:class="${dto?.p_category}==3?on_lnb:''" onclick="addOnLnb(this)">전자기기</a>
+			<a th:href="@{shop(list=p_num,category=4)}" id="four"
+				th:class="${dto?.p_category}==4?on_lnb:''" onclick="addOnLnb(this)">타이어</a>
+		</nav>
+		<div class="w3-auto">
+			<div class="w3-row-padding w3-padding w3-margin-top"
+				style="display: flex">
+
+				<div style="flex-basis: 60%">
+					<div class="j-card">
+						<!--  <a href="detail.jsp">-->
+						<img th:src="@{${dto.img_dir}}" alt="Alps" class="j-image" />
+						<div class="w3-container w3-center"></div>
+					</div>
+					<div class="j-flex-container j-flex-center w3-center">
+						<img class="demo w3-opacity w3-hover-opacity-off"
+							th:src="@{${dto.img_dir}}" th:onclick="currentDiv(1)" />
+					</div>
+				</div>
+				<div class="w3-half j-detail-padding" style="flex-basis: 40%">
+					<div>
+
+						<span id="heart"></span>
+
+					</div>
+					<div class="w3-container j-border-bottom">
+						<h4 class="w3-right" style="overflow: auto">[[${dto.p_name}]]</h4>
+					</div>
+					<div class="w3-panel">
+						<p class="w3-right w3-tiny">등록날짜 : [[${dto.p_date}]]</p>
+					</div>
+					<div class="wrap-star w3-right">
+						<div class="star-rating">
+							<th:block th:if="${reviewStar=='nothing'}">
+								<span th:style="width: 0%"></span>
+							</th:block>
+							<th:block th:unless="${reviewStar=='nothing'}">
+								<span th:style="|width: ${reviewStar}%|"></span>
+							</th:block>
+						</div>
+						<h2 class="w3-small c-btn">
+							리뷰 <span th:text="${reviewCnt}"></span>
+						</h2>
+					</div>
+
+					<!-- 별점 -->
+					<div class="w3-container">
+						<h3 class="c-price_font w3-right">[[${dto.p_price}]]원</h3>
+					</div>
+					<div class="w3-right w3-padding">재고 : [[${dto.p_stock }]] 개</div>
+					<form th:action="@{/buyProductForm}" method="get">
+						<input type="hidden" id="key" value="0" /> <input type="hidden"
+							name="id" id="id" th:value="${session.loginUser?.id}" /> <input
+							type="hidden" id="p_name" name="p_name" th:value="${dto.p_name}" />
+						<input type="hidden" id="p_num" name="p_num" th:value="${p_num}" />
+						<input type="hidden" id="p_price" name="p_price"
+							th:value="${dto?.p_price}" /> <input type="hidden"
+							id="p_category" th:value=${dto?.p_category} /> <input
+							type="hidden" id="p_stock" th:value="${dto.p_stock}" /> <input
+							type="hidden" id="p_content" th:value="${dto.p_content}">
+
+						<div class="w3-container">
+							<div class="w3-right j-updown">
+								<input type="button" onclick="downOrderCount('qtt')" value="-" />
+								<input type="text" id="qtt" name="quantity" min="0" value="1" />
+								<input type="button" onclick="upOrderCount('qtt')" value="+" />
+							</div>
+						</div>
+						<div class="w3-panel">
+							<div class="w3-right">
+								<span class="w3-small partition-right">포인트 적립혜택&nbsp</span> <span
+									class="w3-small c-point_color">최대
+									포인트[[${dto.p_price}/10]] pt 적립</span>
+							</div>
+						</div>
+						<div class="w3-panel j-border-top">
+							<div class="w3-right-align"></div>
+						</div>
+						<div class="w3-right">
+							<input type="button" value="찜하기" th:onclick="pickClick()"
+								class="j-btn">
+							<th:block th:if="${session.loginUser?.id != null}">
+								<button th:onclick="|location.href='@{/buyProductForm}'|"
+									class="j-btn2">바로구매</button>
+							</th:block>
+							<th:block th:unless="${session.loginUser?.id != null}">
+								<input type="button" value="바로구매"
+									th:onclick="return clickEvent1('buyProductForm')"
+									class="j-btn2" />
+							</th:block>
+						</div>
+					</form>
+				</div>
+			</div>
+			<th:block th:if="${session.loginUser?.lv == 3}">
+				<input type="button" th:onclick="productupdateForm()" value="수정"
+					class="w3-button w3-white w3-border w3-border-theme w3-round w3-right" />
+				<input type="button" th:onclick="realDel()" value="삭제"
+					class="w3-button w3-white w3-border w3-border-theme w3-round w3-right" />
+			</th:block>
+
+			<div class="w3-container">
+				<h2>상품에 대한 여러 설명들</h2>
+				<p th:utext="${dto.p_content}"></p>
+			</div>
+			<table class="w3-table w3-bordered w3-border-top">
+				<tr class="w3-light-gray">
+					<th style="width: 60%" class="w3-center w3-light-gray">내용</th>
+					<th class="w3-light-gray">작성자</th>
+					<th class="w3-light-gray">등록일</th>
+					<th class="w3-light-gray">평점</th>
+				</tr>
+
+				<th:block th:if="${session.loginUser?.id != null }">
+					<div class="j-review-margin">
+						<h3 class="w3-left">구매후기</h3>
+						<a
+							th:onclick="|location.href='@{reviewForm(id=${session.loginUser?.id},p_num=${dto?.p_num},category=${category})}'|"
+							class="w3-right w3-large j-shop-btn">💬리뷰작성</a>
+					</div>
+				</th:block>
+				<th:block th:unless="${session.loginUser?.id!=null}">
+					<div class="j-review-margin">
+						<h3 class="w3-left">구매후기</h3>
+						<a th:onclick="clickEvent('detail');"
+							class="w3-right w3-large j-shop-btn"> 💬리뷰작성</a>
+					</div>
+				</th:block>
+				<tr class="w3-small" th:each="review : ${reviewreview}">
+					<th style="width: 60%" class="w3-center"><span
+						th:text="${review.rv_content}" class="w3-large"></span></th>
+					<th><span th:text="${review.id}" class="w3-large"></span></th>
+					<th><span th:text="${review?.rv_date}" class="w3-large"></span></th>
+					<th><span th:text="${review.rv_like}" class="w3-large"></span></th>
+				</tr>
+			</table>
+			<!-- 아티클 -->
+			<div>
+				<article class="w3-container w3-center"></article>
+			</div>
+		</div>
+		<!-- common 푸터 -->
+		<div th:insert="common_footer.html :: footer"></div>
+	</div>
+	<script th:inline="javascript">	
+		$.ajax({
+			type: 'post',
+			url: './pickCheck',
+			data: {
+				id : [[${session.loginUser?.id}]],
+				p_num : [[${p_num}]]
+			},
+			success : function(result){
+				if(result==1){
+					$("#heart").html("<button class='heart-on w3-right' onclick='pickClick()'>💗</button> ");
+				}else{
+					if([[${session.loginUser?.id}]]==null){
+						$("#heart").html("<button class='heart-off w3-right' onclick='clickEvent2Inline()'>🤍</button>");
+					}else{
+						$("#heart").html("<button class='heart-off w3-right' onclick='pickClick()'>🤍</button>");
+					}
+				}
+			}
+		});		
+	</script>
+
+	<script th:inline="javascript">	
+	function pickClick(){
+		$.ajax({
+			type: 'post',
+			url: './pickCheck',
+			data: {
+				id : [[${session.loginUser?.id}]],
+				p_num : [[${p_num}]]
+			},
+			success : function(result){
+				if(result==1){
+					$("#heart").html("<button class='heart-off w3-right' onclick='pickClick()'>🤍</button>");
+					pickLiseDelete([[${session.loginUser?.id}]],[[${p_num}]]);
+				}else{
+					if([[${session.loginUser?.id}]]==null){
+						clickEvent2('pickshop',[[${p_num}]]);
+						("#heart").html("<button class='heart-off w3-right' onclick='pickClick()'>🤍</button>");
+					}
+					$("#heart").html("<button class='heart-on w3-right' onclick='pickClick()'>💗</button> ");
+					pickLiseInsert([[${session.loginUser?.id}]],[[${p_num}]]);
+				}
+			}
+		});		
+	}
+	
+	
+	function pickLiseDelete(id, p_num) {
+		$.ajax({
+			type: 'post',
+			url: './pickListDelete',
+			data: {
+				id: id,
+				p_num: p_num
+			},
+			success: function(result) {
+				if (result) {
+					console.log("찜 삭제 완료")
+				} else {
+					console.log("삭제 실패")
+				}
+
+			},
+			error: function() {
+				console.log("삭제 연결 에러")
+			}
+		});
+	}
+	function pickLiseInsert(id, p_num) {
+		$.ajax({
+			type: 'post',
+			url: './pickListInsert',
+			data: {
+				id: id,
+				p_num: p_num
+			},
+			success: function(result) {
+				if (result) {
+					console.log("찜 추가 완료")
+				} else {
+					console.log("추가 실패")
+				}
+
+			},
+			error: function() {
+				console.log("추가 연결 에러")
+			}
+		});
+	}
+	
+	</script>
+	<script th:inline="javascript">	
+		function clickEvent2Inline(){
+			up = confirm("로그인 후 이용가능합니다.\n로그인 하시겠습니까?")
+			if(up){
+				var p_go = "pickshop";
+				var item = [[${p_num}]];
+				location.href = "loginForm?go=" + p_go + "&p_num=" + item;
+			}else{
+				return false;
+			}
+		}
+	</script>
+</body>
+</html>

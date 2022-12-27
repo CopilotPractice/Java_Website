@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+    
+<mapper namespace="com.icia.el.dao.ICarPickDAO">
+	<select id="CarPickListDAO" resultType="com.icia.el.dto.CarPickDTO">
+		select
+		a.car_pick_num,
+		a.c_num,
+		a.id,
+		b.*,
+		c.cp_price,
+		c.cp_address,
+		c.cp_date,
+		d.img_dir_1
+		from
+		car_pick a
+		left outer join
+		car b
+		on
+		a.c_num=b.c_num
+		left outer join
+		car_sale_post c
+		on
+		b.c_num=c.c_num
+		left outer join
+		car_img d
+		on
+		c.c_num=d.c_num
+		where a.id = #{param1}
+	</select>
+	
+	<select id="CarPickCheckDAO" resultType="_int">
+		select <![CDATA[count(*)]]> from car_pick where id = #{param1} and c_num = #{param2}
+	</select>
+	
+	<insert id="CarPickInsertDAO">
+		insert into car_pick(car_pick_num,c_num,id) values(car_pick_num_seq.nextval,#{param1},#{param2})
+	</insert>
+	
+	<delete id="CarPickDeleteDAO">
+		delete from car_pick where c_num = #{param1} and id = #{param2}
+	</delete>
+</mapper>

@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>electric life</title>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+ <script
+      src="https://kit.fontawesome.com/9d7a2afbd4.js"
+      crossorigin="anonymous"
+    ></script>
+<link rel="icon" type="image/x-icon" href="/images/favicon.ico" />
+<link rel="stylesheet" th:href=@{css/w3.css} />
+<link rel="stylesheet" th:href=@{css/cgoing.css} />
+<link rel="stylesheet" th:href=@{css/jsk.css} />
+<script src="js/w3.js"></script>
+<script src="js/cgoing.js"></script>
+<script src="js/custom.js"></script>
+</head>
+<body>
+	<div id="wrapper">
+		<!-- common 헤더 -->
+		<div th:insert="common_header.html :: header"></div>
+		<!-- shop -->
+		<nav class="flex-container flex-center w3-large lnb-margin w3-padding w3-light-grey">
+				
+				<a th:href="@{shop(list=p_num,category=1)}" id="one" th:class="${category}==1?on_lnb:''" onclick="addOnLnb(this)">새차용품</a> 
+				<a th:href="@{shop(list=p_num,category=2)}" id="two"  th:class="${category}==2?on_lnb:''" onclick="addOnLnb(this)">익스테리어</a> 
+				<a th:href="@{shop(list=p_num,category=3)}" id="three" th:class="${category}==3?on_lnb:''" onclick="addOnLnb(this)">전자기기</a> 
+				<a th:href="@{shop(list=p_num,category=4)}" id="four" th:class="${category}==4?on_lnb:''" onclick="addOnLnb(this)">타이어</a>
+
+		</nav>
+		<!-- shop -->
+		<div class="w3-auto">
+			<div class="j-list">
+				<ul>
+					<li><a th:href="@{shop(list='p_price',category=${category})}">낮은가격순</a></li>
+					<li><a
+						th:href="@{shop(list='p_date desc',category=${category})}">최신등록순</a></li>
+					<li><a th:href="@{shop(list='reviewcnt desc',category=${category})}">리뷰순</a></li>
+					<li><a th:href="@{shop(list='star desc',category=${category})}">평점순</a></li>
+				</ul>
+			</div>
+			<!-- 상품 리스트 -->
+			<div class="flex-container">
+			<th:block th:each="dto : ${shoplist.getList()}">
+				<div class="w3-quarter">
+					<div class="j-card">
+						<a th:href="@{detail(num=${dto?.p_num},category=${category})}" class="product"> 
+						<img th:src="@{${dto.img_dir}}" alt="Alps" class="j-image2" /></a> 
+						<div>
+						<span class="w3-large c-price_font">가격 : [[${#numbers.formatInteger(dto.p_price, 3, 'COMMA')}]]원</span>
+					    <span class="w3-small c-point_color">재고 : [[${dto.p_stock}]] 개</span>
+					    </div>
+						<h2 class="w3-small">
+							<a th:href="@{detail(num=${dto?.p_num})}" class="product">이름 : [[${dto.p_name}]]</a>
+						</h2>
+						<div class="wrap-star">
+							<div class="star-rating">
+								<th:block th:if="${dto?.star}==null">
+									<span th:style="width: 0%"></span>
+								</th:block>
+								<th:block th:unless="${dto?.star}==null">
+									<span th:style="|width: ${dto?.star}%|"></span>
+								</th:block> 
+							</div>
+							<span class="w3-tiny c-btn">판매자 리뷰 [[${dto.reviewCnt}]]건</span>
+						</div>
+					</div>
+				</div>
+			</th:block>
+			</div>
+			<div class="w3-center">
+				<div class="pagination w3-large">
+					<th:block th:classappend="${shoplist.getPrePage() == 0} ? 'disabled'">
+						<a th:href="@{/shop(pageNum=${shoplist.getPrePage()},list='p_num',category=${category})}">&laquo; 이전</a>
+					</th:block> 
+					<th:block
+						th:each="page: ${#numbers.sequence(shoplist.getNavigateFirstPage(), shoplist.getNavigateLastPage())}"
+						th:classappend="${shop == shoplist.getPageNum()} ? 'active'">
+						<a th:text="${page}" th:href="@{/shop(pageNum=${page},list='p_num',category=${category})}"></a>
+					</th:block>
+					<th:block th:classappend="${shoplist.getNextPage() == 0} ? 'disabled'">
+						<a th:href="@{/shop(pageNum=${shoplist.getNextPage()},list='p_num',category=${category})}">다음 &raquo;</a>
+					</th:block>
+				</div>
+			</div>
+			
+			<div class="right-align w3-container">
+				<th:block th:if="${session.loginUser?.lv == 3}">
+					<button
+						th:onclick="|location.href='@{productinsertForm(category=${category})}'|"
+						class="w3-button w3-white w3-border w3-border-theme w3-round w3-right">
+						상품등록</button>
+				</th:block>
+		</div>
+	</div>
+	<!-- common 푸터 -->
+	<div th:insert="common_footer.html :: footer"></div>
+	</div>
+</body>
+</html>

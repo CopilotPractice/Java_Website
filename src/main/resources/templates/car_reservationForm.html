@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Insert title here</title>
+    <link rel="stylesheet" href="css/w3.css" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="js/custom.js"></script>
+  </head>
+  <body>
+    <form action="carReservation">
+      <div style="width: 600px" class="w3-center">
+        <h2 style="background-color: black; color: white">
+          PulseCar 방문예약신청
+        </h2>
+        <p>현재 보고계신 차량은 헛걸음보상 대상차량이 아닙니다.</p>
+        <h4>방문예약 정보 확인</h4>
+        <h4>
+          판매자 :
+          <input
+            type="text"
+            name="dr_c_name"
+            id="dr_c_name"
+            value=""
+            style="border: none"
+            readonly
+          />
+        </h4>
+        <h3>구매자</h3>
+        <p>
+          아이디 :
+          <input
+            type="text"
+            name="userid"
+            id="userid"
+            value=""
+            style="border: none"
+            readonly
+          />
+        </p>
+        <p>
+          이름 :
+          <input
+            type="text"
+            name="username"
+            id="username"
+            value=""
+            style="border: none"
+            readonly
+          />
+        </p>
+        <p>
+          전화번호 :
+          <input
+            type="text"
+            name="userphone"
+            id="userphone"
+            value=""
+            style="border: none"
+            readonly
+          />
+        </p>
+        <input
+          type="text"
+          name="c_num"
+          id="c_num"
+          value=""
+          style="border: none"
+          readonly
+        />
+        <img src="images\reservation.png" alt="" />
+        <div>
+          예약 날짜 : <input type="date" name="reserDate" id="reserDate" min=/>
+        </div>
+        <div>
+          시간 : <input type="time" name="reserTime" id="reserTime" min=/>
+        </div>
+        <div style="margin-top: 30px">
+          <input
+            type="submit"
+            value="방문예약"
+            th:onclick="return realReservation()"
+            style="
+              background-color: rgb(252, 175, 23);
+              width: 155px;
+              height: 50px;
+              font-size: 14px;
+              border-radius: 4px;
+              cursor: pointer;
+            "
+          />
+          <input
+            type="submit"
+            value="취소"
+            th:onclick="return realReservation()"
+            style="
+              background-color: rgb(51, 111, 201);
+              width: 155px;
+              height: 50px;
+              font-size: 14px;
+              border-radius: 4px;
+              color: white;
+              cursor: pointer;
+            "
+          />
+        </div>
+      </div>
+    </form>
+  </body>
+  <script>
+    var today = new Date();
+
+    var year = today.getFullYear();
+    var month = ("0" + (today.getMonth() + 1)).slice(-2);
+    var day = ("0" + today.getDate()).slice(-2);
+
+    var dateString = year + "-" + month + "-" + day;
+    $("#reserDate").attr("min", dateString);
+
+    var dr_c_name = window.opener.document.getElementById("dr_c_name").value;
+    var userid = window.opener.document.getElementById("userid").value;
+    var username = window.opener.document.getElementById("username").value;
+    var userphone = window.opener.document.getElementById("userphone").value;
+    var c_num = window.opener.document.getElementById("c_num").value;
+
+    $("#dr_c_name").attr("value", dr_c_name);
+    $("#userid").attr("value", userid);
+    $("#username").attr("value", username);
+    $("#userphone").attr("value", userphone);
+    $("#c_num").attr("value", c_num);
+  </script>
+</html>

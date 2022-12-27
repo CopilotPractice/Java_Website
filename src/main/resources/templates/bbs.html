@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>electric life</title>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link th:href=@{css/w3.css} rel="stylesheet" />
+<link th:href=@{css/w3-theme-ev.css} rel="stylesheet" />
+<link th:href=@{css/cgoing.css} rel="stylesheet" />
+<link th:href=@{css/jsk.css} rel="stylesheet" />
+ <script
+      src="https://kit.fontawesome.com/9d7a2afbd4.js"
+      crossorigin="anonymous"
+    ></script>
+<link rel="icon" type="image/x-icon" href="/images/favicon.ico" />
+<script src="js/w3.js"></script>
+<script src="js/cgoing.js"></script>
+<script type="text/javascript" src="js/custom.js"></script>
+</head>
+<body>
+	<div id="wrapper">
+		<!-- common 헤더 -->
+		<div th:insert="common_header.html :: header"></div>
+
+		<!-- lnb (Local navigation bar) -->
+		<nav
+			class="flex-container flex-center w3-large lnb-margin w3-padding w3-light-grey">
+			<a
+				th:href="@{bbs(orderBy=bbs_writedate,bbsDiv=null,searchText=null)}"
+				class="on_lnb">자유게시판</a> <a href="https://www.friendscube.com/">소모임</a>
+		</nav>
+
+		<!-- common 자유게시판 -->
+		<div th:insert="common_bbs_free.html :: bbs_free"></div>
+		
+			<div class="j-bbs_list">
+			<button type="button"
+				th:onclick="|location.href='@{/bbs(orderBy=bbs_writedate,bbsDiv=${bbsDiv},searchText=${searchText})}'|">최신순</button>
+			<button type="button"
+				th:onclick="|location.href='@{/bbs(orderBy=bbs_like,bbsDiv=${bbsDiv},searchText=${searchText})}'|">좋아요순</button>
+			<button type="button"
+				th:onclick="|location.href='@{/bbs(orderBy=bbs_count,bbsDiv=${bbsDiv},searchText=${searchText})}'|">인기순</button>
+				</div>
+				
+		<div style="display:flex; justify-content: center;" class="w3-center">
+
+			<img src="images/ad_1.png" style="width:150px; height:450px" />
+			<div class="w3-container" style="width: 1000px; position: relative;">
+				<table class="w3-table w3-bordered w3-border-top">
+					<tr>
+						<th style="width: 10%">글번호</th>
+						<th style="width: 60%">제목</th>
+						<th>작성자</th>
+						<th>작성일</th>
+						<th>추천</th>
+						<th>조회</th>
+					</tr>
+					<tr>
+						<th:block th:if="${session.loginUser?.id!=null}">
+							<tr th:each="dto : ${bbslist.getList()}">
+								<td th:text="${dtoStat.size}-${dtoStat.index}"></td>
+								<td th:if="${dto?.bbs_numofcomment!=0}"><a
+									th:href="@{view(num=${dto?.bbs_num},userid=${session.loginUser?.id})}"
+									th:text="${dto.bbs_title}" class="bbs"></a> <th:text
+										th:text="|&nbsp;&nbsp;&nbsp;&nbsp;[${dto.bbs_numofcomment}]|"></td>
+								<td th:unless="${dto?.bbs_numofcomment!=0}"><a
+									th:href="@{view(num=${dto?.bbs_num},userid=${session.loginUser?.id})}"
+									th:text="${dto.bbs_title}" class="bbs"></a></td>
+								<td><a th:href="@{user(id=${dto?.id})}"
+									th:text="${dto.name}" class="bbs"></a></td>
+								<td th:text="${dto.bbs_writedate }"></td>
+								<td th:text="${dto.bbs_like }"></td>
+								<td th:text="${dto.bbs_count }"></td>
+							</tr>
+						</th:block>
+				</table>
+				<form action="bbs" style="margin-top: 30px;">
+					<!--                          검색창  -->
+					<select name="bbsDiv" id="bbsDiv">
+						<option value="title">제목</option>
+						<option value="writer">작성자</option>
+					</select> <input type="text" id="searchText" name="searchText" /> <input
+						type="submit" value="검색" />
+				</form>
+
+				<div class="w3-center">
+				<div class="pagination w3-large">
+					<th:block th:classappend="${bbslist.getPrePage() == 0} ? 'disabled'">
+						<a th:href="@{/bbs(pageNum=${bbslist.getPrePage()},orderBy=bbs_writedate,bbsDiv=null,searchText=null)}">&laquo; 이전</a>
+					</th:block> 
+					<th:block
+						th:each="page: ${#numbers.sequence(bbslist.getNavigateFirstPage(), bbslist.getNavigateLastPage())}"
+						th:classappend="${bbs == bbslist.getPageNum()} ? 'active'">
+						<a th:text="${page}" th:href="@{/bbs(pageNum=${page},orderBy=bbs_writedate,bbsDiv=null,searchText=null)}"></a>
+					</th:block>
+					<th:block th:classappend="${bbslist.getNextPage() == 0} ? 'disabled'">
+						<a th:href="@{/bbs(pageNum=${bbslist.getNextPage()},orderBy=bbs_writedate,bbsDiv=null,searchText=null)}">다음 &raquo;</a>
+					</th:block>
+				</div>
+			</div>
+
+			<!--                          검색창 끝-->
+			<th:block th:if="${session.loginUser?.id != null }">
+					<button
+						th:onclick="|location.href='@{writeForm(id=${session.loginUser?.id})}'|"
+						class="w3-button w3-white w3-border w3-border-theme w3-round w3-right"
+						style="position: absolute; bottom: 50px; right: 20px;">
+						글쓰기</button>
+				</th:block>
+			<th:block th:unless="${session.loginUser?.id!=null}">
+				<button
+					th:onclick="clickEvent('writeForm',[[${session.loginUser?.id}]]);"
+					class="w3-button w3-white w3-border w3-border-theme w3-round w3-right"
+					style="position: absolute; bottom: 50px; right: 20px;">
+					글쓰기</button>
+			</th:block>
+		</div>
+		<div class="w3-left">
+		<img src="images/ad_2.png" style="width:150px; height:450px" /></div>
+		</div>
+		<!-- common 푸터 -->
+		<div th:insert="common_footer.html :: footer"></div>
+	</div>
+</body>
+</html>

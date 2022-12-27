@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>PulseCar</title>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="stylesheet"
+	href="https://fonts.googleapis.com/icon?family=Material+Icons" />
+<link rel="stylesheet" th:href=@{css/w3.css} />
+<link rel="stylesheet" th:href=@{css/cgoing.css} />
+<link rel="stylesheet" th:href=@{css/jsk.css} />
+<script src="js/w3.js"></script>
+<script src="js/cgoing.js"></script>
+<script type="text/javascript" src="js/custom.js"></script>
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+</head>
+<body>
+	<div id="wrapper">
+		<!-- common 헤더 -->
+		<div th:insert="common_header.html :: header"></div>
+
+		<!-- banner -->
+		<div
+			class="flex-container flex-center w3-large lnb-margin w3-padding w3-light-grey">
+			<a href="car.html">전기차 거래 플랫폼</a>
+		</div>
+
+		<div id="mypage_main" class="PR">
+			<!-- Grid Column(2/12) -->
+			<!-- 사이드바 영역 -->
+			<div id="mypage_side">
+				<div th:insert="common_sidebar_mypage.html :: mypage_side"></div>
+			</div>
+			<!-- 마이페이지 영역 -->
+			<div id="mypage_contents"
+				style="padding-top: 10px; padding-right: 100px; padding-left: 30px">
+				<!-- 방문예약 확인영역 -->
+				<div>
+					<h2 style="border-bottom: solid 1px #aaa">방문예약 확인</h2>
+				</div>
+				<div
+					style="background-color: #aaa; margin-top: 20px; border-bottom: solid 2px gray;">
+					<table>
+						<tr>
+							<td style="width: 30%; border-right: solid 1px gray" class="w3-center" colspan="2">차량</td>
+							<td style="width: 15%; border-right: solid 1px gray" class="w3-center">예약자</td>
+							<td class="w3-center" style="width: 15%; border-right: solid 1px gray">장소</td>
+							<td class="w3-center" style="width: 15%; border-right: solid 1px gray">방문날짜</td>
+							<td class="w3-center" style="width: 15%; border-right: solid 1px gray">요청시간</td>
+							<td class="w3-center" style="width: 7%; border-right: solid 1px gray">확인여부</td>
+						</tr>
+					</table>
+				</div>
+				<div>
+					<!-- 반복 -->
+					<table style="margin-top: 10px; border-bottom: solid 1px #aaa; padding-bottom: 10px;">
+						<tr th:each="dto : ${userReserFinishList}">
+							<td style="width: 20%">
+							<img src="images\index_img\index_car_img\e-tron.png" style="width: 150px; height: 70px; object-fit: contain" /></td>
+							<td style="width: 10%; font-weight: bold" th:text="${dto.c_num}"></td>
+							<td style="width: 15%; font-weight: bold" class="w3-center"  th:text="${dto.reserUserName}"></td>
+							<td class="w3-center" style="width: 15%; font-weight: bold" th:text="${dto.dr_c_name}"></td>
+							<td class="w3-center w3-small" style="width: 15%" th:text="${dto.reserDate}"></td>
+							<td class="w3-center w3-small" style="width: 15%" th:text="${dto.sendMesDate}"></td>
+							<td class="w3-center w3-tiny" style="width: 7%">
+								<input type="button" value="거래 완료 확정" th:onclick="userReserFinish([[${dto.c_num}]],[[${session.loginUser.id}]])"/>
+							</td>
+						</tr>
+						<tr th:each="dto : ${userReserIngList}">
+							<td style="width: 20%">
+							<img src="images\index_img\index_car_img\e-tron.png" style="width: 150px; height: 70px; object-fit: contain" /></td>
+							<td style="width: 10%; font-weight: bold" th:text="${dto.c_num}"></td>
+							<td style="width: 15%; font-weight: bold" class="w3-center"  th:text="${dto.reserUserName}"></td>
+							<td class="w3-center" style="width: 15%; font-weight: bold" th:text="${dto.dr_c_name}"></td>
+							<td class="w3-center w3-small" style="width: 15%" th:text="${dto.reserDate}"></td>
+							<td class="w3-center w3-small" style="width: 15%" th:text="${dto.sendMesDate}"></td>
+							<td class="w3-center w3-tiny" style="width: 7%">
+								<button>확인중</button>
+							</td>
+						</tr>
+					</table>
+					<!-- . -->
+				</div>
+			</div>
+			<div class="quick_list">
+				<ul class="w3-center">최근본차량</ul>
+				<ul>
+					<li><span id="storage1"></span> </li>
+					<li><span id="storage2"></span></li>
+					<li><span id="storage3"></span></li>
+					<li><span id="storage4"></span></li>
+				</ul>
+			</div>
+		</div>
+
+		<!-- common 푸터 -->
+		<div th:insert="common_footer.html :: footer"></div>
+	</div>
+	
+<script th:inline="javascript">
+ 	
+	var id = [[${session.loginUser?.id}]];
+	
+	switch (localStorage.length) {
+	case 5:
+	case 4:
+		$.ajax({
+			type: 'post',
+			url: './car_img',
+			data: {
+				c_num: localStorage.getItem('carstorage4')
+			},
+			success: function(result) {	
+				console.log(result);
+				$("#storage4").html("<a href=car_detail?num="+localStorage.getItem('carstorage4')+"&userid="+id+">"+localStorage.getItem('carstorage4')+"<img src='"+ result +"'/>"+"</a>");
+			}
+		});
+	case 3:
+		$.ajax({
+			type: 'post',
+			url: './car_img',
+			data: {
+				c_num: localStorage.getItem('carstorage3')
+			},
+			
+			success: function(result) {		
+				console.log(result);
+				$("#storage3").html("<a href=car_detail?num="+localStorage.getItem('carstorage3')+"&userid="+id+">"+localStorage.getItem('carstorage3')+"<img src='"+ result +"'/>"+"</a>");
+			}
+		});
+	case 2:
+		$.ajax({
+			type: 'post',
+			url: './car_img',
+			data: {
+				c_num: localStorage.getItem('carstorage2')
+			},
+			success: function(result) {		
+				console.log(result);
+				$("#storage2").html("<a href=car_detail?num="+localStorage.getItem('carstorage2')+"&userid="+id+">"+localStorage.getItem('carstorage2')+"<img src='"+ result +"'/>"+"</a>");
+			}
+		});
+	case 1:
+		$.ajax({
+			type: 'post',
+			url: './car_img',
+			data: {
+				c_num: localStorage.getItem('carstorage1')
+			},
+			success: function(result) {		
+				console.log(result);
+				$("#storage1").html("<a href=car_detail?num="+localStorage.getItem('carstorage1')+"&userid="+id+">"+localStorage.getItem('carstorage1')+"<img src='"+ result +"'/>"+"</a>");
+			}
+		});
+	}
+	console.log(localStorage.length);
+</script>
+</body>
+</html>

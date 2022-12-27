@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <title>PulseCar</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link
+      rel="stylesheet"
+      th:href="@{https://fonts.googleapis.com/icon?family=Material+Icons}" />
+    <link rel="stylesheet" th:href="@{/css/w3.css}" />
+    <link rel="stylesheet" th:href="@{css/cgoing.css}" />
+    <script src="js/w3.js"></script>
+    <script src="js/cgoing.js"></script>
+  </head>
+  <body>
+   <div class="flex-perfectCenter">
+      <div id="wrap_signupForm" class="w3-padding">
+        <div class="w3-center">
+          <h2>회원 정보 수정</h2>
+        </div>
+      <form action="updateUserInfo" th:object="${loginUser}" method="post" name="frm" class="w3-auto w3-container w3-margin-top" style="max-width: 500px">
+      
+      <div>
+           <label for="id">아이디</label>
+          <input class="w3-input" type="text" name="_id" id="id" th:field="*{id}" required />
+        </div>
+        
+        <div class="w3-section w3-theme-d1" style="display: none">
+            {} is available
+          </div>
+          <div class="w3-margin-top">
+            <label for="pw">비밀번호</label>
+            <input
+              class="w3-input"
+              type="password"
+              name="pw"
+              th:field="*{pw}"
+              id="pw"
+              required />
+          </div>
+          <div class="w3-margin-top">
+            <label>이름</label>
+            <input class="w3-input" type="text" name="_name" th:field="*{name}" required />
+          </div>
+          <div class="w3-margin-top">
+            <label>이메일</label>
+            <input class="w3-input" type="email" name="email"  th:field="*{email}" required />
+          </div>
+          <div class="w3-margin-top">
+            <label>휴대폰번호</label>
+            <input
+              class="w3-input"
+              type="tel"
+              name="phone"
+              pattern="[0-9]{3}-[0-9]{4}-[0-9]{4}"
+              required />
+          </div>
+          <div class="w3-panel w3-margin-top">
+            <button class="c-button w3-large w3-black w3-round w3-block">
+              회원정보수정
+            </button>
+          </div>
+         </form>
+      </div>
+     </div>
+  </body>
+</html>

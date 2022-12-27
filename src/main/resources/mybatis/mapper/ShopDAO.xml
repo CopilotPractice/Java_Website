@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.icia.el.dao.IShopDAO">
+
+	<select id="shoplistwashDAO" resultType="com.icia.el.dto.ShopAndReviewDTO">
+		select a.p_num, a.p_name, a.p_price, a.p_stock, a.p_content, a.p_date, a.p_category, a.img_dir,
+        NVL(sum(rv_like)/count(rv_like)*20,0) as star, 
+        count(b.p_num) as reviewCnt
+		from product a left join review b
+		on a.p_num = b.p_num
+		where a.p_category = 1
+		group by a.p_num, a.p_name, a.p_price, a.p_stock, a.p_content, a.p_date,
+		a.p_category, a.img_dir
+        order by ${param1}
+	</select>
+
+	<select id="shoplistexDAO" resultType="com.icia.el.dto.ShopAndReviewDTO">
+		select a.p_num, a.p_name, a.p_price, a.p_stock, a.p_content, a.p_date, a.p_category, a.img_dir,
+        NVL(sum(rv_like)/count(rv_like)*20,0) as star, 
+        count(b.p_num) as reviewCnt
+		from product a left join review b
+		on a.p_num = b.p_num
+		where a.p_category = 2
+		group by a.p_num, a.p_name, a.p_price, a.p_stock, a.p_content, a.p_date,
+		a.p_category, a.img_dir
+        order by ${param1}
+	</select>
+
+	
+	<select id="shoplistarDAO" resultType="com.icia.el.dto.ShopAndReviewDTO">
+		select a.p_num, a.p_name, a.p_price, a.p_stock, a.p_content, a.p_date, a.p_category, a.img_dir,
+        NVL(sum(rv_like)/count(rv_like)*20,0) as star, 
+        count(b.p_num) as reviewCnt
+		from product a left join review b
+		on a.p_num = b.p_num
+		where a.p_category = 3
+		group by a.p_num, a.p_name, a.p_price, a.p_stock, a.p_content, a.p_date,
+		a.p_category, a.img_dir
+        order by ${param1}
+	</select>
+
+	
+	<select id="shoplistireDAO" resultType="com.icia.el.dto.ShopAndReviewDTO">
+		select a.p_num, a.p_name, a.p_price, a.p_stock, a.p_content, a.p_date, a.p_category, a.img_dir,
+        NVL(sum(rv_like)/count(rv_like)*20,0) as star, 
+        count(b.p_num) as reviewCnt
+		from product a left join review b
+		on a.p_num = b.p_num
+		where a.p_category = 4
+		group by a.p_num, a.p_name, a.p_price, a.p_stock, a.p_content, a.p_date,
+		a.p_category, a.img_dir
+        order by ${param1}
+	</select>
+
+	<select id="detailDAO" resultType="com.icia.el.dto.ShopDTO">
+		select * from product where
+		p_num = #{0}
+	</select>
+
+	<insert id="productinsertDAO">
+		INSERT INTO PRODUCT (P_NUM ,
+		P_NAME , P_PRICE ,
+		P_STOCK ,P_CATEGORY , P_CONTENT, IMG_DIR)
+		VALUES
+		(p_num_seq.nextval , #{item1} ,
+		#{item2} , #{item3} , #{item4} ,
+		#{item5}, #{item6})
+	</insert>
+	
+	<update id="productUpdateDAO">
+		
+		update product set p_name = #{param1}, p_price = #{param2}, p_stock = #{param3}, p_content = #{param4}, p_category = #{param5}, img_dir = #{param6} where p_num = #{param7}
+		
+	</update>
+	
+	<update id="productReduceDAO">
+		update product set p_stock = p_stock - #{param1} where p_num = #{param2}
+	</update>
+	
+	<delete id="productDeleteDAO">
+		delete from product where p_num = #{param1}
+	</delete>
+	
+	<select id="lastPnum" resultType="_int">
+		SELECT LAST_NUMBER FROM USER_SEQUENCES WHERE SEQUENCE_NAME = 'P_NUM_SEQ'
+	</select>
+	
+	
+</mapper>

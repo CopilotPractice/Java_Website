@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>EV Life</title>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="stylesheet"
+	th:href="@{https://fonts.googleapis.com/icon?family=Material+Icons}" />
+<link rel="stylesheet" th:href="@{/css/w3.css}" />
+<link rel="stylesheet" th:href="@{/css/cgoing.css}" />
+<script type="text/javascript" th:src="@{/js/w3.js}"></script>
+<script type="text/javascript" th:src="@{/js/cgoing.js}"></script>
+</head>
+<body>
+	<div class="flex-perfectCenter">
+		<div id="wrap_loginForm" class="w3-padding">
+			<div class="w3-center" style="margin-bottom: 50px">
+				<h1 id="logo_lighting">
+					<a href="/">PulseCar</a>
+				</h1>
+			</div>
+			<div class="w3-center">
+				<h3>Login to PulseCar</h3>
+			</div>
+			<!-- 멤버타입 체인지 -->
+			<div class="w3-bar selectMemberType">
+				<button id='normal' style="width: 50%" th:onclick="changeMemberType(this)">일반사용자</button>
+				<button id='dealer' style="width: 50%" th:onclick="changeMemberType(this)">딜러</button>
+			</div>
+			<!-- 일반사용자용 로그인 -->
+			<form th:action="@{/login}" method="post" class="w3-large"
+				id="userForm">
+				<input type="hidden" name="go" th:value="${go}" /> <input
+					type="hidden" name="p_num" th:value="${p_num}" /> <input
+					type="hidden" name="quantity" th:value="${quantity}" /> <input
+					type="hidden" name="p_price" th:value="${p_price}" /> <input
+					type="hidden" name="p_name" th:value="${p_name}" />
+				<div>
+					<label for="id">아이디</label> <input class="w3-input" type="text"
+						name="id" id="id" onkeyup="this.value=this.value.replace(/[^a-zA-Z|0-9]/g,'');" required />
+						
+				</div>
+				<div class="w3-margin-top">
+					<label for="pw">비밀번호</label> 
+					<a th:href = "@{/findPasswordForm}" class="float-r c-button w3-small anchorUnderline">비밀번호 찾기</a>
+					<input class="w3-input" type="password" name="pw" id="pw" required />
+				</div>
+				<div class="w3-panel w3-margin-top">
+					<button class="c-button w3-large w3-black w3-round w3-block cursor">로그인</button>
+				</div>
+				<div th:if="${message!=null}">
+					<span class="w3-text-red" th:text="${message}"></span>
+				</div>
+			</form>
+
+			<!-- 딜러용 로그인 -->
+			<form th:action="@{/dealerLogin}" method="post" class="w3-large"
+				id="dealerForm" style="display: none">
+				<input type="hidden" name="go" th:value="${go}" /> <input
+					type="hidden" name="p_num" th:value="${p_num}" /> <input
+					type="hidden" name="quantity" th:value="${quantity}" /> <input
+					type="hidden" name="p_price" th:value="${p_price}" /> <input
+					type="hidden" name="p_name" th:value="${p_name}" />
+				<div>
+					<label for="id">아이디</label> <input class="w3-input" type="text"
+						name="id" id="dr_id" onkeyup="this.value=this.value.replace(/[^a-zA-Z|0-9]/g,'');" required />
+				</div>
+				<div class="w3-margin-top">
+					<label for="pw">비밀번호</label> 
+					<a th:href = "@{/findPasswordForm}" class="float-r c-button w3-small anchorUnderline">비밀번호 찾기</a> 
+					<input class="w3-input" type="password" name="pw" id="dr_pw" required />
+				</div>
+				<div class="w3-panel w3-margin-top">
+					<button class="c-button w3-large w3-black w3-round w3-block">로그인</button>
+				</div>
+				<div th:if="${message!=null}">
+					<span class="w3-text-red" th:text="${message}"></span>
+				</div>
+			</form>
+			<div class="w3-panel w3-center">
+				<p>
+					New to PulseCar? Create an <a href="signupForm"
+						class="anchorUnderline">account</a>
+				</p>
+			</div>
+		</div>
+	</div>
+	<script th:inline="javascript">
+		var status = [[${status}]];
+		console.log(status);
+		if(status == "normal"){
+			console.log("normal");
+			document.getElementById('normal').classList.add("activeMemberType");
+		}else if(status == "dealer"){
+			console.log("dealer");
+			document.getElementById('dealer').classList.add("activeMemberType");
+		}
+	</script>
+</body>
+</html>

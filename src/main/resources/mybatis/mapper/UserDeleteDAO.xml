@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+    
+<mapper namespace="com.icia.el.dao.IUserDeleteDAO">
+	<delete id="reviewAlldeleteDAO">
+		delete from review where id = #{param1}
+	</delete>
+	<delete id="pickAlldeleteDAO">
+		delete from pick where id = #{param1}		
+	</delete>
+	<delete id="car_pickAlldeleteDAO">
+		delete from car_pick where id = #{param1}
+	</delete>
+	<delete id="bbs_likeAlldeleteDAO">
+		delete from bbs_like where id = #{param1}
+	</delete>
+	<delete id="bbs_commentAlldeleteDAO">
+		delete from bbs_comment where id = #{param1}
+	</delete>
+	<delete id="bbsAlldeleteDAO">
+		delete from bbs where id = #{param1}
+	</delete>
+	<delete id="UserDeleteDAO">
+		delete from userinfo where id = #{param1}
+	</delete>
+	<select id="UserBbsDAO" resultType="com.icia.el.dto.BbsDTO">
+		select * from bbs where id = #{param1}
+	</select>
+	<select id="UserBbsCommentDAO" resultType="com.icia.el.dto.Bbs_CommentDTO">
+		select * from bbs_comment where id = #{param1}
+	</select>
+</mapper>

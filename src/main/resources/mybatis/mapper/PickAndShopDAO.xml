@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.icia.el.dao.IPickAndShopDAO">
+	<select id="pickListDAO" resultType="com.icia.el.dto.PickAndShopDTO">
+		select distinct a.p_num,a.id ,b.p_name,
+		b.p_price,b.p_stock, b.p_content, b.p_date, b.p_category, b.img_dir
+		from pick a left join product b
+		on a.p_num = b.p_num where id = #{param1}
+	</select>
+	
+	<select id="pickCheckDAO" resultType="_int">
+		select count(*) from pick where id = #{param1} and p_num = #{param2}
+	</select>
+	
+	<insert id="pickInsertDAO">
+		insert into pick(pick_num,p_num,id) values(pick_num_seq.nextval,#{param1},#{param2})
+	</insert>
+	
+	<delete id="pickDeleteDAO">
+		delete from pick where p_num = #{param1} and id = #{param2}
+	</delete>
+	
+</mapper>

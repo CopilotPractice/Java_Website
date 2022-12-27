@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+</head>
+<body>
+	<div th:fragment="header">
+	<header id="headerWrap">
+		<div class="w3-container" id="header">
+			<!-- 로고 Area -->
+			<div class="w3-row">
+				<div class="w3-quarter">
+						<h2 class="logo">
+							<a href="/" onmouseover="mOverLogo(this)"
+								onmouseout="mOutLogo(this)">PulseCar</a>
+						</h2>
+					</div>
+					<div class="w3-rest w3-mobile">
+						<div class="w3-right w3-small">
+							<th:block th:if="${session.loginUser!= null}">
+								<span th:text="|${session.loginUser.name}님 환영합니다|"></span>
+								<input type="hidden" id="userid"
+									th:value="${session.loginUser.id}" />
+								<input type="hidden" id="username"
+									th:value="${session.loginUser.name}" />
+								<input type="hidden" id="userphone"
+									th:value="${session.loginUser.phone}" />
+								<span th:if="${session.loginUser.lv == 1}"> <span
+									class="w3-text-blue" th:text="[일반회원]"></span>
+								</span>
+								<span th:if="${session.loginUser.lv == 2}"> <span
+									class="w3-text-deep-orange" th:text="[우수회원]"></span>
+								</span>
+								<span th:if="${session.loginUser.lv == 3}"> <span
+									class="w3-text-green" th:text="[관리자]"></span>
+								</span>
+								<a th:href="@{mypage(loginId=${session.loginUser.id})}"
+									class="c-btn anchorNoColor">마이페이지</a>
+								<a href="logout" class="c-btn anchorNoColor">로그아웃</a>
+							</th:block>
+							<th:block th:if="${session.drLoginUser!= null}">
+								<span th:text="|${session.drLoginUser?.dr_name}님 환영합니다|"></span>
+								<span class="w3-text-red" th:text="[딜러]"></span>
+								<a th:href="@{drmypage(loginId=${session.drLoginUser?.dr_id})}"
+									class="c-btn anchorNoColor">마이페이지</a>
+								<a href="logout" class="c-btn anchorNoColor">로그아웃</a>
+							</th:block>
+							<th:block
+								th:if="${session.loginUser?.id==null } and ${session.drLoginUser?.dr_id==null }">
+								<a href="loginForm" class="c-btn anchorNoColor">로그인</a>
+								<a href="signupForm" class="c-btn anchorNoColor">회원가입</a>
+							</th:block>
+
+						</div>
+						<nav class="w3-bar w3-xlarge flex-container flex-end">
+							<a th:href="@{car(id=${session.loginUser?.id})}" class="gnb_item">Car</a>
+							<a th:href="@{shop(list='p_num',category=1)}" class="gnb_item">Shop</a>
+							<a
+								th:href="@{bbs(orderBy=bbs_writedate,bbsDiv=null,searchText=null)}"
+								class="gnb_item">Community</a> <a href="/search"
+								class="gnb_item">Search</a>
+						</nav>
+					</div>
+					</nav>
+			</div>
+	</div>
+	</div>
+	</div>
+	</header>
+</body>

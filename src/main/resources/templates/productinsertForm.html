@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>electric life</title>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="stylesheet" th:href="@{/css/w3.css}" />
+<link rel="stylesheet" th:href="@{/css/w3-theme-ev.css}" />
+<link rel="stylesheet" th:href="@{/css/cgoing.css}" />
+<script type="text/javascript" th:src="@{/js/w3.js}"></script>
+<script type="text/javascript" src="js/custom.js"></script>
+</head>
+<body>
+<div id="wrapper">
+	<div class="w3-auto">
+		<!-- common 헤더 -->
+		<div th:replace="common_header :: header"></div>
+
+		<section class="w3-row">
+			<!-- Grid Column(2/12 : Left) -->
+			<div class="w3-col m2 l2">
+				<!-- common 사이드바 -->
+				<!-- <div th:replace="common_sidebar :: header"></div> -->
+			</div>
+			<!-- Grid Column(10/12 : Right) -->
+			<div id="detail" class="w3-col m10 l10">
+				<!-- common 자유게시판 -->
+				<!-- <div th:replace="common_bbs_free :: header"></div> -->
+				<div class="w3-panel w3-bottombar">
+					<p class="w3-large">상품등록</p>
+				</div>
+				<!-- 글쓰기 폼 -->
+				<form th:action="@{productInsert}" method="post"
+					enctype="multipart/form-data">
+					<input type="hidden" name="list" value="p_date" /> <input
+						type="hidden" name="category" id="category" th:value="${category}" />
+					<table class="w3-table w3-bordered">
+						<tr>
+							<td>상품이름</td>
+							<td><input type="text" name="p_name"
+								class="w3-input w3-border" required /></td>
+						</tr>
+						<tr>
+							<td>가격</td>
+							<td><input type="text" name="p_price"
+								class="w3-input w3-border" required /></td>
+						</tr>
+						<tr>
+							<td>재고</td>
+							<td><input type="text" name="p_stock"
+								class="w3-input w3-border" required /></td>
+						</tr>
+						<tr>
+						<tr>
+							<td>카테고리</td>
+							<td><input type="text" name="p_category"
+								class="w3-input w3-border" th:value="${category}" readonly /></td>
+						</tr>
+						<tr>
+							<td>내용</td>
+							<td><textarea class="w3-input w3-border" name="p_content"
+									cols="80" rows="13" required></textarea></td>
+						</tr>
+						<tr>
+							<td>이미지 첨부</td>
+							<td><input type="file" name="file" /></td>
+						</tr>
+					</table>
+					<!-- 버튼 -->
+					<div class="w3-panel w3-right">
+						<input type="button" onclick="goBack('shop')" value="뒤로가기"
+							class="w3-button w3-white w3-border w3-border-theme w3-round" />
+						<input type="submit" value="상품등록"
+							class="w3-button w3-border w3-border-theme w3-round" />
+					</div>
+				</form>
+			</div>
+		</section>
+		</div>
+		<!-- common 푸터 -->
+		<div th:replace="common_footer :: footer"></div>
+	</div>
+</body>
+</html>

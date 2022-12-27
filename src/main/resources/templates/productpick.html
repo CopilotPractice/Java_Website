@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>PulseCar</title>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+ <script
+      src="https://kit.fontawesome.com/9d7a2afbd4.js"
+      crossorigin="anonymous"
+    ></script>
+<link rel="icon" type="image/x-icon" href="/images/favicon.ico" />
+<link rel="stylesheet" th:href="@{/css/w3.css}" />
+<link rel="stylesheet" th:href="@{/css/cgoing.css}" />
+<link rel="stylesheet" th:href="@{/css/jsk.css}" />
+<script type="text/javascript" th:src="@{/js/w3.js}"></script>
+<script type="text/javascript" th:src="@{/js/custom.js}"></script>
+<script type="text/javascript" th:src="@{/js/cgoing.js}"></script>
+</head>
+<body>
+	<!-- common 헤더 -->
+	<div id="wrapper">
+		<div th:insert="common_header.html :: header"></div>
+		<!-- lnb (Local navigation bar) -->
+		<nav
+			class="flex-container flex-center w3-large lnb-margin w3-padding w3-light-grey">
+			<a th:href="@{shop(list=p_num,category=1)}" id="one"
+				th:class="${category}==1?on_lnb:''" onclick="addOnLnb(this)">새차용품</a>
+			<a th:href="@{shop(list=p_num,category=2)}" id="two"
+				th:class="${category}==2?on_lnb:''" onclick="addOnLnb(this)">익스테리어</a>
+			<a th:href="@{shop(list=p_num,category=3)}" id="three"
+				th:class="${category}==3?on_lnb:''" onclick="addOnLnb(this)">전자기기</a>
+			<a th:href="@{shop(list=p_num,category=4)}" id="four"
+				th:class="${category}==4?on_lnb:''" onclick="addOnLnb(this)">타이어</a>
+		</nav>
+
+		<!-- 찜리스트 -->
+		<div class="w3-auto">
+			<div class="j-pick-list">
+				<ul>
+					<li>관심상품</li>
+				</ul>
+			</div>
+			<div>
+				<h2 class="w3-large" th:utext="|관심상품 전체 ${#lists.size(pickList)}개|"></h2>
+			</div>
+
+			<!-- 반복 -->
+			<th:block th:each="dto : ${pickList}" class="w3-padding">
+				<div class="w3-row j-border-tb">
+					<div class="w3-padding ">
+						<div style="height: 270px">
+							<div class="w3-col" style="width: 25%">
+							<a th:href="@{detail(num=${dto?.p_num})}"><img th:src="@{${dto.img_dir}}" alt="Alps"
+							class="j-image2" style="height: 270px; width: 270px" /></a>
+	
+							</div>
+							<div class="w3-col" style="width: 50%; height: 100%; position:relative;">
+								<h2 class="w3-large" th:href="@{detail(num=${dto?.p_num})}">[[${dto.p_name}]]</h2>
+								<p>[[${dto?.p_content}]]</p>
+								<p class="w3-small" style="position:absolute; bottom:1px;">[[${dto?.p_date}]]</p>
+							</div>
+							<div class="w3-col" style="width: 25%">
+							<div class="w3-right">
+								<h2 class="w3-large">[[${dto?.p_price}]]원</h2>
+								<p>재고 : [[${dto?.p_stock}]]</p>
+								</div>
+							</div>
+						</div>
+						
+					</div>
+			</div>
+				</th:block>
+		</div>
+		<!-- common 푸터 -->
+		<div th:replace="common_footer :: footer"></div>
+	</div>
+</body>
+</html>

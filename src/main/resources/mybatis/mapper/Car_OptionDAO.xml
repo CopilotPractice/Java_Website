@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+    
+<mapper namespace="com.icia.el.dao.ICar_OptionDAO">
+	<select id="sunroofDAO" resultType="com.icia.el.dto.Car_OptionDTO">
+		select 
+		a.c_num,
+		a.c_brand,
+		a.c_name,
+		a.c_scail,
+		a.c_grade,
+		a.c_year,
+		a.c_mile,
+		a.c_coler,
+		to_char(b.cp_price, 'FM999,999,999') as cp_price,
+		b.cp_address
+		from
+		car a
+		left outer join
+		car_sale_post b
+		on
+		a.c_num=b.c_num
+        left outer join
+        car_option c
+        on
+        b.c_num=c.c_num where sunroof=1
+	</select>
+	<select id="naviDAO" resultType="com.icia.el.dto.Car_OptionDTO">
+		select 
+		a.c_num,
+		a.c_brand,
+		a.c_name,
+		a.c_scail,
+		a.c_grade,
+		a.c_year,
+		a.c_mile,
+		a.c_coler,
+		to_char(b.cp_price, 'FM999,999,999') as cp_price,
+		b.cp_address
+		from
+		car a
+		left outer join
+		car_sale_post b
+		on
+		a.c_num=b.c_num
+        left outer join
+        car_option c
+        on
+        b.c_num=c.c_num where navigation = 1
+	</select>
+	<select id="handleDAO" resultType="com.icia.el.dto.Car_OptionDTO">
+		select 
+		a.c_num,
+		a.c_brand,
+		a.c_name,
+		a.c_scail,
+		a.c_grade,
+		a.c_year,
+		a.c_mile,
+		a.c_coler,
+		to_char(b.cp_price, 'FM999,999,999') as cp_price,
+		b.cp_address
+		from
+		car a
+		left outer join
+		car_sale_post b
+		on
+		a.c_num=b.c_num
+        left outer join
+        car_option c
+        on
+        b.c_num=c.c_num where heathandle = 1
+	</select>
+	<select id="hudDAO" resultType="com.icia.el.dto.Car_OptionDTO">
+		select 
+		a.c_num,
+		a.c_brand,
+		a.c_name,
+		a.c_scail,
+		a.c_grade,
+		a.c_year,
+		a.c_mile,
+		a.c_coler,
+		to_char(b.cp_price, 'FM999,999,999') as cp_price,
+		b.cp_address
+		from
+		car a
+		left outer join
+		car_sale_post b
+		on
+		a.c_num=b.c_num
+        left outer join
+        car_option c
+        on
+        b.c_num=c.c_num where hud = 1
+	</select>
+	<select id="cameraDAO" resultType="com.icia.el.dto.Car_OptionDTO">
+		select 
+		a.c_num,
+		a.c_brand,
+		a.c_name,
+		a.c_scail,
+		a.c_grade,
+		a.c_year,
+		a.c_mile,
+		a.c_coler,
+		to_char(b.cp_price, 'FM999,999,999') as cp_price,
+		b.cp_address
+		from
+		car a
+		left outer join
+		car_sale_post b
+		on
+		a.c_num=b.c_num
+        left outer join
+        car_option c
+        on
+        b.c_num=c.c_num where camera_rear = 1
+	</select>
+	<select id="ldwsDAO" resultType="com.icia.el.dto.Car_OptionDTO">
+		select 
+		a.c_num,
+		a.c_brand,
+		a.c_name,
+		a.c_scail,
+		a.c_grade,
+		a.c_year,
+		a.c_mile,
+		a.c_coler,
+		to_char(b.cp_price, 'FM999,999,999') as cp_price,
+		b.cp_address
+		from
+		car a
+		left outer join
+		car_sale_post b
+		on
+		a.c_num=b.c_num
+        left outer join
+        car_option c
+        on
+        b.c_num=c.c_num where ldws = 1
+	</select>
+	<select id="ecmDAO" resultType="com.icia.el.dto.Car_OptionDTO">
+		select 
+		a.c_num,
+		a.c_brand,
+		a.c_name,
+		a.c_scail,
+		a.c_grade,
+		a.c_year,
+		a.c_mile,
+		a.c_coler,
+		to_char(b.cp_price, 'FM999,999,999') as cp_price,
+		b.cp_address
+		from
+		car a
+		left outer join
+		car_sale_post b
+		on
+		a.c_num=b.c_num
+        left outer join
+        car_option c
+        on
+        b.c_num=c.c_num where ecm = 1
+	</select>
+	<select id="tpmsDAO" resultType="com.icia.el.dto.Car_OptionDTO">
+		select 
+		a.c_num,
+		a.c_brand,
+		a.c_name,
+		a.c_scail,
+		a.c_grade,
+		a.c_year,
+		a.c_mile,
+		a.c_coler,
+		to_char(b.cp_price, 'FM999,999,999') as cp_price,
+		b.cp_address
+		from
+		car a
+		left outer join
+		car_sale_post b
+		on
+		a.c_num=b.c_num
+        left outer join
+        car_option c
+        on
+        b.c_num=c.c_num where tpms = 1
+	</select>
+</mapper>

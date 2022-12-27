@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.icia.el.dao.IBbs_CommentDAO">
+	<insert id="BbsCommentWriteDAO">
+		insert into bbs_comment (cm_num, bbs_num, id,
+		cm_content,rcm_name,rcm_num)
+		values (cm_num_seq.nextval, #{item1},#{item2},#{item3},#{item4},#{item5})
+	</insert>
+	<select id="BbsCommentListDAO"
+		resultType="com.icia.el.dto.Bbs_CommentDTO">
+		select
+		a.cm_num,
+		a.bbs_num,
+		a.id,
+		a.cm_content,
+		a.cm_like,
+		a.cm_date,
+		a.rcm_name,
+		a.rcm_num,
+		b.name
+		from
+		bbs_comment a
+		left outer join
+		userinfo b
+		on
+		a.id=b.id
+		where bbs_num = #{0}
+		order by cm_date asc
+	</select>
+
+	<delete id="BbsCommentAllDeleteDAO">
+		delete from bbs_comment where bbs_num=#{param1}
+	</delete>
+	
+	<delete id="BbsCommentDeleteDAO">
+		delete from bbs_comment where cm_num=#{param1}
+	</delete>
+</mapper>

@@ -1,0 +1,427 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+    
+<mapper namespace="com.icia.el.dao.ICarDAO">
+	<select id="CardealerListDAO" resultType="com.icia.el.dto.CardealerDTO">
+		select 
+		a.c_num,
+		a.c_brand,
+		a.c_name,
+		a.c_scail,
+		a.c_grade,
+		to_char(a.c_year , 'yy/mm') as c_year,
+		a.c_mile,
+		a.c_coler,
+		to_char(b.cp_price, 'FM999,999,999') as cp_price,
+		b.cp_address,
+		b.cp_content,
+        c.*
+		from
+		car a
+		left outer join
+		car_sale_post b
+		on
+		a.c_num=b.c_num
+        left outer join
+        dealer c
+        on
+        b.dr_id=c.dr_id where a.c_num = #{param1}
+	</select>
+	<select id="CarListDAO" resultType="com.icia.el.dto.CarDTO">
+		select 
+		a.c_num,
+		a.c_brand,
+		a.c_name,
+		a.c_scail,
+		a.c_grade,
+		to_char(a.c_year , 'yy/mm') as c_year,
+		a.c_mile,
+		a.c_coler,
+		to_char(b.cp_price, 'FM999,999,999') as cp_price,
+		b.cp_address,
+		c.img_dir_1
+		from
+		car a
+		left outer join
+		car_sale_post b
+		on
+		a.c_num=b.c_num
+		left outer join
+		car_img c
+		on
+		b.c_num=c.c_num
+	</select>
+	<select id="TinyCarListDAO" resultType="com.icia.el.dto.CarDTO">
+		select * from car where c_scail='경차'
+	</select>
+	<select id="SmallCarListDAO" resultType="com.icia.el.dto.CarDTO">
+		select * from car where c_scail='소형'
+	</select>
+	<select id="semimidsizeCarListDAO" resultType="com.icia.el.dto.CarDTO">
+		select * from car where c_scail='준중형'
+	</select>
+	<select id="midsizeCarListDAO" resultType="com.icia.el.dto.CarDTO">
+		select * from car where c_scail='중형'
+	</select>
+	<select id="bigCarListDAO" resultType="com.icia.el.dto.CarDTO">
+		select * from car where c_scail='대형'
+	</select>
+	<select id="sportsCarListDAO" resultType="com.icia.el.dto.CarDTO">
+		select * from car where c_scail='스포츠카'
+	</select>
+	<select id="CarCheckListDAO" resultType="com.icia.el.dto.CarDTO">
+		select 
+		a.c_num,
+		a.c_brand,
+		a.c_name,
+		a.c_scail,
+		a.c_grade,
+		to_char(a.c_year , 'yy/mm') as c_year,
+		a.c_mile,
+		a.c_coler,
+		to_char(b.cp_price, 'FM999,999,999') as cp_price,
+		b.cp_address,
+		c.img_dir_1
+		from car a 
+		left outer join 
+		car_sale_post b 
+		on
+		a.c_num=b.c_num 
+		left outer join
+		car_img c
+		on
+		b.c_num=c.c_num where c_scail=#{param1} or c_scail=#{param2} or c_scail =#{param3} or c_scail =#{param4} or c_scail =#{param5} or c_scail =#{param6}
+	</select>
+	<select id="CarfromDayListDAO" resultType="com.icia.el.dto.CarDTO">
+		select 
+		a.c_num,
+		a.c_brand,
+		a.c_name,
+		a.c_scail,
+		a.c_grade,
+		to_char(a.c_year , 'yy/mm') as c_year,
+		a.c_mile,
+		a.c_coler,
+		to_char(b.cp_price, 'FM999,999,999') as cp_price,
+		b.cp_address,
+		c.img_dir_1
+		from car a 
+		left outer join 
+		car_sale_post b 
+		on
+		a.c_num=b.c_num
+		left outer join
+		car_img c
+		on
+		b.c_num=c.c_num where to_char(c_year,'YYYYMMDD')>#{param1} 
+	</select>
+	<select id="CartoDayListDAO" resultType="com.icia.el.dto.CarDTO">
+		select 
+		a.c_num,
+		a.c_brand,
+		a.c_name,
+		a.c_scail,
+		a.c_grade,
+		to_char(a.c_year , 'yy/mm') as c_year,
+		a.c_mile,
+		a.c_coler,
+		to_char(b.cp_price, 'FM999,999,999') as cp_price,
+		b.cp_address,
+		c.img_dir_1
+		from car a 
+		left outer join 
+		car_sale_post b 
+		on
+		a.c_num=b.c_num
+		left outer join
+		car_img c
+		on
+		b.c_num=c.c_num where to_char(c_year,'YYYYMMDD')<![CDATA[<]]>#{param1}
+	</select>
+	<select id="CarallDayListDAO" resultType="com.icia.el.dto.CarDTO">
+		select 
+		a.c_num,
+		a.c_brand,
+		a.c_name,
+		a.c_scail,
+		a.c_grade,
+		to_char(a.c_year , 'yy/mm') as c_year,
+		a.c_mile,
+		a.c_coler,
+		to_char(b.cp_price, 'FM999,999,999') as cp_price,
+		b.cp_address,
+		c.img_dir_1
+		from car a 
+		left outer join 
+		car_sale_post b 
+		on
+		a.c_num=b.c_num
+		left outer join
+		car_img c
+		on
+		b.c_num=c.c_num where c_year between #{param1} and #{param2}
+	</select>
+	<select id="MiletwetyThUnderDAO" resultType="com.icia.el.dto.CarDTO">
+		select * from car where c_mile <![CDATA[<]]> 20000
+	</select>
+	<select id="MilefortyThUnderDAO" resultType="com.icia.el.dto.CarDTO">
+		select * from car where c_mile between 20000 and 40000
+	</select>
+	<select id="MilesixtyThUnderDAO" resultType="com.icia.el.dto.CarDTO">
+		select * from car where c_mile between 40000 and 60000
+	</select>
+	<select id="MileeightyThUnderDAO" resultType="com.icia.el.dto.CarDTO">
+		select * from car where c_mile between 60000 and 80000
+	</select>
+	<select id="MileoneHunThUnderDAO" resultType="com.icia.el.dto.CarDTO">
+		select * from car where c_mile between 80000 and 100000
+	</select>
+	<select id="MileoneHunThUpDAO" resultType="com.icia.el.dto.CarDTO">
+		select * from car where c_mile > 100000
+	</select>
+	<select id="MileCarListDAO" resultType="com.icia.el.dto.CarDTO">
+		select
+		a.c_num,
+		a.c_brand,
+		a.c_name,
+		a.c_scail,
+		a.c_grade,
+		to_char(a.c_year , 'yy/mm') as c_year,
+		a.c_mile,
+		a.c_coler,
+		to_char(b.cp_price, 'FM999,999,999') as cp_price,
+		b.cp_address,
+		c.img_dir_1
+		from car a 
+		left outer join 
+		car_sale_post b 
+		on
+		a.c_num=b.c_num
+		left outer join
+		car_img c
+		on
+		b.c_num=c.c_num where 
+		c_mile <![CDATA[<]]> nullif(#{param1},0) or 
+		c_mile between #{param2} and nullif(#{param3},0) or 
+		c_mile between #{param4} and nullif(#{param5},0) or
+		c_mile between #{param6} and nullif(#{param7},0) or
+		c_mile between #{param8} and nullif(#{param9},0) or
+		c_mile > nullif(#{param10},0)
+	</select>
+	<select id="PricetenmilDAO" resultType="com.icia.el.dto.CarDTO">
+		select * from car_sale_post where cp_price <![CDATA[<]]> 10000000
+	</select>
+	<select id="PricetwentymilDAO" resultType="com.icia.el.dto.CarDTO">
+		select * from car_sale_post where cp_price between 10000000 and 20000000
+	</select>
+	<select id="PricethirtymilDAO" resultType="com.icia.el.dto.CarDTO">
+		select * from car_sale_post where cp_price between 20000000 and 30000000
+	</select>
+	<select id="PricefortymilDAO" resultType="com.icia.el.dto.CarDTO">
+		select * from car_sale_post where cp_price between 30000000 and 40000000
+	</select>
+	<select id="PricefiftymilDAO" resultType="com.icia.el.dto.CarDTO">
+		select * from car_sale_post where cp_price between 40000000 and 50000000
+	</select>
+	<select id="PricefiftymilupDAO" resultType="com.icia.el.dto.CarDTO">
+		select * from car_sale_post where cp_price > 50000000
+	</select>
+	<select id="PriceCarListDAO" resultType="com.icia.el.dto.CarDTO">
+		select
+		a.c_num,
+		a.c_brand,
+		a.c_name,
+		a.c_scail,
+		a.c_grade,
+		to_char(a.c_year , 'yy/mm') as c_year,
+		a.c_mile,
+		a.c_coler,
+		to_char(b.cp_price, 'FM999,999,999') as cp_price,
+		b.cp_address,
+		c.img_dir_1
+		from car a 
+		left outer join 
+		car_sale_post b 
+		on
+		a.c_num=b.c_num
+		left outer join
+		car_img c
+		on
+		b.c_num=c.c_num where 
+        cp_price <![CDATA[<]]> nullif(#{param1},0) or
+        cp_price between #{param2} and nullif(#{param3},0) or
+        cp_price between #{param4} and nullif(#{param5},0) or
+        cp_price between #{param6} and nullif(#{param7},0) or
+        cp_price between #{param8} and nullif(#{param9},0) or
+        cp_price > nullif(#{param10},0)
+	</select>
+	<select id="GyeonggiDAO" resultType="com.icia.el.dto.CarDTO">
+		select * from car_sale_post where cp_address = '경기'
+	</select>
+	<select id="SeoulDAO" resultType="com.icia.el.dto.CarDTO">
+		select * from car_sale_post where cp_address = '서울'
+	</select>
+	<select id="BusanDAO" resultType="com.icia.el.dto.CarDTO">
+		select * from car_sale_post where cp_address = '부산'
+	</select>
+	<select id="IncheonDAO" resultType="com.icia.el.dto.CarDTO">
+		select * from car_sale_post where cp_address = '인천'
+	</select>
+	<select id="DaeguDAO" resultType="com.icia.el.dto.CarDTO">
+		select * from car_sale_post where cp_address = '대구'
+	</select>
+	<select id="DaejeonDAO" resultType="com.icia.el.dto.CarDTO">
+		select * from car_sale_post where cp_address = '대전'
+	</select>
+	<select id="GwangjuDAO" resultType="com.icia.el.dto.CarDTO">
+		select * from car_sale_post where cp_address = '광주'
+	</select>
+	<select id="AddressCarListDAO" resultType="com.icia.el.dto.CarDTO">
+		select
+		a.c_num,
+		a.c_brand,
+		a.c_name,
+		a.c_scail,
+		a.c_grade,
+		to_char(a.c_year , 'yy/mm') as c_year,
+		a.c_mile,
+		a.c_coler,
+		to_char(b.cp_price, 'FM999,999,999') as cp_price,
+		b.cp_address,
+		c.img_dir_1
+		from car a 
+		left outer join 
+		car_sale_post b 
+		on
+		a.c_num=b.c_num
+		left outer join
+		car_img c
+		on
+		b.c_num=c.c_num where 
+        cp_address = #{param1} or
+        cp_address = #{param2} or
+        cp_address = #{param3} or
+        cp_address = #{param4} or
+        cp_address = #{param5} or
+        cp_address = #{param6} or
+        cp_address = #{param7}
+	</select>
+	<select id="optCheckListDAO" resultType="com.icia.el.dto.CarDTO" parameterType="com.icia.el.dto.CarDTO">
+		select 
+		a.c_num,
+		a.c_brand,
+		a.c_name,
+		a.c_scail,
+		a.c_grade,
+		to_char(a.c_year , 'yy/mm') as c_year,
+		a.c_mile,
+		a.c_coler,
+		to_char(b.cp_price, 'FM999,999,999') as cp_price,
+		b.cp_address,
+		d.img_dir_1
+		from
+		car a
+		left outer join
+		car_sale_post b
+		on
+		a.c_num=b.c_num
+        left outer join
+        car_option c
+        on
+        b.c_num=c.c_num
+        left outer join
+		car_img d
+		on
+		c.c_num=d.c_num where 
+        ${param1}=1 or 
+        ${param2}=1 or 
+        ${param3}=1 or 
+        ${param4}=1 or 
+        ${param5}=1 or 
+        ${param6}=1 or 
+        ${param7}=1 or 
+        ${param8}=1
+	</select>
+	<select id="carBrandListDAO" resultType="com.icia.el.dto.CarDTO">
+		select 
+		a.c_num,
+		a.c_brand,
+		a.c_name,
+		a.c_scail,
+		a.c_grade,
+		to_char(a.c_year , 'yy/mm') as c_year,
+		a.c_mile,
+		a.c_coler,
+		to_char(b.cp_price, 'FM999,999,999') as cp_price,
+		b.cp_address,
+		c.img_dir_1
+		from
+		car a
+		left outer join
+		car_sale_post b
+		on
+		a.c_num=b.c_num
+		left outer join
+		car_img c
+		on
+		b.c_num=c.c_num where c_brand = #{param1}
+	</select>
+	<select id="carModelListDAO" resultType="com.icia.el.dto.CarDTO">
+		select 
+		a.c_num,
+		a.c_brand,
+		a.c_name,
+		a.c_scail,
+		a.c_grade,
+		to_char(a.c_year , 'yy/mm') as c_year,
+		a.c_mile,
+		a.c_coler,
+		to_char(b.cp_price, 'FM999,999,999') as cp_price,
+		b.cp_address,
+		c.img_dir_1
+		from
+		car a
+		left outer join
+		car_sale_post b
+		on
+		a.c_num=b.c_num
+		left outer join
+		car_img c
+		on
+		b.c_num=c.c_num where c_name = #{param1}
+	</select>
+	<select id="CarImgDAO" resultType="com.icia.el.dto.CarImgDTO">
+		select * from car_img where c_num = #{param1}
+	</select>
+	<delete id="cardeleteDAO">
+		delete from car where c_num = #{0}
+	</delete>
+	<select id="CarSearchDAO" resultType="com.icia.el.dto.CarSearchDTO">
+		select
+		a.*,
+		b.img_dir_1,
+		c.cp_address,
+		c.cp_price,
+		d.dr_name
+		from
+		car a
+		left outer join
+		car_img b
+		on
+		a.c_num = b.c_num
+		left outer join
+		car_sale_post c
+		on
+		b.c_num = c.c_num
+		left outer join
+		dealer d
+		on
+		c.dr_id = d.dr_id
+		where a.c_num = null or d.dr_name = null 
+	</select>
+	
+	
+	
+</mapper>

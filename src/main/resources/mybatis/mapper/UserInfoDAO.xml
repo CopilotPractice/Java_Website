@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.icia.el.dao.IUserInfoDAO">
+
+	<select id="loginCheck" resultType="com.icia.el.dto.UserInfoDTO">
+		select * from userinfo where id = #{param1}
+	</select>
+	
+	<update id="LvupdateDAO">
+		update userinfo set lv = 2 where id=#{param1}
+	</update>
+
+	<select id="idCheckDAO" resultType="_int">
+		select count(*) from userinfo
+		where id = #{param1}
+	</select>
+	
+	<select id="idAndEmailMatchingDAO" resultType="_int">
+		select count(*) from userinfo where id = #{param1} and email = #{param2}
+	</select>
+
+	<insert id="userInfoinsertDAO">
+		insert into userinfo (id,pw,name,email,phone,address)
+		values
+		(#{param1},#{param2},#{param3},#{param4},#{param5},#{param6})
+	</insert>
+
+	<update id="userInfoupdateDAO">
+		update userinfo set pw = #{param1},name =
+		#{param2},email = #{param3},phone = #{param4} where id = #{param5}
+	</update>
+
+	<update id="userPayDAO">
+		update userinfo set totalprice = totalprice +
+		#{param2}, point = point + #{param3} where id = #{param1}
+	</update>
+	
+	<update id="changePwDAO">
+		update userinfo set pw = #{param1} where id = #{param2}
+	</update>
+	
+	<select id="restPointDAO" resultType="_int">
+		select point from userinfo where id=#{param1}
+	</select>
+	
+	<update id="buyUsePointProductDAO">
+		update userinfo set point = point - #{param1} where id = #{param2}
+	</update>
+	
+	<select id="AfterRestPointDAO" resultType="_int">
+		select point-#{param1} from userinfo where id=#{param2}
+	</select>
+
+</mapper>

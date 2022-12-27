@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+    
+<mapper namespace="com.icia.el.dao.ICar_reservationDAO">
+	<insert id="reservationInsertDAO">
+		insert into car_reservation(reser_num, dr_c_name, reserUserid, reserUserName, reserUserPhone, reserDate, c_num)
+		values(resur_num_seq.nextval, #{item1}, #{item2}, #{item3}, #{item4}, #{item5}, #{item6})
+	</insert>
+
+	<select id="buycompleteDAO" resultType="com.icia.el.dto.Car_reservationDTO">
+		select * from car_reservation where reseruserid = #{param1} and dr_approve = 1
+	</select>
+	
+	
+	
+	
+	<select id="userReserListDAO" resultType="com.icia.el.dto.Car_reservationDTO">
+		select * from car_reservation where reseruserid = #{param1}
+	</select>
+	
+	<select id="drReserListDAO" resultType="com.icia.el.dto.Car_reservationDTO">
+		select * from car_reservation where dr_c_name = #{param1}
+	</select>
+	
+	<select id="userReserIngDAO" resultType="com.icia.el.dto.Car_reservationDTO">
+		select c_num,reserusername,dr_c_name,reserdate,sendmesdate from car_reservation where dr_approve = 0 and reseruserid = #{param1} 
+	</select>
+	
+	<select id="userReserFinishDAO" resultType="com.icia.el.dto.Car_reservationDTO">
+		select c_num,reserusername,dr_c_name,reserdate,sendmesdate from car_reservation where dr_approve = 1 and reseruserid = #{param1} 
+	</select>
+	
+	<select id="drReserDAO" resultType="com.icia.el.dto.Car_reservationDTO">
+		select c_num,reserusername,dr_c_name,reserdate,sendmesdate from car_reservation where dr_approve = 0 and dr_c_name = #{param1} 
+	</select>
+	
+	<delete id="delReserDAO">
+		delete from car_reservation where c_num = #{param1}
+	</delete>
+	
+	<update id="drConfirmReserDAO">
+		update car_reservation set dr_approve = 1 where c_num = #{param1}
+	</update>
+</mapper>

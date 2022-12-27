@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.icia.el.dao.IReviewDAO">
+	<select id="reviewlistDAO"
+		resultType="com.icia.el.dto.ReviewDTO">
+		select * from review ${param1} order by ${param2} desc
+	</select>
+
+	<insert id="reviewWriteDAO">
+		insert into
+		review(rv_num,id,rv_like,rv_content,p_num)
+		values(p_num_seq.nextval,
+		#{item1}, #{item2}, #{item3}, #{item4})
+	</insert>
+
+	<delete id="deleteReview">
+		delete from review where p_num = #{param1}
+	</delete>
+
+	<select id="reviewCntDAO" resultType="_int">
+		select count(*) from review
+		where p_num = ${param1}
+	</select>
+
+	<select id="reviewStarDAO" resultType="string">
+		select
+		to_number(sum(rv_like))/to_number(count(rv_like))*20 as star from
+		review
+		where p_num = #{param1}
+		group by p_num
+	</select>
+</mapper>

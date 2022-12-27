@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <title>PulseCar</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/icon?family=Material+Icons" />
+       <script
+      src="https://kit.fontawesome.com/9d7a2afbd4.js"
+      crossorigin="anonymous"
+    ></script>
+<link rel="icon" type="image/x-icon" href="/images/favicon.ico" />
+   <link rel="stylesheet" th:href="@{css/w3.css}" />
+    <link rel="stylesheet" th:href="@{css/cgoing.css}" />
+    <link rel="stylesheet" th:href="@{css/jsk.css}" />
+    <script type="text/javascript" th:src="@{/js/w3.js}"></script>
+    <script type="text/javascript" th:src="@{/js/cgoing.js}"></script>
+    <script type="text/javascript" th:src="@{/js/Car.js}"></script>
+    <script src="js/custom.js"></script>
+    <script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+ 
+  </head>
+  <body>
+    <div id="wrapper">
+      <!-- common 헤더 -->
+      <div th:insert="common_header.html::header"></div>
+      <script>
+        w3.includeHTML();
+      </script>
+
+      <!-- banner -->
+      <div
+        class="flex-container flex-center w3-large lnb-margin w3-padding w3-light-grey">
+        <a th:href="@{car(userid=${user?.getId})}">전기차 거래 플랫폼</a>
+      </div>
+
+      <div class="w3-row PR" id="car_main">
+        <!-- Grid Column(2/12) -->
+        <!-- 사이드바 영역 -->
+        <div class="w3-col s2 w3-hide-small">
+          <div th:insert="common_sidebar_car.html::sidebar_car"></div>
+          <script>
+            w3.includeHTML();
+          </script>
+        </div>
+        <!-- Grid Column(10/12) -->
+        <!-- 자동차 리스트 영역 -->
+       <div class="w3-col s10 w3-padding">
+				<div class="flex-container-carMain">
+					<th:block th:if="${cardto!=null}">
+						<div class="w3-rest w3-padding flex-container" id="carList">
+							<a
+								th:href="@{car_detail(num=${car?.c_num},userid=${user?.getId})}">
+							</a>
+						</div>
+					</th:block>
+					<div class="w3-rest w3-padding flex-container" id="my_div"
+						style="margin: 0px; height: 650px; display: flex; flex-wrap: wrap;">
+						<th:block th:each="car:${carlist.getList()}">
+							<div class="car-card">
+								<a
+									th:href="@{car_detail(num=${car?.c_num},userid=${user?.getId})}"
+									th:onclick="carStorage([[${car?.c_num}]])"> <img
+									th:src="@{/image/__${car?.img_dir_1}__}" alt="Alps"
+									class="car-image2" />
+									<p>
+										<span class="w3-large" th:utext="${car.c_brand}">{제조사}</span>
+										<span class="w3-large" th:utext="${car.c_name}"
+											style="font-weight: bold">{이름}</span> <span
+											th:utext="${car.c_grade}">{등급}</span>
+									</p>
+									<p>
+										<span class="partition-right" th:utext="${car.c_year}+'월식'">{연식}</span>
+										<span class="partition-right"
+											th:utext="${#numbers.formatInteger(car.c_mile, 3, 'COMMA')}+'km'">{주행거리}</span>
+										<span th:utext="${car.cp_address}">{지역}</span>
+									</p>
+									<p class="w3-large" th:utext="${car.cp_price}+'원'">{가격}</p>
+								</a>
+							</div>
+						</th:block>
+					</div>
+				</div>
+				<!-- 자동차 리스트 반복 구간 End -->
+          <!-- Pagination -->
+          <div class="w3-center">
+				<div class="pagination w3-large" >
+					<th:block th:classappend="${carlist.getPrePage() == 0} ? 'disabled'">
+						<a th:href="@{/car(pageNum=${carlist.getPrePage()},id=${user?.getId})}">&laquo; 이전</a>
+					</th:block> 
+					<th:block
+						th:each="page: ${#numbers.sequence(carlist.getNavigateFirstPage(), carlist.getNavigateLastPage())}"
+						th:classappend="${car == carlist.getPageNum()} ? 'active'">
+						<a th:text="${page}" th:href="@{/car(pageNum=${page},id=${user?.getId})}"></a>
+					</th:block>
+					<th:block th:classappend="${carlist.getNextPage() == 0} ? 'disabled'">
+						<a th:href="@{/car(pageNum=${carlist.getNextPage()},id=${user?.getId})}">다음 &raquo;</a>
+					</th:block>
+				</div>
+			</div>
+			
+			
+			
+        </div>
+        
+        
+      <div class="quick_list">
+				<ul class="w3-center">최근본차량</ul>
+				<ul>
+					<li><span id="storage1" class="quick"></span> </li>
+					<li><span id="storage2" class="quick"></span></li>
+					<li><span id="storage3" class="quick"></span></li>
+					<li><span id="storage4" class="quick"></span></li>
+				</ul>
+			</div>
+      </div>
+      <!-- common 푸터 -->
+      <div th:insert="common_footer.html::footer"></div>
+      <script>
+        w3.includeHTML();
+      </script>
+    </div>
+    <script th:inline="javascript">
+ 	
+	var id = [[${session.loginUser?.id}]];
+	
+	switch (localStorage.length) {
+	case 5:
+	case 4:
+		$.ajax({
+			type: 'post',
+			url: './car_img',
+			data: {
+				c_num: localStorage.getItem('carstorage4')
+			},
+			success: function(result) {	
+				console.log(result);
+				$("#storage4").html("<a href=car_detail?num="+localStorage.getItem('carstorage4')+"&userid="+id+">"+localStorage.getItem('carstorage4')+"<img src="+"/image/"+ result +"/>"+"</a>");
+			console.log(result);
+			}
+		});
+	case 3:
+		$.ajax({
+			type: 'post',
+			url: './car_img',
+			data: {
+				c_num: localStorage.getItem('carstorage3')
+			},
+			
+			success: function(result) {		
+				console.log(result);
+				$("#storage3").html("<a href=car_detail?num="+localStorage.getItem('carstorage3')+"&userid="+id+">"+localStorage.getItem('carstorage3')+"<img src="+"/image/"+ result +"/>"+"</a>");
+				console.log(result);
+			}
+		});
+	case 2:
+		$.ajax({
+			type: 'post',
+			url: './car_img',
+			data: {
+				c_num: localStorage.getItem('carstorage2')
+			},
+			success: function(result) {		
+				console.log(result);
+				$("#storage2").html("<a href=car_detail?num="+localStorage.getItem('carstorage2')+"&userid="+id+">"+localStorage.getItem('carstorage2')+"<img src="+"/image/"+ result +"/>"+"</a>");
+				console.log(result);
+			}
+		});
+	case 1:
+		$.ajax({
+			type: 'post',
+			url: './car_img',
+			data: {
+				c_num: localStorage.getItem('carstorage1')
+			},
+			success: function(result) {		
+				console.log(result);
+				$("#storage1").html("<a href=car_detail?num="+localStorage.getItem('carstorage1')+"&userid="+id+">"+localStorage.getItem('carstorage1')+"<img src="+"/image/"+ result +"/>"+"</a>");
+				console.log(result);
+			}
+		});
+	}
+	console.log(localStorage.length);
+</script>
+  </body>
+</html>

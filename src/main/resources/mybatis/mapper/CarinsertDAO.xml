@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+    
+
+<mapper namespace="com.icia.el.dao.ICarinsertDAO">
+	<insert id="CarinsertDAO">
+		insert into car (c_num,c_brand,c_name,c_scail,c_grade,c_year,c_mile,c_coler)
+		values (#{item1},#{item2},#{item3},#{item4},#{item5},#{item6},#{item7},#{item8})
+	</insert>
+	<insert id="CarOptioninsertDAO">
+		insert into car_option (c_num,sunroof,navigation,heathandle,hud,camera_rear,ldws,ecm,tpms)
+		values (#{item1},#{item2},#{item3},#{item4},#{item5},#{item6},#{item7},#{item8},#{item9})
+	</insert>
+	<insert id="CarSPinsertDAO">
+		insert into car_sale_post (cp_num,c_num,cp_content,cp_price,cp_address,dr_id)
+		values (cp_num_seq.nextval,#{item1},#{item2},#{item3},#{item4},#{item5})
+	</insert>
+	<insert id="CarImginsertDAO">
+		insert into car_img (c_num,img_dir_1,img_dir_2,img_dir_3,img_dir_4,img_dir_5,img_dir_6)
+		values (#{param1},#{param2},#{param3},#{param4},#{param5},#{param6},#{param7})
+	</insert>
+</mapper>

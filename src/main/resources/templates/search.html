@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>PulseCar</title>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="stylesheet" href="css/w3.css" />
+<link rel="stylesheet" href="css/cgoing.css" />
+<link rel="stylesheet"
+	href="https://fonts.googleapis.com/icon?family=Material+Icons" />
+	 <script
+      src="https://kit.fontawesome.com/9d7a2afbd4.js"
+      crossorigin="anonymous"
+    ></script>
+<link rel="icon" type="image/x-icon" href="/images/favicon.ico" />
+<script src="js/w3.js"></script>
+<script src="js/cgoing.js"></script>
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+<script type="text/javascript"
+	src="https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=6udxm7609k&submodules=geocoder"></script>
+<style>
+#mapControl {
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	align-items: center;
+}
+
+#searchDiv {
+	display: flex;
+	justify-content: center;
+}
+
+#searchDiv>* {
+	margin: 5px;
+}
+
+#searchBtn {
+	font-size: 20px;
+	cursor: pointer;
+}
+
+#apiWrapper {
+	width: 80%;
+	border: 1px solid;
+	border-radius: 10px;
+}
+
+#apiWrapper>div {
+	margin: 30px;
+}
+
+#apiBtnGroup {
+	display: flex;
+	justify-content: center;
+}
+
+#apiBtnGroup>button {
+	margin: 5px;
+}
+/* Map */
+#mapWrapper {
+  width: 1200px;
+  margin: auto;
+  display: flex;
+  justify-content: space-between;
+  /* padding: 10px; */
+}
+#mapWrapper > div {
+  padding: 20px;
+  margin: 20px;
+}
+
+#map,
+#mapControl {
+  width: 800px;
+  aspect-ratio: 1/1;
+  margin: auto;
+  margin-top: 100px;
+}
+
+#mapControl > input {
+  padding: 10px;
+  border: 1px solid;
+  border-radius: 10px;
+  /* width: 80%; */
+}
+
+</style>
+</head>
+<body>
+	<div id="wrapper">
+		<!-- common 헤더 -->
+		<div th:insert="common_header.html::header"></div>
+
+		<!-- lnb (Local navigation bar) -->
+		<nav
+			class="flex-container flex-center w3-large lnb-margin w3-padding w3-light-grey">
+			<a href="#">검색 공간</a>
+		</nav>
+
+		<div id="mapWrapper">
+			<div id="map"></div>
+			<div id="mapControl">
+				<div>
+					<h2 class="w3-text-theme w3-center">검색창</h2>
+					<div id="searchDiv">
+						<input class="w3-round" type="text" id="searchInp" autofocus
+							autocomplete="on" />
+						<button class="w3-theme w3-round" id="searchBtn">검색</button>
+					</div>
+				</div>
+				<div id="apiWrapper" style="display: none">
+					<div class="w3-center">
+						<h2>API 검색 결과</h2>
+					</div>
+					<div id="apiBtnGroup">
+						<button class="w3-button w3-black w3-round"
+							onclick="showModal(this)" id="blogBtn">블로그</button>
+						<button class="w3-button w3-black w3-round"
+							onclick="showModal(this)" id="imgBtn">이미지</button>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<!-- Modal blog -->
+		<div id="blogDiv" class="w3-modal" style="z-index: 100;">
+			<div class="w3-modal-content w3-animate-top" style="width: 70%; height: 70%; overflow: auto">
+				<div class="w3-container">
+					<span
+						onclick="document.getElementById('blogDiv').style.display='none'"
+						class="w3-button w3-display-topright">&times;</span>
+					<div id="blogFetch"
+						style="display: flex; flex-wrap: wrap; justify-content: space-between;">
+					</div>
+				</div>
+			</div>
+		</div>
+		
+		<!-- Modal img -->
+		<div id="imgDiv" class="w3-modal" style="z-index: 100;">
+			<div class="w3-modal-content w3-animate-top" style="width: 70%; height: 90%; overflow: auto">
+				<div class="w3-container">
+					<span
+						onclick="document.getElementById('imgDiv').style.display='none'"
+						class="w3-button w3-display-topright">&times;</span>
+					<div id="imgFetch"
+						style="display: flex; flex-wrap: wrap;">
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<!-- common 푸터 -->
+		<div th:insert="common_footer.html::footer"></div>
+	</div>
+	<script src="js/cgoing_map.js"></script>
+	<script>
+		
+		// 전역
+		var markers = [];
+	    var infoWindows = [];
+	    var markersCenter = {
+	    		lat: [],
+	    		lng: []
+	    };
+	    
+		// 검색 버튼 클릭 (지역 API 관련)
+		$("#searchBtn").click(function() {
+			
+			// 초기화
+			initialize();
+			
+			// 검색어
+			let search = $("#searchInp").val();
+			
+			// 검색어 예외처리
+			if (search == '') {
+				alert('검색어를 입력하세요.')
+				return false;
+			} else {
+				// apiWrapper Box
+				$("#apiWrapper").show();
+			}
+			
+			
+			// 네이버 지역 API 
+			$.ajax({
+				type : "GET",
+				dataType : "JSON",
+				url : "http://localhost:8083/api/naver/local",
+				data : {
+					search : search
+				},
+			}).done(function(result) { 
+				
+				// naver 지역 API fetch
+				for (let i = 0; i < result.items.length; i++) {
+					// 마커 생성
+					var marker = createMarker(result.items[i].mapx, result.items[i].mapy);
+					
+					// 마커 좌표 저장
+					markersCenter.lat.push(marker.getPosition().lat());
+					markersCenter.lng.push(marker.getPosition().lng());
+					
+					// 정보창 생성
+					var infowindow = createInfowindow(result.items[i].title, result.items[i].address)
+					
+					markers.push(marker);
+					infoWindows.push(infowindow);
+				}
+				
+				// 지도 센터 변경
+				// 마커 sort
+				markersCenter.lat.sort(function(a, b){return a - b});
+				markersCenter.lng.sort(function(a, b){return a - b});
+					
+				let minLat = markersCenter.lat[0];
+				let maxLat = markersCenter.lat[markers.length - 1];
+				let minLng = markersCenter.lng[0];
+				let maxLng = markersCenter.lng[markers.length - 1];
+				
+					
+				// 마커 다 보이게 map fit
+				var markersBounds = new naver.maps.LatLngBounds(
+                       new naver.maps.LatLng(minLat, minLng),
+                       new naver.maps.LatLng(maxLat, maxLng)
+                   	);
+					
+				map.fitBounds(markersBounds);
+				
+				
+				//이벤트 리스너 (클릭 시 정보창 띄우기)
+				for (var i=0; i < markers.length; i++) {
+				    naver.maps.Event.addListener(markers[i], 'click', getClickHandler(i));
+				}
+				
+				function getClickHandler(seq) {
+				    return function(e) {
+				        var marker = markers[seq], 
+				        	infoWindow = infoWindows[seq];
+
+				        if (infoWindow.getMap()) {
+				            infoWindow.close();
+				        } else {
+				            infoWindow.open(map, marker);
+				        }
+				    }
+				}
+				
+				
+			}); 	//ajax done END
+		}); 		//검색 버튼 클릭 callback END
+		
+		
+		
+		// ---------- 블로그 관련
+		
+		// 블로그 버튼 클릭 (블로그 API 관련)
+		$("#blogBtn").click(function() {
+			
+			let b_title = '';
+			let b_link = '';
+			let b_description = '';
+			let blogTemplate = '';
+			
+			// 초기화
+			$("#blogFetch").empty();
+			
+			// 검색어
+			let search = $("#searchInp").val();
+			
+			// 네이버 지역 API
+			$.ajax({
+				type : "GET",
+				dataType : "JSON",
+				url : "http://localhost:8083/api/naver/blog",
+				data : {
+					search : search
+				},
+			}).done(function(result) { 
+				console.log(result);
+				
+				// naver 블로그 API fetch
+				for (var i=0; i < result.items.length; i++) {
+				    b_title = result.items[i].title;
+				    b_link = result.items[i].link;
+				    b_description = result.items[i].description;
+					
+				    blogTemplate = `
+				    	<div style="width:30%; margin:10px; padding:10px; height: 280px; overflow: scroll;"
+				    	class="w3-card-4">
+				    		<a href="${b_link}"><h5 class="w3-text-theme anchor">${b_title}</h5></a>
+						  	<p>${b_description}</p>
+						</div>
+					`;
+					
+				    $("#blogFetch").append(blogTemplate);
+				}
+				
+				
+			}); 	//ajax done END
+		}); 		//블로그 버튼 클릭 callback END
+		
+		
+		
+		
+		// ---------- 이미지 관련
+		
+		// 이미지 버튼 클릭 (이미지 API 관련)
+		$("#imgBtn").click(function() {
+			
+			let imgTemplate = '';
+			
+			// 초기화
+			$("#imgFetch").empty();
+			
+			// 검색어
+			let search = $("#searchInp").val();
+			
+			// 네이버 지역 API
+			$.ajax({
+				type : "GET",
+				dataType : "JSON",
+				url : "http://localhost:8083/api/naver/image",
+				data : {
+					search : search
+				},
+			}).done(function(result) { 
+				console.log(result);
+				
+				// naver 이미지 API fetch
+				for (var i=0; i < result.items.length; i++) {
+					
+				    imgTemplate = `
+				    	<div class="w3-center w3-margin">
+				    	  <img src="${result.items[i].link}" alt="Alps">
+				    	  <div class="w3-container w3-center">
+				    	    <p>${result.items[i].title}</p>
+				    	  </div>
+				    	</div>
+					`;
+					
+				    $("#imgFetch").append(imgTemplate);
+				}
+				
+				
+			}); 	//ajax done END
+		}); 		//이미지 버튼 클릭 callback END
+		
+		
+		
+		
+		
+		// Execute a function when the user presses a key on the keyboard
+		var input = document.getElementById("searchInp");
+		
+		input.addEventListener("keypress", function(event) {
+		  if (event.key === "Enter") {
+		    event.preventDefault();
+		    // Trigger the button element with a click
+		    document.getElementById("searchBtn").click();
+		  }
+		});
+		
+		// modal close
+	    var blogDiv = document.getElementById("blogDiv");
+	    var imgDiv = document.getElementById("imgDiv");
+	
+	    window.onclick = function (event) {
+	        if (event.target == blogDiv) {
+	          blogDiv.style.display = "none";
+	        }
+	        if (event.target == imgDiv) {
+	          imgDiv.style.display = "none";
+	        }
+	    };
+
+	</script>
+	<script>
+		// function
+		function createMarker(x, y) {
+			var tm128 = new naver.maps.Point(x, y);
+			var latLng = naver.maps.TransCoord.fromTM128ToLatLng(tm128);
+			var marker = new naver.maps.Marker({
+			    position: latLng,
+			    map: map,
+			    icon: {
+			        url: 'https://raw.githubusercontent.com/darkness501/icia_electricLife/main/favicon1.png',
+			    }
+			});
+			
+			return marker;
+		}
+		
+		function createInfowindow(title, address) {
+			var contentString = 
+		        `<div class="iw_inner">
+		           <h6>${title}</h6>
+		           <p>${address}</p>
+		         </div>`;
+			
+		    // 정보창 생성
+			var infowindow = new naver.maps.InfoWindow({
+			    content: contentString
+			});
+		    
+		    return infowindow;
+		}
+		
+		// 초기화 함수
+		function initialize() {
+			// 초기 정보창 닫기 (IP 기반 현재 위치 창)
+			infowindow.close();
+			
+			// marker 지우기
+			for(var i = 0; i < markers.length; i++){
+				markers[i].setMap(null);
+			}
+			// markers 관련 초기화
+			markers.length = 0;
+			markersCenter.lat.length = 0;
+			markersCenter.lng.length = 0;
+			// infoWindows 초기화
+			infoWindows.length = 0;
+		}
+		
+		// 모달창 함수
+		function showModal(obj) {
+			
+			if ($(obj).text() == '블로그') {
+				document.getElementById('blogDiv').style.display='block';
+			} else {
+				document.getElementById('imgDiv').style.display='block';
+			}
+			
+		}
+	</script>
+</body>
+</html>

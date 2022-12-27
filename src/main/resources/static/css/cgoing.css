@@ -1,0 +1,732 @@
+/* ----- font ----- */
+@import url("https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Karla:ital,wght@0,500;1,400&display=swap");
+@import url("https://hangeul.pstatic.net/hangeul_static/css/nanum-square-round.css");
+@import url("https://hangeul.pstatic.net/hangeul_static/css/nanum-square.css");
+
+html,
+body {
+  /* font-family: "Noto Sans KR", sans-serif; */
+  font-family: "NanumSquareRound", sans-serif;
+  font-size: 15px;
+  line-height: 1.5;
+}
+.thumbnail {
+  box-sizing: border-box;
+}
+
+.opac {
+  opacity: 0.6;
+}
+.cursor {
+  cursor: pointer;
+}
+/* text */
+.font-bold {
+  font-weight: bold;
+}
+
+/* ----- Logo ----- */
+.logo {
+  text-shadow: 2px 2px 2px #aaa;
+  margin: 0;
+  padding: 15px 0 0 15px;
+}
+#logo_lighting {
+  text-shadow: 4px 4px 4px #5ac8fa;
+}
+.logo:hover {
+  text-shadow: 4px 4px 4px #5ac8fa;
+}
+
+/* ----------- layout ----------  */
+/* Index */
+#header {
+  width: 1200px;
+  margin: auto;
+  padding: 10px;
+}
+
+/* Header sticky */
+.sticky {
+  position: sticky;
+  top: 0;
+  background-color: white;
+}
+.headerReverse {
+  animation-name: transEffect;
+  animation-duration: 0.8s;
+  background-color: black;
+  color: white;
+}
+@keyframes transEffect {
+  from {
+    background-color: white;
+    color: black;
+  }
+  to {
+    background-color: black;
+    color: white;
+  }
+}
+
+/* 메인이미지 */
+#mainImage {
+  width: 1200px;
+  margin: auto;
+}
+#browseByBrand {
+  width: 1200px;
+  margin: auto;
+  padding: 30px;
+}
+#recentActivity {
+  margin: auto;
+  background-color: blanchedalmond;
+  padding: 30px;
+}
+#aroundView {
+  width: 1200px;
+  margin: auto;
+  padding: 30px;
+}
+
+/* footer 바닥에 놓기 */
+html,
+body {
+  height: 100%;
+}
+#wrapper {
+  position: relative;
+  min-height: 100%;
+  /* margin: auto; */
+  padding-bottom: 333px;
+}
+/* 현재 footer의 height : 333px */
+#footer {
+  width: 100%;
+  position: absolute;
+  bottom: 0;
+  margin: auto;
+}
+#footer-contents {
+  width: 1200px;
+  margin: auto;
+}
+/* footer design */
+.footer-css {
+  display: flex;
+  list-style-type: none;
+  justify-content: center;
+}
+.footer-css > li {
+  margin: 0 20px;
+}
+#footer-sns {
+  display: flex;
+  list-style-type: none;
+  justify-content: center;
+}
+#footer-sns > li {
+  margin: 0 10px;
+}
+
+/* Car */
+#car_main {
+  width: 1200px;
+  margin: auto;
+}
+#car_detail {
+  width: 1200px;
+  margin: auto;
+}
+/* Car detail 화면 플렉스 */
+#carArea {
+  width: 60%;
+}
+#dealerArea {
+  width: 40%;
+}
+/* Car Gallery */
+.d-none {
+  display: none;
+}
+.d-show {
+  display: block;
+}
+.gallery_thumbnail > img {
+  /* 사진 갯수에 따라 동적으로 바뀌어야 함 */
+  width: calc(100% / 6);
+  cursor: pointer;
+  border: 1px solid #5ac8fa;
+  /* margin: -1px; */
+}
+.gallery_thumbnail > img:hover {
+  border: 1px solid red;
+}
+.activeThumb {
+  border: 1px solid red !important;
+}
+
+#gallery_photo {
+  object-fit: cover;
+  width: 700px;
+  height: 450px;
+}
+.gallery-flex {
+  display: flex;
+}
+
+/* Shop */
+#shop {
+  width: 1200px;
+  margin: auto;
+}
+
+/* Community */
+#bbs_table {
+  width: 1000px;
+  margin: auto;
+}
+
+#comm_banner {
+  width: 1000px;
+  margin: auto;
+}
+#comm_ctl {
+  width: 1000px;
+  margin: auto;
+}
+
+/* mypage 마이페이지 */
+#mypage_main {
+  width: 1200px;
+  margin: auto;
+  display: flex;
+  /* justify-content: space-between; */
+}
+#mypage_side {
+  flex-basis: 20%;
+}
+#mypage_contents {
+  flex-basis: 80%;
+}
+
+/* ----------- layout end ----------  */
+
+/* Position */
+.pos-rel {
+  position: relative;
+}
+
+/* Next & previous buttons */
+.prev,
+.next {
+  position: absolute;
+  cursor: pointer;
+  top: 35%;
+  font-size: 50px;
+  padding: 16px;
+  color: #5ac8fa;
+  font-weight: bold;
+  /* border: 1px solid; */
+}
+.next {
+  right: 0;
+}
+.prev:hover,
+.next:hover {
+  color: #5ac8fa;
+}
+
+/* .prev,
+.next {
+  cursor: pointer;
+  position: absolute;
+  top: 40%;
+  width: auto;
+  padding: 16px;
+  margin-top: -50px;
+  color: white;
+  font-weight: bold;
+  font-size: 20px;
+  border-radius: 0 3px 3px 0;
+  user-select: none;
+  -webkit-user-select: none;
+} */
+
+/* navigation */
+
+.on_lnb {
+  background-color: white !important;
+  border-radius: 8px;
+  color: #5ac8fa;
+  font-weight: bold;
+}
+.on_gnb {
+  color: #5ac8fa !important;
+}
+.gnb_item {
+  font-weight: bold;
+}
+.gnb_item:hover {
+  color: #5ac8fa;
+}
+.lnb-margin {
+  margin: 16px 0;
+}
+
+/* ----- 이미지 ----- */
+.cropping {
+  max-height: 600px;
+  overflow: hidden;
+}
+.cropping img {
+  max-width: initial;
+  /* transform: translate(0px, 0px); */
+}
+
+/* 로그인, 회원가입 배경 */
+#wrap_loginForm {
+  width: 400px;
+  /* height: 300px; */
+}
+
+#wrap_signupForm {
+  width: 400px;
+  /* height: 300px; */
+}
+
+.selectMemberType {
+  font-size: large;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+.selectMemberType > button {
+  float: left;
+  cursor: pointer;
+  border: none;
+  padding: 5px;
+  box-sizing: border-box;
+  color: #aaa;
+}
+.activeMemberType {
+  border-bottom: 5px solid #5ac8fa !important;
+  color: black !important;
+}
+
+/* ----- 버튼 button ----- */
+.c-btn {
+  border: none;
+  display: inline-block;
+  cursor: pointer;
+  padding: 4px 4px;
+}
+.c-thumb {
+  border: none;
+  display: inline-block;
+  cursor: pointer;
+  /* padding: 5px 5px; */
+}
+.btn-plain {
+  border: none;
+  cursor: pointer;
+  background-color: #fff;
+}
+
+/*  */
+a {
+  text-decoration: none;
+}
+
+/* ----- Dropdown ----- */
+.dropdown-btn {
+  border: none;
+  vertical-align: middle;
+  padding: 8px 8px;
+  text-align: center;
+  cursor: pointer;
+  white-space: nowrap;
+  width: 100%;
+}
+.dropdown-btn:hover {
+  color: #7cd3fb !important;
+}
+
+/* ----- list ----- */
+.c-ul {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+.c-ul li {
+  padding: 4px 8px;
+  /* border-bottom: 1px solid #ddd; */
+}
+.c-ul li:last-child {
+  border-bottom: 1px solid #ddd;
+}
+.c-ul li:hover {
+  background-color: #ccc;
+}
+
+/* ----- anchor ----- */
+.anchor {
+  text-decoration: underline;
+}
+.anchorUnderline {
+  color: #5ac8fa;
+}
+.anchorUnderline:hover {
+  text-decoration: underline;
+}
+.anchorNoColor {
+  text-decoration: underline;
+}
+.anchorNoColor:hover {
+  color: #5ac8fa;
+}
+
+/* ----- hover ----- */
+.bbs:hover {
+  text-decoration: underline;
+  color: #5ac8fa;
+}
+
+/* ----- card ----- */
+.car-card {
+  /* box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16); */
+  /* box-shadow: 0 2px 2px 0 lightgray; */
+  flex-basis: 25%;
+  padding: 8px;
+}
+.car-card:hover {
+  /* box-shadow: 0 4px 10px 0 #5ac8fa; */
+  /* box-shadow: 0 4px 10px 0 rgba(0, 0, 0, 0.2); */
+  position: relative;
+  animation: anim_arise 0.3s;
+}
+.car-card img {
+  border-radius: 8px;
+}
+
+@keyframes anim_arise {
+  0% {
+    bottom: 0px;
+  }
+  50% {
+    bottom: 5px;
+  }
+  100% {
+    bottom: 0px;
+  }
+}
+
+/* The animation code */
+@keyframes anim_diag {
+  0% {
+    left: 0px;
+    top: 0px;
+  }
+  50% {
+    left: 3px;
+    top: 3px;
+  }
+  100% {
+    left: 0px;
+    top: 0px;
+  }
+}
+
+/* The element to apply the animation to */
+/* div {
+  width: 100px;
+  height: 100px;
+  position: relative;
+  background-color: red;
+  animation-name: example;
+  animation-duration: 4s;
+} */
+
+/* flex */
+.flex-container {
+  display: flex;
+  flex-wrap: wrap;
+}
+.flex-container > a {
+  margin: 0 10px;
+  padding: 0 10px;
+}
+.flex-container-carMain {
+  display: flex;
+  flex-wrap: wrap;
+}
+.flex-container-carDetail {
+  display: flex;
+  /* margin: 20pxz; */
+  /* flex-wrap: wrap; */
+}
+.flex-container-carDetail > a {
+  margin: 0 10px;
+  padding: 0 10px;
+}
+.flex-container-carDetail > div {
+  margin: 10px;
+}
+
+/* Responsive layout - makes a one column layout instead of a two-column layout */
+@media (max-width: 600px) {
+  .flex-container {
+    flex-direction: column;
+  }
+}
+@media (max-width: 800px) {
+  .c-card {
+    flex-basis: 50%;
+    padding: 8px;
+  }
+}
+/* ----- flex layout ----- */
+.flex-sb {
+  justify-content: space-between;
+}
+.flex-center {
+  justify-content: center;
+  align-items: center;
+}
+.flex-end {
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.flex-perfectCenter {
+  display: flex;
+  /* width: 100vw; */
+  /* height: 90vh; */
+  justify-content: center;
+  align-items: center;
+}
+
+/* 파티션 */
+.partition-right::after {
+  content: " │";
+}
+.partition-left::before {
+  content: "│";
+}
+
+/* CSS Grid */
+
+/* 기타 효과 */
+.carName {
+  display: inline-block;
+  background-image: linear-gradient(transparent 50%, yellow 50%);
+  border-bottom: 0.25rem;
+}
+.carPrice {
+  display: inline-block;
+  background-image: linear-gradient(transparent 50%, aqua 50%);
+  border-bottom: 0.25rem;
+}
+
+/* ----- 가상 element ----- */
+.km::after {
+  content: "km";
+}
+.dot::after {
+  content: " ◾";
+}
+.kmAndDot::after {
+  content: "km ◾";
+}
+.dealer::after {
+  margin-left: 10px;
+  padding: 3px;
+  content: "딜러";
+  border: 1px solid;
+  background-color: lightblue;
+}
+
+/* 가상 아이콘 */
+.gi-reset::before {
+  font-family: "Material Icons";
+  content: "replay";
+}
+.gi-search::before {
+  font-family: "Material Icons";
+  content: "search";
+}
+
+/* pagination */
+.pagination {
+  display: inline-block;
+}
+
+.pagination a {
+  color: black;
+  float: left;
+  padding: 8px 16px;
+  text-decoration: none;
+}
+
+.pagination a.active {
+  background-color: #4caf50;
+  color: white;
+  border-radius: 5px;
+}
+
+.pagination a:hover:not(.active) {
+  background-color: #ddd;
+  border-radius: 5px;
+}
+
+#mypageBox {
+  border: 4px solid grey;
+  /* padding: 10px; */
+}
+#mypageBox > div {
+  border-bottom: 1px solid grey;
+}
+#mypageBox > ul {
+  border-bottom: 1px solid grey;
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+#mypageBox > ul:last-child {
+  border-bottom: none;
+}
+#mypageBox > ul > li {
+  padding: 5px;
+  margin-left: 10px;
+}
+
+.mypageGroup > li:first-child {
+  font-size: larger;
+  font-weight: bold;
+  color: red;
+}
+.mypageCarStatus {
+  /* flex-basis: 50%; */
+  display: flex;
+  /* justify-content: space-evenly; */
+}
+.mypageCarStatus > div {
+  width: 50%;
+  border: 1px solid;
+  margin: 5px;
+}
+.mypageCarStatus p {
+  margin: 0;
+  padding: 10px;
+}
+/* .myCarBuy_box {
+  border: 1px solid;
+} */
+
+#brandList {
+  list-style-type: none;
+  display: flex;
+  flex-wrap: wrap;
+}
+#brandList > li {
+  flex-basis: 25%;
+  padding: 10px;
+}
+
+#brandList b {
+  margin-left: 20px;
+}
+
+#aroundView_Box > div {
+  padding: 10px;
+}
+#aroundView_Box img {
+  border-radius: 10px;
+}
+#aroundView_Box {
+  display: flex;
+}
+
+/* 자동차 애니메이션 */
+
+.carAppear {
+  animation-name: carAppear;
+  animation-duration: 1s;
+  animation-fill-mode: forwards;
+}
+.signAppear {
+  animation-name: signAppear;
+  animation-duration: 2s;
+  animation-fill-mode: forwards;
+  animation-delay: 1s;
+}
+.signAppearFastly {
+  animation-name: signAppearFastly;
+  animation-duration: 1s;
+  animation-fill-mode: forwards;
+}
+
+@keyframes carAppear {
+  from {
+    opacity: 0;
+    transform: translateX(-200%);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0%);
+    visibility: visible;
+  }
+}
+@keyframes signAppear {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+    visibility: visible;
+  }
+}
+@keyframes signAppearFastly {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+    visibility: visible;
+  }
+}
+/* 오른쪽에서 등장 */
+.carAppearR {
+  animation-name: carAppearR;
+  animation-duration: 1s;
+  animation-fill-mode: forwards;
+}
+
+@keyframes carAppearR {
+  from {
+    opacity: 0;
+    transform: translateX(200%);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0%);
+    visibility: visible;
+  }
+}
+.aroundView_item {
+  width: 25%;
+}
+.aroundView_item > img {
+  object-fit: contain;
+  height: 200px;
+}
+.aroundView_item > p {
+  text-align: center;
+  font-size: 25px;
+  font-weight: bold;
+  position: relative;
+  bottom: 50px;
+  font-style: italic;
+}
+

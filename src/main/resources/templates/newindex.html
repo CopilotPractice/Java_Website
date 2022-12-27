@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>PulseCar</title>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="stylesheet"
+	th:href="@{https://fonts.googleapis.com/icon?family=Material+Icons}" />
+<link rel="icon" type="image/x-icon" href="/images/favicon.ico" />
+<link rel="stylesheet" th:href="@{css/w3.css}" />
+<link rel="stylesheet" th:href="@{css/cgoing.css}" />
+<script src="js/w3.js"></script>
+<script src="js/cgoing.js"></script>
+</head>
+<body>
+	<div id="wrapper">
+		<!-- common 헤더 -->
+		<div class="w3-container" style="z-index: 1" id="header">
+			<!-- 로고 Area -->
+			<div class="w3-row">
+				<div class="w3-quarter">
+						<h2 class="logo">
+							<a href="/" onmouseover="mOverLogo(this)"
+								onmouseout="mOutLogo(this)">PulseCar</a>
+						</h2>
+					</div>
+				<div class="w3-rest w3-mobile">
+					<div class="w3-right w3-small">
+			<th:block th:if="${session.loginUser!= null}">
+							<span th:text="|${session.loginUser.name}님 환영합니다|"></span>
+							<a th:href="@{productpick(id=${session.loginUser.id})}">찜목록</a>
+							<span th:if="${session.loginUser.lv == 1}"> <span
+								class="w3-text-blue" th:text="[일반회원]"></span>
+							</span>
+							<span th:if="${session.loginUser.lv == 2}"> <span
+								class="w3-text-deep-orange" th:text="[우수회원]"></span>
+							</span>
+							<span th:if="${session.loginUser.lv == 3}"> <span
+								class="w3-text-green" th:text="[관리자]"></span>
+							</span>
+							<a th:href="@{mypage(loginId=${session.loginUser.id})}"
+								class="c-btn anchorNoColor">마이페이지</a>
+							<a th:href="@{updateUserInfoForm(loginId=${session.loginUser.id})}"
+								class="c-btn anchorNoColor">회원정보수정</a>
+							<a href="logout" class="c-btn anchorNoColor">로그아웃</a>
+			</th:block>
+			<th:block th:if="${session.drLoginUser!= null}">
+							<span th:text="|${session.drLoginUser?.dr_name}님 환영합니다|"></span>
+							<span class="w3-text-red" th:text="[딜러]"></span>
+							<a th:href="@{updateUserInfoForm(loginId=${session.drLoginUser.dr_id})}"
+								class="c-btn anchorNoColor">회원정보수정</a>
+							<a href="logout" class="c-btn anchorNoColor">로그아웃</a>
+			</th:block>
+			<th:block th:if="${session.loginUser?.id==null } and ${session.drLoginUser?.dr_id==null }">
+							<a href="loginForm" class="c-btn anchorNoColor">로그인</a>
+							<a href="signupForm" class="c-btn anchorNoColor">회원가입</a>
+			</th:block>
+			
+					</div>
+					<nav class="w3-bar w3-xlarge flex-container flex-end">
+						<a th:href="@{car(id=${session.loginUser?.id})}" class="gnb_item">Car</a> 
+						<a th:href="@{shop(list='p_num',category=1)}" class="gnb_item">Shop</a>
+						<a
+							th:href="@{bbs(orderBy=bbs_writedate,bbsDiv=null,searchText=null)}"
+							class="gnb_item">Community</a> <a href="life.html"
+							class="gnb_item">Life</a>
+					</nav>
+				</div>
+				</nav>
+			</div>
+	</div>
+
+	    <!-- 메인 이미지 -->
+      <div class="cropping" id="mainImage">
+        <img src="images/taycan.jpg" alt="mainimage" style="width: 100%" />
+      </div>
+
+      <!-- 섹션 (Browse by Brand) -->
+      <section id="browseByBrand" class="w3-container">
+        <h2 class="w3-center">Browse by Brand</h2>
+        <ul id="brandList" class="w3-large">
+          <li>
+            <a href="#">
+              <img
+                src="https://static.tcimg.net/vehicles/logo_text/384x384_full_color/d88259cdbac929b7/Hyundai.png?fill=solid&fit=fill&h=50&w=50"
+                alt="brand_hyundai" />
+              <b>Hyundai</b>
+            </a>
+          </li>
+          <li>
+            <a href="#">
+              <img
+                src="https://static.tcimg.net/vehicles/logo/1664x384_full_color/3669c24f879ba296/Genesis.png?fill=solid&fit=fill&h=50&w=50"
+                alt="brand_genesis" />
+              <b>Genesis</b>
+            </a>
+          </li>
+          <li>
+            <a href="#">
+              <img
+                src="https://static.tcimg.net/vehicles/logo/1629x384_full_color/638bbde84c5f569e/Kia.png?fill=solid&fit=fill&h=50&w=50"
+                alt="brand_kia" />
+              <b>Kia</b>
+            </a>
+          </li>
+          <li>
+            <a href="#">
+              <img
+                src="https://static.tcimg.net/vehicles/logo_text/820x384_full_color/1dd21e0781f0e450/Chevrolet.png?fill=solid&fit=fill&h=50&w=50"
+                alt="brand_chevrolet" />
+              <b>Chevrolet</b>
+            </a>
+          </li>
+          <li>
+            <a href="#">
+              <img
+                src="https://static.tcimg.net/vehicles/logo/385x384_full_color/894bffb70433ffd7/Tesla.png?fill=solid&fit=fill&h=50&w=50"
+                alt="brand_tesla" />
+              <b>Tesla</b>
+            </a>
+          </li>
+          <li>
+            <a href="#">
+              <img
+                src="https://static.tcimg.net/vehicles/logo/384x384_full_color/959be7e00726a9e0/Mercedes-Benz.png?fill=solid&fit=fill&h=50&w=50"
+                alt="brand_benz" />
+              <b>Benz</b>
+            </a>
+          </li>
+          <li>
+            <a href="#">
+              <img
+                src="https://static.tcimg.net/vehicles/logo/384x384_full_color/614861eca7caf1b4/BMW.png?fill=solid&fit=fill&h=50&w=50"
+                alt="brand_bmw" />
+              <b>BMW</b>
+            </a>
+          </li>
+          <li>
+            <a href="#">
+              <img
+                src="https://static.tcimg.net/vehicles/logo/1088x384_full_color/0598fce6d069a5a0/Audi.png?fill=solid&fit=fill&h=50&w=50"
+                alt="brand_audi" />
+              <b>Audi</b>
+            </a>
+          </li>
+          <li>
+            <a href="#">
+              <img
+                src="https://static.tcimg.net/vehicles/logo/296x384_full_color/5505f9fd129ce1d5/Porsche.png?fill=solid&fit=fill&h=50&w=50"
+                alt="brand_porsche" />
+              <b>Porsche</b>
+            </a>
+          </li>
+          <li>
+            <a href="#">
+              <img
+                src="https://static.tcimg.net/vehicles/logo/379x384_full_color/f17cb6e7bc04cb64/Polestar.png?fill=solid&fit=fill&h=50&w=50"
+                alt="brand_polestar" />
+              <b>Polestar</b>
+            </a>
+          </li>
+        </ul>
+      </section>
+
+      <!-- 섹션 (Recent Activitiy) -->
+      <section id="recentActivity">
+        <h2 class="w3-center">Recent Activity</h2>
+      </section>
+
+    
+      <!-- 섹션 (Around View) -->
+      <section id="aroundView">
+        <h2 class="w3-center">360° View</h2>
+        <div id="aroundView_Box">
+          <div class="aroundView_item">
+            <img
+              src="https://static.tcimg.net/vehicles/primary/131d8be043aa520a/2022-Audi-e-tron_GT-white-full_color-driver_side_front_quarter.png?h=180&w=360"
+              class="w3-image cursor"
+              onclick="carAppearR(this)" />
+            <p>Audi ev-tron</p>
+          </div>
+          <div class="aroundView_item">
+            <img
+              src="https://static.tcimg.net/vehicles/gallery/611083f89b3c70e6/2022-Porsche-Taycan.jpg?h=270&w=360"
+              class="w3-image cursor"
+              onclick="carAppearL(this)" />
+            <p>Porsche taycan</p>
+          </div>
+          <div class="aroundView_item">
+            <img
+              src="https://static.tcimg.net/vehicles/primary/e973f3f7aa878390/2023-Hyundai-IONIQ_5-white-full_color-driver_side_front_quarter.png?h=180&w=360"
+              class="w3-image cursor"
+              onclick="carAppearR(this)" />
+            <p>Hyundai ioniq6</p>
+          </div>
+          <div class="aroundView_item">
+            <img
+              src="https://static.tcimg.net/vehicles/primary/8cd251dde0775b5f/2022-Kia-EV6-white-full_color-driver_side_front_quarter.png?h=180&w=360"
+              class="w3-image cursor"
+              onclick="carAppearR(this)" />
+            <p>Kia EV6</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- 애니메이션 -->
+      <div
+        style="text-align: center; padding-bottom: 50px"
+        id="wrapperAroundView">
+        <img
+          src="./images/img_taycan/2022-Porsche-Taycan_0.jpg"
+          id="carAnimImage"
+          style="width: 50%; visibility: hidden"
+          draggable="false" />
+        <div id="rotateSign" style="visibility: hidden">
+          <img
+            src="https://consumer.tcimg.net/assets/_next/static/images/spin-icon-3274eb8beb535df572c4055615053584.svg"
+            alt="rotateSign" />
+          <p class="w3-large font-bold w3-text-red" style="margin-top: 5px">
+            Drag to spin 360° View
+          </p>
+        </div>
+      </div>
+
+      <!-- 섹션 (Recent Activitiy) -->
+      <section id="recentActivity">
+        <h2 class="w3-center">Recent Activity</h2>
+      </section>
+      <!-- dummy -->
+      <div style="padding-bottom: 2000px">dummy</div>
+		
+		<!-- common 푸터 -->
+		<div th:insert="common_footer.html :: footer"></div>
+	</div>
+<script src="js/carRotate.js"></script>
+</body>
+</html>

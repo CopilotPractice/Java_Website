@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.icia.el.dao.IDealerDAO">
+	<select id="drLoginCheck" resultType="com.icia.el.dto.DealerDTO">
+		select * from dealer where dr_id = #{param1}
+	</select>
+	<select id="dridCheck" resultType="com.icia.el.dto.DealerDTO">
+		select * from dealer where dr_c_name = #{param1}
+	</select>
+
+	<insert id="dealerinsertDAO">
+		insert into dealer (dr_id,dr_pw,dr_name,dr_phone,dr_email,dr_c_name,dr_c_address,dr_c_phone)
+		values(#{param1},#{param2},#{param3},#{param4},#{param5},#{param6},#{param7},#{param8})
+	</insert>
+	
+	<select id="dridCheckDAO" resultType="_int">
+		select count(*) from dealer
+		where dr_id = #{param1}
+	</select>
+	<update id="dealerupdateDAO">
+		update dealer set dr_pw = #{param1},dr_name =
+		#{param2},dr_email = #{param3},dr_phone = #{param4},dr_c_name=#{param5},dr_c_phone=#{param6} where dr_id = #{param7}
+	</update>
+	<update id="sellingupDAO">
+		update dealer set dr_selling = dr_selling+1 where dr_id=#{0}
+	</update>
+	<update id="sellingdownDAO">
+		update dealer set dr_selling = dr_selling-1 where dr_id=#{0}
+	</update>
+	<update id="soldDAO">
+		update dealer set dr_sold = dr_sold+1 where dr_id=#{0}
+	</update>
+	<select id="drsellingcarDAO" resultType="com.icia.el.dto.DealerDTO">
+		select
+		a.c_name,
+		b.img_dir_1,
+		c.cp_price
+        from
+		car a
+		left outer join
+		car_img b
+		on
+		a.c_num = b.c_num
+		left outer join
+		car_sale_post c
+		on
+		b.c_num=c.c_num
+		left outer join
+		dealer d
+        on
+		c.dr_id=d.dr_id
+		where d.dr_id=#{param1}
+	</select>
+	<select id="drComCheckDAO" resultType="string">
+		select dr_c_name  from dealer where dr_id = #{param1}
+	</select>
+</mapper>

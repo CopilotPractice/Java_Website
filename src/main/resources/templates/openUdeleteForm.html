@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script src="js/custom.js"></script>
+
+</head>
+<body>
+	<form th:action="@{userdelete}">
+		<input type="hidden" name="id" id="id" value=""/>
+		<select name="reason" required>
+			<option value="changeId">아이디 변경을 위한 탈퇴 후 재가입</option>
+			<option value="privacy">개인정보 유출 우려</option>
+			<option value="dissatisfaction">이용에 따른 불만</option>
+		</select>
+		<br/>
+			<input type="text" placeholder="자세한 사유 직접 입력"/>
+		<br/>
+		<input type="submit" value="탈퇴" th:onclick="return udelete()">
+	</form>
+	
+<script>
+	document.getElementById('id').value = opener.document.getElementById('userId').value;
+</script>
+</body>
+</html>

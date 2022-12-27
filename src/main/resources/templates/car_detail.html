@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>PulseCar</title>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="stylesheet"
+	href="https://fonts.googleapis.com/icon?family=Material+Icons" />
+	 <script
+      src="https://kit.fontawesome.com/9d7a2afbd4.js"
+      crossorigin="anonymous"
+    ></script>
+<link rel="icon" type="image/x-icon" href="/images/favicon.ico" />
+<link rel="stylesheet" href="css/w3.css" />
+<link rel="stylesheet" href="css/cgoing.css" />
+<link rel="stylesheet" href="css/jsk.css" />
+<script src="js/w3.js"></script>
+<script src="js/custom.js"></script>
+<script src="js/cgoing.js"></script>
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+</head>
+<body>
+	<div id="wrapper">
+		<!-- common 헤더 -->
+		<div th:insert="common_header.html :: header"></div>
+
+		<script>
+        w3.includeHTML();
+      </script>
+		<!-- banner -->
+		<div
+			class="flex-container flex-center w3-large lnb-margin w3-padding w3-light-grey">
+			<a th:href="@{car}">전기차 거래 플랫폼</a>
+		</div>
+
+		<!-- car detail -->
+
+		<div id="car_detail">
+			<div class="w3-panel w3-xlarge">
+				<a th:href="@{car}">← 뒤로가기 🥰</a>
+				<div class="w3-right">
+					<a href="#" class="w3-margin-right">🚗 이전 차량</a> <a href="#">다음
+						차량 🚕</a>
+				</div>
+			</div>
+			<div class="w3-container">
+				<input type="hidden" id="c_num" th:value="${cddto.c_num}" /> 
+				<input type="hidden" id="dr_c_name" th:value="${cddto.dr_c_name}" />
+				<h2 class="carName" th:utext="${cddto.c_name}">차량 이름</h2>
+				<h2 class="carPrice w3-right" th:utext="${cddto.cp_price}+'원'">{가격}</h2>
+
+				<div class="w3-large">
+					<span class="kmAndDot" th:utext="${cddto.c_mile}">{주행거리}</span> <span
+						class="dot" th:utext="${cddto.c_year}+'년식'">{연식}</span> <span
+						class="dot" th:utext="${cddto.c_scail}">{차종}</span> <span
+						class="dot" th:utext="${cddto.c_coler}">{색깔}</span> <span
+						th:utext="${cddto.c_num}">{차량번호}</span> <span
+						style="display: inline-block; margin: 0 0 -15px 0;" id="heart"></span>
+				</div>
+			</div>
+			<div class="flex-container-carDetail">
+				<div class="pos-rel" id="carArea">
+					<!-- 큰 이미지 Area -->
+					<div id="gallery_photo">
+						<img th:src="@{/image/__${carimg?.img_dir_1}__}" class="w3-image"
+							id="focusImage" />
+					</div>
+					<!-- 컨트롤 바 -->
+					<div>
+						<a class="prev" onclick="wanderImage(-1)">&#10094;</a> <a
+							class="next" onclick="wanderImage(1)">&#10095;</a>
+					</div>
+					<!-- 썸네일 이미지 리스트 -->
+					<div class="gallery_thumbnail gallery-flex">
+						<img th:src="@{/image/__${carimg?.img_dir_1}__}"
+							class="thumbnail activeThumb"
+							onmouseover="changeFocusImage(this)" /> <img
+							th:src="@{/image/__${carimg?.img_dir_2}__}" class="thumbnail"
+							onmouseover="changeFocusImage(this)" /> <img
+							th:src="@{/image/__${carimg?.img_dir_3}__}" class="thumbnail"
+							onmouseover="changeFocusImage(this)" /> <img
+							th:src="@{/image/__${carimg?.img_dir_4}__}" class="thumbnail"
+							onmouseover="changeFocusImage(this)" /> <img
+							th:src="@{/image/__${carimg?.img_dir_5}__}" class="thumbnail"
+							onmouseover="changeFocusImage(this)" /> <img
+							th:src="@{/image/__${carimg?.img_dir_6}__}" class="thumbnail"
+							onmouseover="changeFocusImage(this)" />
+					</div>
+				</div>
+				<!-- 딜러 설명 Area -->
+				<div id="dealerArea"
+					class="w3-center w3-border w3-border-black w3-round">
+					<!-- <i class="material-icons"
+						style="font-size: 150px; margin-top: 20px">face</i> -->
+					<p style="font-size: 100px; margin-top: 20px; margin-bottom: -20px">[[${cddto.dr_icon}]]</p>
+					<h3 th:utext="${cddto.dr_c_name}">{상사 이름}</h3>
+					<h4 class="dealer" th:utext="${cddto.dr_name}">{딜러 이름}</h4>
+					<div class="w3-large font-bold">
+						<span class="partition-right" th:utext="|판매중 ${cddto.dr_selling}|">판매중 {}</span> 
+						<span th:utext="|판매완료 ${cddto.dr_sold}|">판매완료 {}</span>
+					</div>
+					<p class="w3-large font-bold" th:utext="${cddto.dr_c_address}">{주소}</p>
+					<h3 class="w3-text-red" th:utext="${cddto.dr_c_phone}">📞
+						{전화번호}</h3>
+					<h3 style="display: inline-block;" id="heart"></h3>
+						<div style="float: right; margin-right: 73px;">
+					<button class="cardetailbtn" onclick="pickClick()">찜하기</button>
+					<th:block th:if="${session.loginUser!= null}">
+						<button class="cardetailbtn2" onclick="openCarReserForm()">방문예약</button>
+					</th:block>
+					<th:block th:unless="${session.loginUser!= null}">
+						<button class="cardetailbtn2" onclick="car_detailNologin()">방문예약</button>
+					</th:block>
+					</div>
+				</div>
+			</div>
+
+			<!-- 아티클 -->
+			<div>
+				<div class="j-border-tb">
+					<table style="margin-left: 20px">
+						<tr>
+							<td><p class="w3-xlarge font-bold">판매자 정보
+								<p></td>
+						</tr>
+						<tr>
+							<td rowspan='2'><p
+									style="font-size: 70px; margin-top: 30px; margin-bottom: 10px;">[[${cddto.dr_icon}]]</p></td>
+							<td>
+								<p>
+								<h3>
+									<span th:utext="${cddto.dr_c_name}">{상사 이름}</span> <span
+										class="dealer" th:utext="${cddto.dr_name}">{딜러 이름}</span>
+								</h3>
+							</td>
+						<tr>
+							<td>
+								<p>
+									<span class="w3-large font-bold partition-right"
+										th:utext="${cddto.dr_c_address}">{주소}</span> <span
+										class="w3-large" th:utext="${cddto.dr_c_phone}">📞
+										{전화번호}</span>
+								</p>
+							</td>
+						</tr>
+					</table>
+				</div>
+				<div style="margin-left: 20px">
+					<p th:utext="${cddto.cp_content}"></p>
+					<img src="images/cardetail_1.png" >
+					<img src="images/cardetil_1.png" >
+					<img src="images/cardetail_caution.png" >
+				</div>
+			</div>
+		</div>
+
+		<!-- common 푸터 -->
+		<div th:insert="common_footer.html::footer"></div>
+		<script th:inline="javascript">	
+		$.ajax({
+			type: 'post',
+			url: './carpickCheck',
+			data: {
+				id : [[${user.getId}]],
+				p_num : [[${cddto.c_num}]]
+			},
+			success : function(result){
+				if(result==1){
+					$("#heart").html("<button class='heart-on w3-right' onclick='pickClick()'>💗</button> ");
+				}else{
+					if([[${user.getId}]]==null){
+						$("#heart").html("<button class='heart-off w3-right' onclick='clickEvent2Inline()'>🤍</button>");
+					}else{
+						$("#heart").html("<button class='heart-off w3-right' onclick='pickClick()'>🤍</button>");
+					}
+				}
+			}
+		});		
+	</script>
+
+		<script th:inline="javascript">	
+	function pickClick(){
+		$.ajax({
+			type: 'post',
+			url: './carpickCheck',
+			data: {
+				id : [[${user.getId}]],
+				p_num : [[${cddto.c_num}]]
+			},
+			success : function(result){
+				if(result==1){
+					$("#heart").html("<button class='heart-off w3-right' onclick='pickClick()'>🤍</button>");
+					carpickLiseDelete([[${user.getId}]],[[${cddto.c_num}]]);
+				}else{
+					if([[${user.getId}]]==null){
+						//clickEvent2('pickshop',[[${cddto.c_num}]]);
+						("#heart").html("<button class='heart-off w3-right' onclick='pickClick()'>🤍</button>");
+					}
+					$("#heart").html("<button class='heart-on w3-right' onclick='pickClick()'>💗</button> ");
+					carpickLiseInsert([[${user.getId}]],[[${cddto.c_num}]]);
+				}
+			}
+		});		
+	}
+	function carpickLiseDelete(id, p_num) {
+		$.ajax({
+			type: 'post',
+			url: './carpickListDelete',
+			data: {
+				id: id,
+				p_num: p_num
+			},
+			success: function(result) {
+				if (result) {
+					console.log("찜 삭제 완료")
+				} else {
+					console.log("삭제 실패")
+				}
+
+			},
+			error: function() {
+				console.log("삭제 연결 에러")
+			}
+		});
+	}
+	function carpickLiseInsert(id, p_num) {
+		$.ajax({
+			type: 'post',
+			url: './carpickListInsert',
+			data: {
+				id: id,
+				p_num: p_num
+			},
+			success: function(result) {
+				if (result) {
+					console.log("찜 추가 완료")
+				} else {
+					console.log("추가 실패")
+				}
+
+			},
+			error: function() {
+				console.log("추가 연결 에러")
+			}
+		});
+	}
+	</script>
+		<script th:inline="javascript">	
+		function clickEvent2Inline(){
+			up = confirm("로그인 후 이용가능합니다.\n로그인 하시겠습니까?")
+			if(up){
+				var p_go = "pickshop";
+				var item = [[${c_num}]];
+				location.href = "loginForm?go=" + p_go + "&p_num=" + item;
+			}else{
+				return false;
+			}
+		}
+		
+	</script>
+	<script th:inline="javascript">	
+		function car_detailNologin(){
+				up = confirm("로그인 후 이용가능합니다.\n로그인 하시겠습니까?");
+				if(up){
+					var car_num = [[${cddto.c_num}]];
+					var id = [[${session.loginUser?.id}]];
+					location.href = "loginForm?go=carDetail" + "&num="+car_num +"&id="+id;
+				}else{
+					return false;
+				}
+			}
+	</script> 
+	</div>
+</body>
+</html>

@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>electric life</title>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="stylesheet"
+	th:href="@{https://fonts.googleapis.com/icon?family=Material+Icons}" />
+	 <script
+      src="https://kit.fontawesome.com/9d7a2afbd4.js"
+      crossorigin="anonymous"
+    ></script>
+<link rel="icon" type="image/x-icon" href="/images/favicon.ico" />
+<link rel="stylesheet"
+	th:href="@{https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css}" />
+	<link rel="icon" type="image/x-icon" href="/images/favicon.ico" />
+<link rel="stylesheet" th:href="@{/css/w3.css}" />
+<link rel="stylesheet" th:href="@{/css/cgoing.css}" />
+<link rel="stylesheet" th:href="@{/css/jsk.css}" />
+<script type="text/javascript" th:src="@{/js/w3.js}"></script>
+<script type="text/javascript" th:src="@{/js/custom.js}"></script>
+<script type="text/javascript" th:src="@{/js/cgoing.js}"></script>
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+</head>
+<body>
+	<div id="wrapper">
+		<!-- common 헤더 -->
+		<div th:insert="common_header.html :: header"></div>
+
+		<!-- lnb (Local navigation bar) -->
+		<nav
+			class="flex-container flex-center w3-large lnb-margin w3-padding w3-light-grey">
+			<a
+				th:href="@{bbs(orderBy=bbs_writedate,bbsDiv=null,searchText=null)}"
+				class="on_lnb">자유게시판</a> <a href="#">소모임</a>
+		</nav>
+		<!-- common 자유게시판 -->
+			<div th:insert="common_bbs_free.html :: bbs_free"></div>
+		<div style="display:flex; justify-content: center;">
+		<img src="images/ad_1.png" style="width:150px; height:450px" />
+		<div class="w3-container" style="width:1000px">
+
+			<!-- 작성글 테이블 -->
+			<table class="w3-table w3-bordered">
+				<tr class="w3-small w3-light-gray">
+					<td>글제목</td>
+					<td colspan="3" th:utext="${dto.bbs_title}"></td>
+				</tr>
+				<tr class="w3-small">
+					<td style="width: 20%;"><span>작성자</span> <span
+						th:utext="${dto.name}"></span></td>
+					<td style="width: 60%;"><span>작성일</span> <span
+						th:utext="${dto.bbs_writedate}"></span></td>
+					<td><span>추천</span> <span th:utext="${dto.bbs_like}"></span></td>
+					<td><span>조회</span> <span th:utext="${dto.bbs_count}"></span></td>
+				</tr>
+				<tr>
+					<td colspan="4"><div style="min-height:180px">
+					 <span th:utext="${dto.bbs_content}"></span></div>
+					 
+					 <!-- 따봉 -->
+					 
+					 <div class="w3-center">
+					<th:block th:if="${bbsdto?.id!=null}">
+					<th:block th:if="${bbsdto?.id}==${dto?.id}" >
+						<button class="thumb-box" id="countBtn" value="up" onclick="qwe()">
+							<div class="like-num"><span id="test"><span th:text='${dto.bbs_like}'></span></span></div>
+							<div id="thumb_ck"></div>
+						</button>
+					</th:block>
+					<th:block th:unless="${bbsdto?.id}==${dto?.id}">
+						<button class="thumb-box" id="countBtn" value="up" onclick="qwe()">
+							<div class="like-num"><span id="test"><span th:text='${dto.bbs_like}'></span></span></div>
+							<div id="thumb_ck"></div>
+						</button>
+					</th:block>
+				</th:block>
+				<th:block th:unless="${bbsdto?.id!=null}">
+					<button th:onclick="clickEvent();" class="thumb-box">
+						<div class="like-num"><span id="test"><span th:text='${dto.bbs_like}'></span></span></div>
+						<div id="thumb_ck"></div>
+					</button>
+				</th:block>
+				
+				<!-- 따봉끝 -->
+				
+					 </div>
+					 </td>
+				</tr>
+			</table>
+			
+			<!-- 수정삭제 -->
+				<div class="w3-right">				
+				<th:block th:if="${bbsdto?.id!=null}" class="w3-right">
+					<th:block th:if="${bbsdto?.id}==${dto?.id}" >
+					<button
+							class="bbs-btn"
+							th:onclick="|location.href='@{updateForm(num=${dto.bbs_num})}'|"
+							>🖌수정</button>
+						<button
+							class="bbs-btn"
+							th:onclick="bbsdelete([[${dto.bbs_num}]]);">🗑삭제
+						</button>
+					</th:block>
+					</th:block>
+					</div>
+					<!-- 댓글 -->
+				<div class="w3-medium" style="border-top: 1px solid #bfbfbf; padding:20px 0 0 0;"
+					 th:each="cmdto : ${cm_dto}" th:if="${cmdto.rcm_num==0}" >
+					<tr>
+						<td><span style="font-Weight:700" th:text="${cmdto.name}"></span> 
+						<span class="w3-small" th:text="${cmdto.cm_date}"></span> 
+						<br /> 
+						<span th:utext="${cmdto?.cm_content}"></span> 
+						<th:block th:switch="${bbsdto?.id}">
+						
+						<span class="c-btn anchorUnderline w3-right partition-left" th:case="${cmdto?.id}" 
+						th:onclick="cmdelete([[${cmdto?.cm_num}]],[[${bbsdto?.id}]],[[${dto?.bbs_num}]]);">삭제</span>
+						
+						 <span class="c-btn anchorUnderline w3-right"
+									th:onclick="toggleShow([[${cmdto.cm_num}]])">답글</span>
+									
+						<form action="bbscommentwrite" method="post" >
+						<input type="hidden" name="id" th:value="${bbsdto?.id}">
+						<input type="hidden" name="num" th:value="${dto?.bbs_num}">
+						<input type="hidden" name="rcm_name" th:value="${cmdto?.name}">
+						<input type="hidden" name="rcm_num" th:value="${cmdto?.cm_num}">
+						<div class="w3-padding">
+						<div class="w3-display-container"  th:id="${cmdto.cm_num}" style="display:none">
+						<textarea class="w3-input w3-border" name="cm_content"	cols="50" rows="1" ></textarea>
+						<button	class="w3-button w3-white w3-border w3-border-theme w3-round w3-margin-top">입력하기</button>
+						</div>
+						</div>
+						</form> 
+						</th:block></td>
+				 	</tr>
+				 	<!-- 대댓글 -->
+				<tr class="w3-small" th:each="cmdto2 : ${cm_dto}" th:if="${cmdto2.rcm_num==cmdto.cm_num}">
+					<div style="padding:20px 0 0 0px; border-top: 1px solid #bfbfbf;">
+					<td><i class="material-icons" style="font-size:24px;color:#5ac8fa">subdirectory_arrow_right</i>
+					[<span style="font-Weight:700" th:text="${cmdto2.rcm_name}" class="anchorUnderline"></span>]
+					<span style="font-Weight:700" th:text="${cmdto2.name}"></span> 
+						<span class="w3-small" th:text="${cmdto2.cm_date}"></span>
+						 <br /> 
+						<span th:utext="${cmdto2?.cm_content}"></span>
+				<th:block th:switch="${bbsdto?.id}">
+				<span class="c-btn anchorUnderline w3-right partition-left" th:case="${cmdto2?.id}" 
+						th:onclick="cmdelete([[${cmdto2?.cm_num}]],[[${bbsdto?.id}]],[[${dto?.bbs_num}]]);">삭제</span>
+				
+				 <span class="w3-right c-btn anchorUnderline"
+									th:onclick="toggleShow([[${cmdto2.cm_num}]])">답글</span>
+									
+									
+				 <form action="bbscommentwrite" method="post">
+						<input type="hidden" name="id" th:value="${bbsdto?.id}">
+						<input type="hidden" name="num" th:value="${dto?.bbs_num}">
+						<input type="hidden" name="rcm_name" th:value="${cmdto2.name}">
+						<input type="hidden" name="rcm_num" th:value="${cmdto.cm_num}">
+						<div class="w3-padding">
+						<div class="w3-display-container"  th:id="${cmdto2.cm_num}" style="display:none">
+						<textarea class="w3-input w3-border" name="cm_content"	cols="50" rows="1" ></textarea>
+						<button	class="w3-button w3-white w3-border w3-border-theme w3-round w3-margin-top">입력하기</button>
+						</div>
+						</div>
+						</div>
+						</form> 
+					</th:block></tr>
+						
+				</div>
+				
+			
+			<th:block th:if=${bbsdto?.id!=null}>
+				<form action="bbscommentwrite" method="post">
+					<input type="hidden" name="id" th:value="${bbsdto?.id}"> <input
+						type="hidden" name="num" th:value="${dto?.bbs_num}">
+						<input type="hidden" name="rcm_name" th:value='0'>
+						<input type="hidden" name="rcm_num" th:value=0>
+					<div class="w3-padding">
+						<p th:text="${bbsdto?.name}"></p>
+						<div class="w3-display-container">
+							<textarea class="w3-input w3-border" name="cm_content" cols="80"
+								rows="5"></textarea>
+							<button
+								class="w3-button w3-white w3-border w3-border-theme w3-round w3-margin-top">
+								입력하기</button>
+						</div>
+					</div>
+				</form>
+			</th:block>
+			<div class="w3-padding">
+				<div class="w3-display-container">
+					<th:block th:unless="${bbsdto?.id!=null}">
+						<textarea class="w3-input w3-border" name="cm_content" cols="80"
+							rows="5" placeholder="로그인 후 이용가능합니다" readonly></textarea>
+						<button
+							class="w3-button w3-white w3-border w3-border-theme w3-round w3-margin-top">
+							입력하기</button>
+					</th:block>
+				</div>
+			</div>
+		</div>
+		<img src="images/ad_2.png" style="width:150px; height:450px" />
+		</div>
+		<!-- common 푸터 -->
+		<div th:replace="common_footer :: footer"></div>
+	</div>
+<script th:inline="javascript">	
+	$.ajax({
+		type: 'post',
+		url: './likeCheck',
+		data: {
+			id : [[${bbsdto?.id}]],
+			bbs_num : [[${dto?.bbs_num}]]
+		},
+		success : function(result){
+			if(result==1){
+				$("#thumb_ck").html("<i id='thumb' class='fa fa-thumbs-o-up' style='font-size:17px; font-weight:400; line-height:28px; color:#1a70dc;'></i>");
+		
+			}else{
+				$("#thumb_ck").html("<i id='thumb' class='fa fa-thumbs-o-up' style='font-size:17px; font-weight:400; line-height:28px; color: gray;'></i>");
+				
+			}
+		}
+	});		
+	</script>
+
+	<script th:inline="javascript">	
+	function qwe(){
+		$.ajax({
+			type: 'post',
+			url: './likeCheck',
+			data: {
+				id : [[${bbsdto?.id}]],
+				bbs_num : [[${dto?.bbs_num}]]
+			},
+			success : function(result){
+				if(result==1){
+					$("#thumb_ck").html("<i id='thumb' class='fa fa-thumbs-o-up' style='font-size:17px; font-weight:400; line-height:28px; color:#1a70dc;'></i>");
+						deleteLike([[${bbsdto?.id}]],[[${dto?.bbs_num}]]);
+						/* ${"#test"}.text([[${dto?.bbs_count}-1]]) */
+						$("#thumb_ck").html("<i id='thumb' class='fa fa-thumbs-o-up' style='font-size:17px; font-weight:400; line-height:28px; color: gray;'></i>");
+				}else{
+					$("#thumb_ck").html("<i id='thumb' class='fa fa-thumbs-o-up' style='font-size:17px; font-weight:400; line-height:28px; color: gray;'></i>");
+						insertLike([[${bbsdto?.id}]],[[${dto?.bbs_num}]]);
+						/* ${"#test"}.text([[${dto?.bbs_count}+1]]) */
+						$("#thumb_ck").html("<i id='thumb' class='fa fa-thumbs-o-up' style='font-size:17px; font-weight:400; line-height:28px; color:#1a70dc;'></i>");
+				}
+			}
+		});		
+	}
+	
+	
+	function deleteLike(id, bbs_num) {
+		$.ajax({
+			type: 'post',
+			url: './likedelete',
+			data: {
+				id: id,
+				bbs_num: bbs_num
+			},
+			success: function(result) {
+				if (result) {
+					console.log("삭제 완료")
+					let count = document.querySelector("#test").innerText * 1;
+					count -= 1
+					downLike();
+					document.querySelector("#test").innerText = count;
+				} else {
+					console.log("삭제 실패")
+				}
+
+			},
+			error: function() {
+				console.log("삭제 연결 에러")
+			}
+		});
+	}
+	function insertLike(id, bbs_num) {
+		$.ajax({
+			type: 'post',
+			url: './likeinsert',
+			data: {
+				id: id,
+				bbs_num: bbs_num
+			},
+			success: function(result) {
+				if (result) {
+					console.log("추가 완료")
+					let count = document.querySelector("#test").innerText * 1;
+					count += 1
+					upLike();
+					document.querySelector("#test").innerText = count;
+				} else {
+					console.log("추가 실패")
+				}
+
+			},
+			error: function() {
+				console.log("추가 연결 에러")
+			}
+		});
+	}
+	</script>
+
+	<script th:inline="javascript">	
+	function upLike(){
+		$.ajax({
+			type: 'post',
+			url: './upLike',
+			data: {
+				bbs_num : [[${dto?.bbs_num}]]
+			},
+			success : function(result){
+				if (result) {
+					console.log("bbs_cnt 올리기 완료")
+				}else{
+					console.log("bbs_cnt 올리기 실패")
+				}
+		}
+		});	
+	}
+	function downLike(){
+		$.ajax({
+			type: 'post',
+			url: './downLike',
+			data: {
+				bbs_num : [[${dto?.bbs_num}]]
+			},
+			success : function(result){
+				if (result) {
+					console.log("bbs_cnt 내리기 완료")
+				}else{
+					console.log("bbs_cnt 내리기 실패")
+				}
+		}
+		});	
+	}
+	</script>
+</body>
+</html>

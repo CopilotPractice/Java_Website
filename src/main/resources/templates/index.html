@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>PulseCar</title>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+ <script
+      src="https://kit.fontawesome.com/9d7a2afbd4.js"
+      crossorigin="anonymous"
+    ></script>
+<link rel="icon" type="image/x-icon" href="/images/favicon.ico" />
+<link rel="stylesheet" th:href="@{css/w3.css}" />
+<link rel="stylesheet" th:href="@{css/jsk.css}" />
+<link rel="stylesheet" th:href="@{css/cgoing.css}" />
+<script src="js/w3.js"></script>
+<script src="js/cgoing.js"></script>
+<script src="js/custom.js"></script>
+</head>
+<body>
+	<div id="wrapper">
+		<!-- common 헤더 -->
+		<div th:include="common_header.html :: header" class="sticky"
+			style="z-index: 1"></div>
+
+		<!-- 메인 이미지 -->
+		<div class="cropping" id="mainImage">
+			<img src="images/taycan.jpg" alt="mainimage" style="width: 100%" />
+		</div>
+
+		 <!-- 섹션 (Browse by Brand) -->
+      <th:block th:if="${session.loginUser==null}">
+      <section id="browseByBrand" class="w3-container">
+        <h2 class="w3-center">Browse by Brand</h2>
+        <ul id="brandList" class="w3-large">
+          <li>
+            <a th:href="@{indexcar(brand=현대)}">
+              <img
+                src="https://static.tcimg.net/vehicles/logo_text/384x384_full_color/d88259cdbac929b7/Hyundai.png?fill=solid&fit=fill&h=50&w=50"
+                alt="brand_hyundai" />
+              <b>Hyundai</b>
+            </a>
+          </li>
+          <li>
+            <a th:href="@{indexcar(brand=제네시스)}">
+              <img
+                src="https://static.tcimg.net/vehicles/logo/1664x384_full_color/3669c24f879ba296/Genesis.png?fill=solid&fit=fill&h=50&w=50"
+                alt="brand_genesis" />
+              <b>Genesis</b>
+            </a>
+          </li>
+          <li>
+            <a th:href="@{indexcar(brand=기아)}">
+              <img
+                src="https://static.tcimg.net/vehicles/logo/1629x384_full_color/638bbde84c5f569e/Kia.png?fill=solid&fit=fill&h=50&w=50"
+                alt="brand_kia" />
+              <b>Kia</b>
+            </a>
+          </li>
+          <li>
+            <a th:href="@{indexcar(brand=쉐보레)}">
+              <img
+                src="https://static.tcimg.net/vehicles/logo_text/820x384_full_color/1dd21e0781f0e450/Chevrolet.png?fill=solid&fit=fill&h=50&w=50"
+                alt="brand_chevrolet" />
+              <b>Chevrolet</b>
+            </a>
+          </li>
+          <li>
+            <a th:href="@{indexcar(brand=테슬라)}">
+              <img
+                src="https://static.tcimg.net/vehicles/logo/385x384_full_color/894bffb70433ffd7/Tesla.png?fill=solid&fit=fill&h=50&w=50"
+                alt="brand_tesla" />
+              <b>Tesla</b>
+            </a>
+          </li>
+          <li>
+            <a th:href="@{indexcar(brand=벤츠)}">
+              <img
+                src="https://static.tcimg.net/vehicles/logo/384x384_full_color/959be7e00726a9e0/Mercedes-Benz.png?fill=solid&fit=fill&h=50&w=50"
+                alt="brand_benz" />
+              <b>Benz</b>
+            </a>
+          </li>
+          <li>
+            <a th:href="@{indexcar(brand=BMW)}">
+              <img
+                src="https://static.tcimg.net/vehicles/logo/384x384_full_color/614861eca7caf1b4/BMW.png?fill=solid&fit=fill&h=50&w=50"
+                alt="brand_bmw" />
+              <b>BMW</b>
+            </a>
+          </li>
+          <li>
+            <a th:href="@{indexcar(brand=아우디)}">
+              <img
+                src="https://static.tcimg.net/vehicles/logo/1088x384_full_color/0598fce6d069a5a0/Audi.png?fill=solid&fit=fill&h=50&w=50"
+                alt="brand_audi" />
+              <b>Audi</b>
+            </a>
+          </li>
+          <li>
+            <a th:href="@{indexcar(brand=포르쉐)}">
+              <img
+                src="https://static.tcimg.net/vehicles/logo/296x384_full_color/5505f9fd129ce1d5/Porsche.png?fill=solid&fit=fill&h=50&w=50"
+                alt="brand_porsche" />
+              <b>Porsche</b>
+            </a>
+          </li>
+          <li>
+            <a th:href="@{indexcar(brand=폴스타)}">
+              <img
+                src="https://static.tcimg.net/vehicles/logo/379x384_full_color/f17cb6e7bc04cb64/Polestar.png?fill=solid&fit=fill&h=50&w=50"
+                alt="brand_polestar" />
+              <b>Polestar</b>
+            </a>
+          </li>
+        </ul>
+      </section>
+      </th:block>
+      <th:block th:unless="${session.loginUser==null}">
+      <section id="browseByBrand" class="w3-container">
+        <h2 class="w3-center">Browse by Brand</h2>
+        <ul id="brandList" class="w3-large">
+          <li>
+            <a th:href="@{indexcar(brand=현대,id=${session.loginUser.id})}">
+              <img
+                src="https://static.tcimg.net/vehicles/logo_text/384x384_full_color/d88259cdbac929b7/Hyundai.png?fill=solid&fit=fill&h=50&w=50"
+                alt="brand_hyundai" />
+              <b>Hyundai</b>
+            </a>
+          </li>
+          <li>
+            <a th:href="@{indexcar(brand=제네시스,id=${session.loginUser.id})}">
+              <img
+                src="https://static.tcimg.net/vehicles/logo/1664x384_full_color/3669c24f879ba296/Genesis.png?fill=solid&fit=fill&h=50&w=50"
+                alt="brand_genesis" />
+              <b>Genesis</b>
+            </a>
+          </li>
+          <li>
+            <a th:href="@{indexcar(brand=기아,id=${session.loginUser.id})}">
+              <img
+                src="https://static.tcimg.net/vehicles/logo/1629x384_full_color/638bbde84c5f569e/Kia.png?fill=solid&fit=fill&h=50&w=50"
+                alt="brand_kia" />
+              <b>Kia</b>
+            </a>
+          </li>
+          <li>
+            <a th:href="@{indexcar(brand=쉐보레,id=${session.loginUser.id})}">
+              <img
+                src="https://static.tcimg.net/vehicles/logo_text/820x384_full_color/1dd21e0781f0e450/Chevrolet.png?fill=solid&fit=fill&h=50&w=50"
+                alt="brand_chevrolet" />
+              <b>Chevrolet</b>
+            </a>
+          </li>
+          <li>
+            <a th:href="@{indexcar(brand=테슬라,id=${session.loginUser.id})}">
+              <img
+                src="https://static.tcimg.net/vehicles/logo/385x384_full_color/894bffb70433ffd7/Tesla.png?fill=solid&fit=fill&h=50&w=50"
+                alt="brand_tesla" />
+              <b>Tesla</b>
+            </a>
+          </li>
+          <li>
+            <a th:href="@{indexcar(brand=벤츠,id=${session.loginUser.id})}">
+              <img
+                src="https://static.tcimg.net/vehicles/logo/384x384_full_color/959be7e00726a9e0/Mercedes-Benz.png?fill=solid&fit=fill&h=50&w=50"
+                alt="brand_benz" />
+              <b>Benz</b>
+            </a>
+          </li>
+          <li>
+            <a th:href="@{indexcar(brand=BMW,id=${session.loginUser.id})}">
+              <img
+                src="https://static.tcimg.net/vehicles/logo/384x384_full_color/614861eca7caf1b4/BMW.png?fill=solid&fit=fill&h=50&w=50"
+                alt="brand_bmw" />
+              <b>BMW</b>
+            </a>
+          </li>
+          <li>
+            <a th:href="@{indexcar(brand=아우디,id=${session.loginUser.id})}">
+              <img
+                src="https://static.tcimg.net/vehicles/logo/1088x384_full_color/0598fce6d069a5a0/Audi.png?fill=solid&fit=fill&h=50&w=50"
+                alt="brand_audi" />
+              <b>Audi</b>
+            </a>
+          </li>
+          <li>
+            <a th:href="@{indexcar(brand=포르쉐,id=${session.loginUser.id})}">
+              <img
+                src="https://static.tcimg.net/vehicles/logo/296x384_full_color/5505f9fd129ce1d5/Porsche.png?fill=solid&fit=fill&h=50&w=50"
+                alt="brand_porsche" />
+              <b>Porsche</b>
+            </a>
+          </li>
+          <li>
+            <a th:href="@{indexcar(brand=폴스타,id=${session.loginUser.id})}">
+              <img
+                src="https://static.tcimg.net/vehicles/logo/379x384_full_color/f17cb6e7bc04cb64/Polestar.png?fill=solid&fit=fill&h=50&w=50"
+                alt="brand_polestar" />
+              <b>Polestar</b>
+            </a>
+          </li>
+        </ul>
+      </section>
+      </th:block>
+
+		<!-- 섹션 (Recent Activitiy) -->
+		<section id="recentActivity">
+			<h2 class="w3-center">Welcome to PulseCar</h2>
+		</section>
+
+
+		<!-- 섹션 (Around View) -->
+		<section id="aroundView">
+			<h2 class="w3-center">360° View</h2>
+			<div id="aroundView_Box">
+				<div class="aroundView_item">
+					<img
+						src="https://static.tcimg.net/vehicles/primary/131d8be043aa520a/2022-Audi-e-tron_GT-white-full_color-driver_side_front_quarter.png?h=180&w=360"
+						class="w3-image cursor" onclick="carAppearR(this)" />
+					<p>Audi ev-tron</p>
+				</div>
+				<div class="aroundView_item">
+					<img
+						src="https://static.tcimg.net/vehicles/gallery/611083f89b3c70e6/2022-Porsche-Taycan.jpg?h=270&w=360"
+						class="w3-image cursor" onclick="carAppearL(this)" />
+					<p>Porsche taycan</p>
+				</div>
+				<div class="aroundView_item">
+					<img
+						src="https://static.tcimg.net/vehicles/primary/e973f3f7aa878390/2023-Hyundai-IONIQ_5-white-full_color-driver_side_front_quarter.png?h=180&w=360"
+						class="w3-image cursor" onclick="carAppearR(this)" />
+					<p>Hyundai ioniq6</p>
+				</div>
+				<div class="aroundView_item">
+					<img
+						src="https://static.tcimg.net/vehicles/primary/8cd251dde0775b5f/2022-Kia-EV6-white-full_color-driver_side_front_quarter.png?h=180&w=360"
+						class="w3-image cursor" onclick="carAppearR(this)" />
+					<p>Kia EV6</p>
+				</div>
+			</div>
+		</section>
+
+		<!-- 애니메이션 -->
+		<div style="text-align: center; padding-bottom: 50px"
+			id="wrapperAroundView">
+			<img src="./images/img_taycan/2022-Porsche-Taycan_0.jpg"
+				id="carAnimImage" style="width: 50%; visibility: hidden"
+				draggable="false" />
+			<div id="rotateSign" style="visibility: hidden">
+				<img
+					src="https://consumer.tcimg.net/assets/_next/static/images/spin-icon-3274eb8beb535df572c4055615053584.svg"
+					alt="rotateSign" />
+				<p class="w3-large font-bold w3-text-red" style="margin-top: 5px">
+					Drag to spin 360° View</p>
+			</div>
+		</div>
+		<div style="text-align: center">
+			<img src="images\index_img\1.png" /> <img
+				src="images\index_img\2.png" style="margin-top: 50px" /> <img
+				src="images\index_img\3.png" /> <img src="images\index_img\4.png"
+				style="margin-top: 50px" />
+		</div>
+		<section id="recentActivity" style="margin-top: 200px">
+			<h1 class="w3-center">Models of Electric Vehicles</h1>
+		</section>
+		<div id="carAnimImage2" style="padding-left: 23%; margin-top: 100px"
+			class="flex-container">
+			<div class="Transform-3D" style="width: 232px; height: 319px">
+				<img src="images\index_img\index_car_img\Taycan.png"
+					style="width: 230px; height: 137px" />
+				<div
+					style="border-bottom: solid 1px lightgray; height: 25px; margin: 10px;">
+					<p style="font-size: 15px; font-weight: bolder">
+						<img
+							src="https://static.tcimg.net/vehicles/logo/296x384_full_color/5505f9fd129ce1d5/Porsche.png?fill=solid&fit=fill&h=50&w=50"
+							alt="brand_porsche" style="width: 17px" />
+						Porsche Taycan
+					</p>
+					<p class="fade-in-box">포르쉐 타이칸 (Porsche Taycan)은 포르쉐가 설계하고 개발한
+						준대형 전기 스포츠 세단으로, 파나메라의 아랫급 모델이며, 파워트레인은 리막이 설계한 시스템을 사용했다. 패스트백
+						모델에 이어 에스테이트 모델인 스포트 투리스모 모델도 출시했다. 타이칸은 튀르키예어로 "기운찬 젊은 말"이란 뜻으로서
+						포르쉐 로고의 슈투트가르트의 휘장 속의 말을 의미한다.</p>
+				</div>
+			</div>
+			<div class="Transform-3D" style="width: 232px; height: 319px">
+				<img src="images\index_img\index_car_img\EV6.png"
+					style="width: 230px; height: 137px" />
+				<div
+					style="border-bottom: solid 1px lightgray; height: 25px; margin: 10px;">
+					<p style="font-size: 15px; font-weight: bolder">
+						<img
+							src="https://static.tcimg.net/vehicles/logo/1629x384_full_color/638bbde84c5f569e/Kia.png?fill=solid&fit=fill&h=50&w=50"
+							alt="brand_kia" style="width: 17px" /> KIA EV6
+					</p>
+					<p class="fade-in-box">파워트레인으로는 크로아티아의 자동차 제조사이자 현대자동차그룹이 투자한
+						리막 오토모빌리의 800V 고전압 시스템이 적용될 것으로 추정되며, 350kW 급속 충전 기능도 제공된다. 1회 충전
+						거리는 약 450~500km 정도로 예상하고 있다.</p>
+				</div>
+			</div>
+			<div class="Transform-3D" style="width: 232px; height: 319px">
+				<img src="images\index_img\index_car_img\e-tron.png"
+					style="width: 230px; height: 137px" />
+				<div
+					style="border-bottom: solid 1px lightgray; height: 25px; margin: 10px;">
+					<p style="font-size: 15px; font-weight: bolder">
+						<img
+							src="https://static.tcimg.net/vehicles/logo/1088x384_full_color/0598fce6d069a5a0/Audi.png?fill=solid&fit=fill&h=50&w=50"
+							alt="brand_audi" style="width: 17px" /> AUDI
+						E-Tron GT
+					</p>
+					<p class="fade-in-box">아우디 e-트론 GT (Audi e-tron GT)는 아우디가 개발한
+						준대형 4도어 쿠페형 스포츠 세단이자 전기자동차이다. 포르쉐 타이칸과 플랫폼이 같으며 모터, 배터리 등 대부분의 핵심
+						부품 역시 공유한다.</p>
+				</div>
+			</div>
+			<div class="Transform-3D" style="width: 232px; height: 319px">
+				<img src="images\index_img\index_car_img\ionic6.png"
+					style="width: 230px; height: 137px" />
+				<div
+					style="border-bottom: solid 1px lightgray; height: 25px; margin: 10px;">
+					<p style="font-size: 15px; font-weight: bolder">
+						<img
+							src="https://static.tcimg.net/vehicles/logo_text/384x384_full_color/d88259cdbac929b7/Hyundai.png?fill=solid&fit=fill&h=50&w=50"
+							alt="brand_hyundai" style="width: 17px" />
+						Hyundai Ionic6
+					</p>
+					<p class="fade-in-box">22년 7월 14일, 2022 부산국제모터쇼에서 실차가 최초 공개됐다.
+						배터리는 계획 초기에는 72.6kWh로 기획했지만 EV6와 동일한 77.4kWh 배터리로 상품성 개선이 이뤄졌으며
+						77.4kWh 사양 산업부 측정 기준 1회 충전 주행 가능거리 524km를 달성했다.</p>
+				</div>
+			</div>
+		</div>
+
+		<div id="carAnimImage3" style="padding-left: 23%; margin-top: 100px"
+			class="flex-container">
+			<div class="Transform-3D" style="width: 232px; height: 319px">
+				<img src="images\index_img\index_car_img\model3.png"
+					style="width: 230px; height: 137px" />
+				<div
+					style="border-bottom: solid 1px lightgray; height: 25px; margin: 10px;">
+					<p style="font-size: 15px; font-weight: bolder">
+						<img
+							src="https://static.tcimg.net/vehicles/logo/385x384_full_color/894bffb70433ffd7/Tesla.png?fill=solid&fit=fill&h=50&w=50"
+							alt="brand_tesla" style="width: 17px" /> Tesla
+						Model 3
+					</p>
+					<p class="fade-in-box">테슬라 모델 3는 2016년 3월 31일 테슬라에서 공개한 중형 전기
+						세단이다. 대한민국에서는 2019년 8월 13일에 공식 출시했다. 미국 프리미엄 자동차 시장에서 2018년 말 이후
+						판매량 1위, 미국 캘리포니아 주(세계 최대 자동차 시장인 미국에서 가장 자동차가 많은 주)에서 2020년 1분기
+						판매량 1위</p>
+				</div>
+			</div>
+			<div class="Transform-3D" style="width: 232px; height: 319px">
+				<img src="images\index_img\index_car_img\i4.png"
+					style="width: 230px; height: 137px" />
+				<div
+					style="border-bottom: solid 1px lightgray; height: 25px; margin: 10px;">
+					<p style="font-size: 15px; font-weight: bolder">
+						<img
+							src="https://static.tcimg.net/vehicles/logo/384x384_full_color/614861eca7caf1b4/BMW.png?fill=solid&fit=fill&h=50&w=50"
+							alt="brand_bmw" style="width: 17px" /> BMW I4
+					</p>
+					<p class="fade-in-box">독일의 자동차 제조사인 BMW에서 2022년에 출시된 중형 5도어
+						리프트백/패스트백 세단이며, G26 4시리즈 그란 쿠페를 기반으로 개발되는 순수 전기차로 전기자동차 브랜드인 i시리즈의
+						4번째 차량이다</p>
+				</div>
+			</div>
+			<div class="Transform-3D" style="width: 232px; height: 319px">
+				<img src="images\index_img\index_car_img\eqs.png"
+					style="width: 230px; height: 137px" />
+				<div
+					style="border-bottom: solid 1px lightgray; height: 25px; margin: 10px;">
+					<p style="font-size: 15px; font-weight: bolder">
+						<img
+							src="https://static.tcimg.net/vehicles/logo/384x384_full_color/959be7e00726a9e0/Mercedes-Benz.png?fill=solid&fit=fill&h=50&w=50"
+							alt="brand_benz" style="width: 17px" />
+						Mercedes-Benz EQ S
+					</p>
+					<p class="fade-in-box">독일 메르세데스-벤츠 산하의 전기차 브랜드인 'EQ'의 최상위 플래그십
+						세단 모델로서 S클래스의 전기차 버전이라고 할 수 있는 전기 대형 세단이다. 벤츠의 전기차 전용 플랫폼인
+						EVA(Electric Vehicle Architecture)를 사용하는 첫번째 전기차이다.컨셉트카인 VISION
+						EQS를 기반으로 제작</p>
+				</div>
+			</div>
+			<div class="Transform-3D" style="width: 232px; height: 319px">
+				<img src="images\index_img\index_car_img\polestar2.png"
+					style="width: 230px; height: 137px" />
+				<div
+					style="border-bottom: solid 1px lightgray; height: 25px; margin: 10px;">
+					<p style="font-size: 15px; font-weight: bolder">
+						<img
+							src="https://static.tcimg.net/vehicles/logo/379x384_full_color/f17cb6e7bc04cb64/Polestar.png?fill=solid&fit=fill&h=50&w=50"
+							alt="brand_polestar" style="width: 17px" />
+						Polestar 2
+					</p>
+					<p class="fade-in-box">테슬라 모델 3의 경쟁자인 중형 크로스오버 순수 전기차로 볼보의 첫 순수
+						전기차다. 2019년 말에 폴스타 1의 생산이 시작된 직후 생산이 시작됐다. 온라인 공개는 2019년 2월 27일에
+						예정대로 진행됐으며, 실물은 2019년 3월 제네바 모터쇼에서 공개됐다.</p>
+				</div>
+			</div>
+		</div>
+		<!-- dummy -->
+		<div style="padding-bottom: 300px"></div>
+
+		<!-- common 푸터 -->
+		<div th:insert="common_footer.html :: footer"></div>
+	</div>
+	<script src="js/carRotate.js"></script>
+</body>
+</html>
